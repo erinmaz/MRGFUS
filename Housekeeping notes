@@ -1,0 +1,6 @@
+rsync -r MRGFUS '/mnt/AcademicFS/emazerol/MRGFUS-rsync-backup'
+
+git add .
+git commit -m "scripts as soon as I remembered to start a git"
+git push -u origin master
+
