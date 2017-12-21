@@ -100,7 +100,7 @@ set fmri(unwarp_dir) y-
 # 3 : Use slice order file
 # 4 : Use slice timings file
 # 5 : Interleaved (0, 2, 4 ... 1, 3, 5 ... )
-set fmri(st) 0
+set fmri(st) 5
 
 # Slice timings file
 set fmri(st_file) ""
@@ -118,7 +118,7 @@ set fmri(norm_yn) 0
 set fmri(perfsub_yn) 0
 
 # Highpass temporal filtering
-set fmri(temphp_yn) 0
+set fmri(temphp_yn) 1
 
 # Lowpass temporal filtering
 set fmri(templp_yn) 0
@@ -263,7 +263,7 @@ set fmri(regstandard_nonlinear_yn) 0
 set fmri(regstandard_nonlinear_warpres) 10 
 
 # High pass filter cutoff
-set fmri(paradigm_hp) 1.0
+set fmri(paradigm_hp) 150
 
 # Total voxels
 set fmri(totalVoxels) 173260800
