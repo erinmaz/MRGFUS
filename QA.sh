@@ -31,6 +31,24 @@ rm ${T1dir}/*.nii.gz
 fsleyes ${ANALYSISDIR}/${MYSUB}/anat/T1.nii.gz &
 
 
+#################### T2 QA #############################################
+for f in ${DICOMDIR}/${MYSUB}/*PUSag_CUBE_T2*; do
+    if [ -e "$f" ]; then
+	PURET2=YES
+	T2dir=$f
+    else
+	PURET2=NO
+	T2dir=${DICOMDIR}/${MYSUB}/*Sag_CUBE_T2*
+    fi
+    break
+done
+
+dcm2nii ${T2dir}
+mv ${T2dir}/o*.nii.gz ${ANALYSISDIR}/${MYSUB}/anat/T2.nii.gz
+rm ${T2dir}/*.nii.gz
+fsleyes ${ANALYSISDIR}/${MYSUB}/anat/T2.nii.gz &
+
+
 #################### SWAN QA ###########################################
 
 #Need to see what these files look like with PURE. MIN IP may not change etc.
@@ -109,7 +127,7 @@ fsleyes ${ANALYSISDIR}/${MYSUB}/fmri/rs.feat/tsnr_func &
 
 
 ################# SUMMARY OUTPUT ########################################
-echo $MYSUB $STUDYINFO $PURET1 $PUdwtsnr $PUrstsnr $rstsnr `awk -v max=0 '{if($1>max){ max=$1}}END{print max} ' ${ANALYSISDIR}/${MYSUB}/fmri/PUrs_FD.rms` `awk '{ total += $1 } END { print total/NR}' ${ANALYSISDIR}/${MYSUB}/fmri/PUrs_FD.rms`
+echo $MYSUB $STUDYINFO $PURET1 $PURET2 $PUdwtsnr $PUrstsnr $rstsnr `awk -v max=0 '{if($1>max){ max=$1}}END{print max} ' ${ANALYSISDIR}/${MYSUB}/fmri/PUrs_FD.rms` `awk '{ total += $1 } END { print total/NR}' ${ANALYSISDIR}/${MYSUB}/fmri/PUrs_FD.rms`
 
 
 

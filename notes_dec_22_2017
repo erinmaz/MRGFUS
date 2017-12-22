@@ -1,0 +1,22 @@
+MYSUB=9004_EP-12203
+MYSUB=9006_EO-12487
+
+flirt -applyxfm -init /home/erinmazerolle/MRGFUS/analysis/${MYSUB}/xfms/highres2SWAN.mat -in /home/erinmazerolle/MRGFUS/analysis/${MYSUB}/anat/T1.nii -ref /home/erinmazerolle/MRGFUS/analysis/${MYSUB}/anat/SWAN_mag.nii.gz -out /home/erinmazerolle/MRGFUS/analysis/${MYSUB}/anat/T12SWAN_mag
+
+fsleyes /home/erinmazerolle/MRGFUS/analysis/${MYSUB}/anat/T12SWAN_mag /home/erinmazerolle/MRGFUS/analysis/${MYSUB}/anat/SWAN_mag
+
+flirt -applyxfm -init /home/erinmazerolle/MRGFUS/analysis/${MYSUB}/xfms/highres2SWAN.mat -in /home/erinmazerolle/MRGFUS/analysis/${MYSUB}/anat/T1_lesion_mask_filled -ref /home/erinmazerolle/MRGFUS/analysis/${MYSUB}/anat/SWAN_mag.nii.gz -out /home/erinmazerolle/MRGFUS/analysis/${MYSUB}/anat/T1_lesion_mask_filled2SWAN_mag -interp nearestneighbour
+
+fsleyes /home/erinmazerolle/MRGFUS/analysis/${MYSUB}/anat/T12SWAN_mag /home/erinmazerolle/MRGFUS/analysis/${MYSUB}/anat/SWAN_mag /home/erinmazerolle/MRGFUS/analysis/${MYSUB}/anat/T1_lesion_mask_filled2SWAN_mag 
+
+
+try reg directly from T1 to SWAN_mag with BBR? Not really an option
+
+Go direct with 6 dof - looks much much better
+flirt -in /home/erinmazerolle/MRGFUS/analysis/${MYSUB}/anat/T1.nii -ref /home/erinmazerolle/MRGFUS/analysis/${MYSUB}/anat/SWAN_mag.nii.gz -out /home/erinmazerolle/MRGFUS/analysis/${MYSUB}/anat/T12SWAN_mag_direct -dof 6 -omat  /home/erinmazerolle/MRGFUS/analysis/${MYSUB}/anat/T12SWAN_mag_direct.mat 
+
+fsleyes /home/erinmazerolle/MRGFUS/analysis/${MYSUB}/anat/T12SWAN_mag_direct /home/erinmazerolle/MRGFUS/analysis/${MYSUB}/anat/SWAN_mag
+
+flirt -in /home/erinmazerolle/MRGFUS/analysis/${MYSUB}/anat/T1_lesion_mask_filled -ref /home/erinmazerolle/MRGFUS/analysis/${MYSUB}/anat/SWAN_mag.nii.gz -out /home/erinmazerolle/MRGFUS/analysis/${MYSUB}/anat/T1_lesion_mask_filled2SWAN_mag -applyxfm -init /home/erinmazerolle/MRGFUS/analysis/${MYSUB}/anat/T12SWAN_mag_direct.mat -interp nearestneighbour
+
+fsleyes /home/erinmazerolle/MRGFUS/analysis/${MYSUB}/anat/SWAN_mag /home/erinmazerolle/MRGFUS/analysis/${MYSUB}/anat/T1_lesion_mask_filled2SWAN_mag
