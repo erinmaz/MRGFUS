@@ -30,7 +30,7 @@ set fmri(featwatcher_yn) 1
 set fmri(sscleanup_yn) 0
 
 # Output directory
-set fmri(outputdir) ""
+set fmri(outputdir) "MYOUTPUT"
 
 # TR(s)
 set fmri(tr) 3.000000
@@ -106,7 +106,7 @@ set fmri(st) 5
 set fmri(st_file) ""
 
 # BET brain extraction
-set fmri(bet_yn) 1
+set fmri(bet_yn) 0
 
 # Spatial smoothing FWHM (mm)
 set fmri(smooth) 4
@@ -124,7 +124,7 @@ set fmri(temphp_yn) 1
 set fmri(templp_yn) 0
 
 # MELODIC ICA data exploration
-set fmri(melodic_yn) 1
+set fmri(melodic_yn) 0
 
 # Carry out main stats?
 set fmri(stats_yn) 0
@@ -227,7 +227,7 @@ set fmri(reginitial_highres_search) 90
 set fmri(reginitial_highres_dof) 3
 
 # Registration to main structural
-set fmri(reghighres_yn) 0
+set fmri(reghighres_yn) 1
 
 # Search space for registration to main structural
 # 0   : No search
@@ -239,7 +239,7 @@ set fmri(reghighres_search) 90
 set fmri(reghighres_dof) BBR
 
 # Registration to standard image?
-set fmri(regstandard_yn) 0
+set fmri(regstandard_yn) 1
 
 # Use alternate reference images?
 set fmri(alternateReference_yn) 0
@@ -257,7 +257,7 @@ set fmri(regstandard_search) 90
 set fmri(regstandard_dof) 12
 
 # Do nonlinear registration from structural to standard space?
-set fmri(regstandard_nonlinear_yn) 0
+set fmri(regstandard_nonlinear_yn) 1
 
 # Control nonlinear warp field resolution
 set fmri(regstandard_nonlinear_warpres) 10 
@@ -277,6 +277,9 @@ set feat_files(1) "MYINPUT"
 
 # Add confound EVs text file
 set fmri(confoundevs) 0
+
+# Subject's structural image for analysis 1
+set highres_files(1) "MYT1"
 
 # EV 1 title
 set fmri(evtitle1) ""

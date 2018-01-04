@@ -15,3 +15,12 @@ erinmazerolle@PikeLab-Summer:~/MRGFUS/scripts$ fslmaths harvardoxford-subcortica
 erinmazerolle@PikeLab-Summer:~/MRGFUS/scripts$ fslmaths harvardoxford-subcortical_prob_Left_Lateral_Ventricle.nii.gz -thr 50 -bin harvardoxford-subcortical_prob_Left_Lateral_Ventricle_thr50_bin
 erinmazerolle@PikeLab-Summer:~/MRGFUS/scripts$ fslmaths harvardoxford-subcortical_prob_Left_Lateral_Ventricle_thr50_bin.nii.gz -add harvardoxford-subcortical_prob_Right_Lateral_Ventricle_thr50_bin.nii.gz -bin harvardoxford-subcortical_prob_Lateral_Ventricles
 
+
+Chris Rorden's dcm2niiX version v1.0.20170724 (OpenJPEG build) GCC6.1.0 (64-bit MacOS)
+
+Installed pigz:
+http://brewinstall.org/Install-pigz-on-Mac-with-Brew/
+ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" < /dev/null 2> /dev/null
+brew install pigz
+Ran brew doctor, got an error about sticky bit. followed instructions for that and also applied it to /usr/loca/bin
+then ran brew postinstall pigz and it seemed to work!
