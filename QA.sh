@@ -175,7 +175,7 @@ fslmaths ${ANALYSISDIR}/${MYSUB}/fmri/rs.feat/filtered_func_data -Tstd ${ANALYSI
 fslmaths ${ANALYSISDIR}/${MYSUB}/fmri/rs.feat/mean_func -div ${ANALYSISDIR}/${MYSUB}/fmri/rs.feat/std_func ${ANALYSISDIR}/${MYSUB}/fmri/rs.feat/tsnr_func
 rstsnr=`fslstats ${ANALYSISDIR}/${MYSUB}/fmri/rs.feat/tsnr_func -k ${ANALYSISDIR}/${MYSUB}/fmri/rs.feat/mask -M`
 fsleyes ${ANALYSISDIR}/${MYSUB}/fmri/rs.feat/tsnr_func &
-fsl_motion_outliers -i ${ANALYSISDIR}/${MYSUB}/fmri/rs -s ${ANALYSISDIR}/${MYSUB}/fmri/rs_motion.rms -p ${ANALYSISDIR}/${MYSUB}/fmri/rs_motion.png --thresh=2 -o ${ANALYSISDIR}/${MYSUB}/fmri/rs_motion_confounds.txt
+fsl_motion_outliers -i ${ANALYSISDIR}/${MYSUB}/fmri/rs -s ${ANALYSISDIR}/${MYSUB}/fmri/rs_motion.rms -p ${ANALYSISDIR}/${MYSUB}/fmri/rs_motion.png -o ${ANALYSISDIR}/${MYSUB}/fmri/rs_motion_confounds.txt
 sed 's:MYINPUT:'${ANALYSISDIR}'/'${MYSUB}'/fmri/rs.nii.gz:g' ${SCRIPTSDIR}/QA_mc_only.fsf > ${ANALYSISDIR}/${MYSUB}/fmri/QA_mc_only.fsf
 feat ${ANALYSISDIR}/${MYSUB}/fmri/QA_mc_only.fsf
 fslmaths ${ANALYSISDIR}/${MYSUB}/fmri/rs+.feat/filtered_func_data -Tstd ${ANALYSISDIR}/${MYSUB}/fmri/rs+.feat/std_func
