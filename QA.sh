@@ -13,7 +13,7 @@ mkdir ${ANATDIR}
 
 
 #################### GET SESSION INFO ##################################
-file1=`find ${DICOMDIR}/${MYSUB}/*SAG_FSPGR_BRAVO* -type f | head -1;` 
+file1=`find ${DICOMDIR}/${MYSUB}/*SAG_FSPGR_BRAVO* -type f -not -name ".DS_Store" | head -1;` 
 STUDYINFO=`dicom_hdr $file1 | egrep "ID Study Description" | cut -f5- -d "/"`
 
 
@@ -118,6 +118,10 @@ if [ "$PURET1" = "YES" ] && [ "$PUREdiff" = "YES" ]
 then
 	T1fordiffreg=${ANATDIR}/T1_brain
 	diffforreg=${ANALYSISDIR}/${MYSUB}/diffusion/nodif_brain
+elif [ "$PURET1" = "NO" ] && [ "$PUREdiff" = "NO" ] 
+then
+	T1fordiffreg=${ANATDIR}/T1_brain
+	diffforreg=${ANALYSISDIR}/${MYSUB}/diffusion/nodif_brain
 
 elif [ "$PURET1" = "YES" ]
 then
@@ -178,11 +182,15 @@ fslmaths ${ANALYSISDIR}/${MYSUB}/fmri/rs+.feat/filtered_func_data -Tstd ${ANALYS
 fslmaths ${ANALYSISDIR}/${MYSUB}/fmri/rs+.feat/mean_func -div ${ANALYSISDIR}/${MYSUB}/fmri/rs+.feat/std_func ${ANALYSISDIR}/${MYSUB}/fmri/rs+.feat/tsnr_func
 rstsnr_mc_only=`fslstats ${ANALYSISDIR}/${MYSUB}/fmri/rs+.feat/tsnr_func -k ${ANALYSISDIR}/${MYSUB}/fmri/rs.feat/mask -M`
 fsleyes ${ANALYSISDIR}/${MYSUB}/fmri/rs+.feat/tsnr_func &
-if [ "$PURET1" = "YES" ] && [ "$PUREBOLD" = "YES"]
+if [ "$PURET1" = "YES" ] && [ "$PUREBOLD" = "YES" ]
 then
 	T1forreg=${ANATDIR}/T1_brain
 	BOLDforreg=${ANALYSISDIR}/${MYSUB}/fmri/rs.nii.gz
-elif [ "$PURET1" = "YES"]
+elif [ "$PURET1" = "NO" ] && [ "$PUREBOLD" = "NO" ]
+then
+	T1forreg=${ANATDIR}/T1_brain
+	BOLDforreg=${ANALYSISDIR}/${MYSUB}/fmri/rs.nii.gz
+elif [ "$PURET1" = "YES" ]
 then
 #need to get non-PURE T1 to reg with BOLD
 	#not very efficient, because I potentially convert nonPURE T1 twice (once for fMRI and once for diffusion)
@@ -191,7 +199,7 @@ then
 	fslmaths ${ANATDIR}/T1_noPURE -mas ${ANATDIR}/spm_mask ${ANATDIR}/T1_noPURE_brain
 	T1forreg=${ANATDIR}/T1_noPURE_brain
 	BOLDforreg=${ANALYSISDIR}/${MYSUB}/fmri/rs.nii.gz
-elif [ "$PUREBOLD" = "YES"]
+elif [ "$PUREBOLD" = "YES" ]
 then
 #need to get non-PURE BOLD to reg with T1
 	dcm2niix ${DICOMDIR}/${MYSUB}/*rsBOLD*
@@ -206,7 +214,7 @@ feat ${ANALYSISDIR}/${MYSUB}/fmri/reg.fsf
 	
 
 ################# SUMMARY OUTPUT ########################################
-echo $MYSUB $STUDYINFO $PURET1 $PURET2 $PUREdiff $PUREBOLD $difftsnr $rstsnr $rstsnr_mc_only `awk -v max=0 '{if($1>max){ max=$1}}END{print max} ' ${ANALYSISDIR}/${MYSUB}/fmri/rs_motion.rms` `awk '{ total += $1 } END { print total/NR}' ${ANALYSISDIR}/${MYSUB}/fmri/rs_motion.rms`
+echo $MYSUB,$STUDYINFO,$PURET1,$PURET2,$PUREdiff,$PUREBOLD,$difftsnr,$rstsnr,$rstsnr_mc_only,`awk -v max=0 '{if($1>max){ max=$1}}END{print max} ' ${ANALYSISDIR}/${MYSUB}/fmri/rs_motion.rms`,`awk '{ total += $1 } END { print total/NR}' ${ANALYSISDIR}/${MYSUB}/fmri/rs_motion.rms`
 
 
 

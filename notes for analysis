@@ -23,4 +23,5 @@ http://brewinstall.org/Install-pigz-on-Mac-with-Brew/
 ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" < /dev/null 2> /dev/null
 brew install pigz
 Ran brew doctor, got an error about sticky bit. followed instructions for that and also applied it to /usr/loca/bin
-then ran brew postinstall pigz and it seemed to work!
+then ran brew postinstall pigz and it seemed to work
+
