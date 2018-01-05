@@ -2,11 +2,11 @@
 
 #subject ID as input
 MYSUB=$1
-MAINDIR=/Users/erin/Desktop/Projects/MRGFUS
+MAINDIR=/home/erinmazerolle/MRGFUS/
 DICOMDIR=${MAINDIR}/dicoms
 ANALYSISDIR=${MAINDIR}/analysis
 SCRIPTSDIR=${MAINDIR}/scripts
-SPMDIR=/Users/erin/Documents/MATLAB/spm12
+SPMDIR=/home/erinmazerolle/matlab/spm12
 mkdir ${ANALYSISDIR}/${MYSUB}
 ANATDIR=${ANALYSISDIR}/${MYSUB}/anat
 mkdir ${ANATDIR}
