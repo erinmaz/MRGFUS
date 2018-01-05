@@ -15,7 +15,7 @@ mkdir ${ANATDIR}
 #################### GET SESSION INFO ##################################
 file1=`find ${DICOMDIR}/${MYSUB}/*SAG_FSPGR_BRAVO* -type f -not -name ".DS_Store" | head -1;` 
 STUDYINFO=`dicom_hdr $file1 | egrep "ID Study Description" | cut -f5- -d "/"`
-
+DATE=`dicom_hinfo -tag 0008,0020 -no_name $file1`
 
 #################### T1 QA #############################################
 for f in ${DICOMDIR}/${MYSUB}/*PUSAG_FSPGR_BRAVO*; do
@@ -102,7 +102,7 @@ topup --imain=${ANALYSISDIR}/${MYSUB}/diffusion/all_b0 --datain=${SCRIPTSDIR}/ac
 fslmaths ${ANALYSISDIR}/${MYSUB}/diffusion/all_b0_unwarped.nii.gz -Tmean ${ANALYSISDIR}/${MYSUB}/diffusion/mean_b0_unwarped
 bet ${ANALYSISDIR}/${MYSUB}/diffusion/mean_b0_unwarped ${ANALYSISDIR}/${MYSUB}/diffusion/nodif_brain -m
 fslmerge -t ${ANALYSISDIR}/${MYSUB}/diffusion/data_uncorrected ${ANALYSISDIR}/${MYSUB}/diffusion/dti_fow ${ANALYSISDIR}/${MYSUB}/diffusion/dti_rev
-time eddy --imain=${ANALYSISDIR}/${MYSUB}/diffusion/data_uncorrected --mask=${ANALYSISDIR}/${MYSUB}/diffusion/nodif_brain_mask.nii.gz --acqp=${SCRIPTSDIR}/acqp_eddy.txt --index=${SCRIPTSDIR}/index.txt --bvecs=${SCRIPTSDIR}/bvecs --bvals=${SCRIPTSDIR}/bvals --topup=${ANALYSISDIR}/${MYSUB}/diffusion/topup_results --out=${ANALYSISDIR}/${MYSUB}/diffusion/data
+time eddy_cpu --imain=${ANALYSISDIR}/${MYSUB}/diffusion/data_uncorrected --mask=${ANALYSISDIR}/${MYSUB}/diffusion/nodif_brain_mask.nii.gz --acqp=${SCRIPTSDIR}/acqp_eddy.txt --index=${SCRIPTSDIR}/index.txt --bvecs=${SCRIPTSDIR}/bvecs --bvals=${SCRIPTSDIR}/bvals --topup=${ANALYSISDIR}/${MYSUB}/diffusion/topup_results --out=${ANALYSISDIR}/${MYSUB}/diffusion/data
 dtifit -k ${ANALYSISDIR}/${MYSUB}/diffusion/data.nii.gz -o ${ANALYSISDIR}/${MYSUB}/diffusion/dtifit -m ${ANALYSISDIR}/${MYSUB}/diffusion/nodif_brain_mask.nii.gz -r ${SCRIPTSDIR}/bvecs -b ${SCRIPTSDIR}/bvals
 fsleyes ${ANALYSISDIR}/${MYSUB}/diffusion/dtifit_FA ${ANALYSISDIR}/${MYSUB}/diffusion/dtifit_V1 &
 #diffusion tsnr calc
@@ -194,16 +194,16 @@ elif [ "$PURET1" = "YES" ]
 then
 #need to get non-PURE T1 to reg with BOLD
 	#not very efficient, because I potentially convert nonPURE T1 twice (once for fMRI and once for diffusion)
-	dcm2niix ${DICOMDIR}/${MYSUB}/*SAG_FSPGR_BRAVO*
-	mv ${DICOMDIR}/${MYSUB}/*SAG_FSPGR_BRAVO*/*.nii.gz ${ANATDIR}/T1_noPURE.nii.gz
+	dcm2niix ${DICOMDIR}/${MYSUB}/*-SAG_FSPGR_BRAVO*
+	mv ${DICOMDIR}/${MYSUB}/*-SAG_FSPGR_BRAVO*/*.nii.gz ${ANATDIR}/T1_noPURE.nii.gz
 	fslmaths ${ANATDIR}/T1_noPURE -mas ${ANATDIR}/spm_mask ${ANATDIR}/T1_noPURE_brain
 	T1forreg=${ANATDIR}/T1_noPURE_brain
 	BOLDforreg=${ANALYSISDIR}/${MYSUB}/fmri/rs.nii.gz
 elif [ "$PUREBOLD" = "YES" ]
 then
 #need to get non-PURE BOLD to reg with T1
-	dcm2niix ${DICOMDIR}/${MYSUB}/*rsBOLD*
-	mv ${DICOMDIR}/${MYSUB}/*rsBOLD*/*.nii.gz ${ANALYSISDIR}/${MYSUB}/fmri/rs_noPURE.nii.gz
+	dcm2niix ${DICOMDIR}/${MYSUB}/*-rsBOLD*
+	mv ${DICOMDIR}/${MYSUB}/*-rsBOLD*/*.nii.gz ${ANALYSISDIR}/${MYSUB}/fmri/rs_noPURE.nii.gz
 	T1forreg=${ANATDIR}/T1_brain
 	BOLDforreg=${ANALYSISDIR}/${MYSUB}/fmri/rs_noPURE.nii.gz
 fi
@@ -214,7 +214,7 @@ feat ${ANALYSISDIR}/${MYSUB}/fmri/reg.fsf
 	
 
 ################# SUMMARY OUTPUT ########################################
-echo $MYSUB,$STUDYINFO,$PURET1,$PURET2,$PUREdiff,$PUREBOLD,$difftsnr,$rstsnr,$rstsnr_mc_only,`awk -v max=0 '{if($1>max){ max=$1}}END{print max} ' ${ANALYSISDIR}/${MYSUB}/fmri/rs_motion.rms`,`awk '{ total += $1 } END { print total/NR}' ${ANALYSISDIR}/${MYSUB}/fmri/rs_motion.rms`
+echo $MYSUB,$DATE,$STUDYINFO,$PURET1,$PURET2,$PUREdiff,$PUREBOLD,$difftsnr,$rstsnr,$rstsnr_mc_only,`awk -v max=0 '{if($1>max){ max=$1}}END{print max} ' ${ANALYSISDIR}/${MYSUB}/fmri/rs_motion.rms`,`awk '{ total += $1 } END { print total/NR}' ${ANALYSISDIR}/${MYSUB}/fmri/rs_motion.rms`
 
 
 

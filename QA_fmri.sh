@@ -82,16 +82,16 @@ elif [ "$PURET1" = "YES" ]
 then
 #need to get non-PURE T1 to reg with BOLD
 	#not very efficient, because I potentially convert nonPURE T1 twice (once for fMRI and once for diffusion)
-	dcm2niix ${DICOMDIR}/${MYSUB}/*SAG_FSPGR_BRAVO*
-	mv ${DICOMDIR}/${MYSUB}/*SAG_FSPGR_BRAVO*/*.nii.gz ${ANATDIR}/T1_noPURE.nii.gz
+	dcm2niix ${DICOMDIR}/${MYSUB}/*-SAG_FSPGR_BRAVO*
+	mv ${DICOMDIR}/${MYSUB}/*-SAG_FSPGR_BRAVO*/*.nii.gz ${ANATDIR}/T1_noPURE.nii.gz
 	fslmaths ${ANATDIR}/T1_noPURE -mas ${ANATDIR}/spm_mask ${ANATDIR}/T1_noPURE_brain
 	T1forreg=${ANATDIR}/T1_noPURE_brain
 	BOLDforreg=${ANALYSISDIR}/${MYSUB}/fmri/rs.nii.gz
 elif [ "$PUREBOLD" = "YES" ]
 then
 #need to get non-PURE BOLD to reg with T1
-	dcm2niix ${DICOMDIR}/${MYSUB}/*rsBOLD*
-	mv ${DICOMDIR}/${MYSUB}/*rsBOLD*/*.nii.gz ${ANALYSISDIR}/${MYSUB}/fmri/rs_noPURE.nii.gz
+	dcm2niix ${DICOMDIR}/${MYSUB}/*-rsBOLD*
+	mv ${DICOMDIR}/${MYSUB}/*-rsBOLD*/*.nii.gz ${ANALYSISDIR}/${MYSUB}/fmri/rs_noPURE.nii.gz
 	T1forreg=${ANATDIR}/T1_brain
 	BOLDforreg=${ANALYSISDIR}/${MYSUB}/fmri/rs_noPURE.nii.gz
 fi
