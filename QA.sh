@@ -2,7 +2,7 @@
 
 #subject ID as input
 MYSUB=$1
-MAINDIR=/home/erinmazerolle/MRGFUS/
+MAINDIR=/home/erinmazerolle/MRGFUS
 DICOMDIR=${MAINDIR}/dicoms
 ANALYSISDIR=${MAINDIR}/analysis
 SCRIPTSDIR=${MAINDIR}/scripts
