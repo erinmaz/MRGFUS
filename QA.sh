@@ -70,7 +70,7 @@ fsleyes ${ANALYSISDIR}/${MYSUB}/anat/SWAN_MIN_IP.nii.gz &
 
 
 #################### FLAIR QA ###########################################
-dcm2niix ${DICOMDIR}/${MYSUB}/*FLAIR*
+dcm2niix ${DICOMDIR}/${MYSUB}/*Ax-FLAIR*
 mv ${DICOMDIR}/${MYSUB}/*FLAIR*/*.nii.gz ${ANALYSISDIR}/${MYSUB}/anat/flair.nii.gz
 fsleyes ${ANALYSISDIR}/${MYSUB}/anat/flair.nii.gz &
 

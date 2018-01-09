@@ -1,0 +1,68 @@
+Chris Rorden's dcm2niiX version v1.0.20170724 (OpenJPEG build) GCC6.1.0 (64-bit MacOS)
+Found 188 DICOM image(s)
+Convert 188 DICOM as /Users/erin/Desktop/Projects/MRGFUS/dicoms/9001_SH-12271/3-SAG_FSPGR_BRAVO-/20170824120536_3-SAG_FSPGR_BRAVO- (256x256x188x1)
+compress: "/usr/local/bin/pigz" -n -f "/Users/erin/Desktop/Projects/MRGFUS/dicoms/9001_SH-12271/3-SAG_FSPGR_BRAVO-/20170824120536_3-SAG_FSPGR_BRAVO-.nii"
+Conversion required 0.619109 seconds (0.163918 for core code).
+[?1h=
+                            < M A T L A B (R) >
+                  Copyright 1984-2017 The MathWorks, Inc.
+                   R2017b (9.3.0.713579) 64-bit (maci64)
+                             September 14, 2017
+
+ 
+To get started, type one of these: helpwin, helpdesk, or demo.
+For product information, visit www.mathworks.com.
+ 
+Initialising batch system... done.
+
+
+------------------------------------------------------------------------
+Running job #1
+------------------------------------------------------------------------
+Running 'Segment'
+
+SPM12: spm_preproc_run (v6365)                     11:06:49 - 08/01/2018
+========================================================================
+[?1h=Segment /Users/erin/Desktop/Projects/MRGFUS/analysis/9001_SH-12271/anat/T1.nii,1
+Completed                               :          11:09:51 - 08/01/2018
+Done    'Segment'
+Done
+
+[?1l>Chris Rorden's dcm2niiX version v1.0.20170724 (OpenJPEG build) GCC6.1.0 (64-bit MacOS)
+Found 188 DICOM image(s)
+Convert 188 DICOM as /Users/erin/Desktop/Projects/MRGFUS/dicoms/9001_SH-12271/4-Sag_CUBE_T2-/20170824120536_4-Sag_CUBE_T2- (512x512x188x1)
+compress: "/usr/local/bin/pigz" -n -f "/Users/erin/Desktop/Projects/MRGFUS/dicoms/9001_SH-12271/4-Sag_CUBE_T2-/20170824120536_4-Sag_CUBE_T2-.nii"
+Conversion required 2.345974 seconds (0.584215 for core code).
+Chris Rorden's dcm2niiX version v1.0.20170724 (OpenJPEG build) GCC6.1.0 (64-bit MacOS)
+Found 152 DICOM image(s)
+Convert 152 DICOM as /Users/erin/Desktop/Projects/MRGFUS/dicoms/9001_SH-12271/7-Ax_SWAN_2_0-/20170824120536_7-Ax_SWAN_2_0- (512x512x152x1)
+compress: "/usr/local/bin/pigz" -n -f "/Users/erin/Desktop/Projects/MRGFUS/dicoms/9001_SH-12271/7-Ax_SWAN_2_0-/20170824120536_7-Ax_SWAN_2_0-.nii"
+Conversion required 1.501073 seconds (0.445848 for core code).
+Chris Rorden's dcm2niiX version v1.0.20170724 (OpenJPEG build) GCC6.1.0 (64-bit MacOS)
+Found 152 DICOM image(s)
+Convert 152 DICOM as /Users/erin/Desktop/Projects/MRGFUS/dicoms/9001_SH-12271/700-FILT_PHA_Ax_SWAN_2_0-/20170824120536_700-FILT_PHA_Ax_SWAN_2_0- (512x512x152x1)
+compress: "/usr/local/bin/pigz" -n -f "/Users/erin/Desktop/Projects/MRGFUS/dicoms/9001_SH-12271/700-FILT_PHA_Ax_SWAN_2_0-/20170824120536_700-FILT_PHA_Ax_SWAN_2_0-.nii"
+Conversion required 1.377946 seconds (0.443234 for core code).
+Chris Rorden's dcm2niiX version v1.0.20170724 (OpenJPEG build) GCC6.1.0 (64-bit MacOS)
+Found 16 DICOM image(s)
+Convert 16 DICOM as /Users/erin/Desktop/Projects/MRGFUS/dicoms/9001_SH-12271/701-MIN_IP-/20170824120536_701-MIN_IP- (512x512x16x1)
+compress: "/usr/local/bin/pigz" -n -f "/Users/erin/Desktop/Projects/MRGFUS/dicoms/9001_SH-12271/701-MIN_IP-/20170824120536_701-MIN_IP-.nii"
+Conversion required 0.139801 seconds (0.052959 for core code).
+Chris Rorden's dcm2niiX version v1.0.20170724 (OpenJPEG build) GCC6.1.0 (64-bit MacOS)
+Found 50 DICOM image(s)
+Convert 50 DICOM as /Users/erin/Desktop/Projects/MRGFUS/dicoms/9001_SH-12271/8-Ax_FLAIR_3_0-/20170824120536_8-Ax_FLAIR_3_0- (512x512x50x1)
+compress: "/usr/local/bin/pigz" -n -f "/Users/erin/Desktop/Projects/MRGFUS/dicoms/9001_SH-12271/8-Ax_FLAIR_3_0-/20170824120536_8-Ax_FLAIR_3_0-.nii"
+Conversion required 1.035170 seconds (0.114681 for core code).
+Chris Rorden's dcm2niiX version v1.0.20170724 (OpenJPEG build) GCC6.1.0 (64-bit MacOS)
+Found 3648 DICOM image(s)
+Saving 48 DTI gradients. GE Reorienting PU:DWI_45dir_2mm_(ASSET) : please validate. isCol=1 sliceDir=3 flp=0 0 1
+Convert 3648 DICOM as /Users/erin/Desktop/Projects/MRGFUS/dicoms/9001_SH-12271/1200-PUDWI_45dir_2mm_(ASSET)-/20170824120536_1200-PUDWI_45dir_2mm_(ASSET)- (120x120x76x48)
+compress: "/usr/local/bin/pigz" -n -f "/Users/erin/Desktop/Projects/MRGFUS/dicoms/9001_SH-12271/1200-PUDWI_45dir_2mm_(ASSET)-/20170824120536_1200-PUDWI_45dir_2mm_(ASSET)-.nii"
+Conversion required 4.960300 seconds (1.666826 for core code).
+Chris Rorden's dcm2niiX version v1.0.20170724 (OpenJPEG build) GCC6.1.0 (64-bit MacOS)
+Found 684 DICOM image(s)
+Saving 9 DTI gradients. GE Reorienting PU:DWI_PE-REV_2mm_(ASSET) : please validate. isCol=1 sliceDir=3 flp=0 0 1
+Convert 684 DICOM as /Users/erin/Desktop/Projects/MRGFUS/dicoms/9001_SH-12271/1300-PUDWI_PE-REV_2mm_(ASSET)-/20170824120536_1300-PUDWI_PE-REV_2mm_(ASSET)- (120x120x76x9)
+compress: "/usr/local/bin/pigz" -n -f "/Users/erin/Desktop/Projects/MRGFUS/dicoms/9001_SH-12271/1300-PUDWI_PE-REV_2mm_(ASSET)-/20170824120536_1300-PUDWI_PE-REV_2mm_(ASSET)-.nii"
+Conversion required 0.802012 seconds (0.260033 for core code).
+?

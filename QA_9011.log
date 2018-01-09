@@ -1,0 +1,142 @@
+Chris Rorden's dcm2niiX version v1.0.20170724 (OpenJPEG build) GCC6.1.0 (64-bit MacOS)
+Found 188 DICOM image(s)
+Convert 188 DICOM as /Users/erin/Desktop/Projects/MRGFUS/dicoms/9011_BB/300-PUSAG_FSPGR_BRAVO-/20180104121917_300-PUSAG_FSPGR_BRAVO- (256x256x188x1)
+compress: "/usr/local/bin/pigz" -n -f "/Users/erin/Desktop/Projects/MRGFUS/dicoms/9011_BB/300-PUSAG_FSPGR_BRAVO-/20180104121917_300-PUSAG_FSPGR_BRAVO-.nii"
+Conversion required 0.419221 seconds (0.147793 for core code).
+[?1h=
+                                                 < M A T L A B (R) >
+                                       Copyright 1984-2017 The MathWorks, Inc.
+                                        R2017b (9.3.0.713579) 64-bit (maci64)
+                                                 September 14, 2017
+
+ 
+To get started, type one of these: helpwin, helpdesk, or demo.
+For product information, visit www.mathworks.com.
+ 
+Initialising batch system... done.
+
+
+------------------------------------------------------------------------
+Running job #1
+------------------------------------------------------------------------
+Running 'Segment'
+
+SPM12: spm_preproc_run (v6365)                     12:35:42 - 08/01/2018
+========================================================================
+[?1h=Segment /Users/erin/Desktop/Projects/MRGFUS/analysis/9011_BB/anat/T1.nii,1
+Completed                               :          12:38:21 - 08/01/2018
+Done    'Segment'
+Done
+
+[?1l>Chris Rorden's dcm2niiX version v1.0.20170724 (OpenJPEG build) GCC6.1.0 (64-bit MacOS)
+Chris Rorden's dcm2niiX version v1.0.20170724 (OpenJPEG build) GCC6.1.0 (64-bit MacOS)
+Found 152 DICOM image(s)
+Convert 152 DICOM as /Users/erin/Desktop/Projects/MRGFUS/dicoms/9011_BB/7-Ax_SWAN_2_0-/20180104121917_7-Ax_SWAN_2_0- (512x512x152x1)
+compress: "/usr/local/bin/pigz" -n -f "/Users/erin/Desktop/Projects/MRGFUS/dicoms/9011_BB/7-Ax_SWAN_2_0-/20180104121917_7-Ax_SWAN_2_0-.nii"
+Conversion required 1.402377 seconds (0.432901 for core code).
+Chris Rorden's dcm2niiX version v1.0.20170724 (OpenJPEG build) GCC6.1.0 (64-bit MacOS)
+Found 152 DICOM image(s)
+Convert 152 DICOM as /Users/erin/Desktop/Projects/MRGFUS/dicoms/9011_BB/700-FILT_PHA_Ax_SWAN 2_0-/20180104121917_700-FILT_PHA_Ax_SWAN 2_0- (512x512x152x1)
+compress: "/usr/local/bin/pigz" -n -f "/Users/erin/Desktop/Projects/MRGFUS/dicoms/9011_BB/700-FILT_PHA_Ax_SWAN 2_0-/20180104121917_700-FILT_PHA_Ax_SWAN 2_0-.nii"
+Conversion required 1.292320 seconds (0.406096 for core code).
+Chris Rorden's dcm2niiX version v1.0.20170724 (OpenJPEG build) GCC6.1.0 (64-bit MacOS)
+Found 16 DICOM image(s)
+Convert 16 DICOM as /Users/erin/Desktop/Projects/MRGFUS/dicoms/9011_BB/702-MIN_IP-/20180104121917_702-MIN_IP- (512x512x16x1)
+compress: "/usr/local/bin/pigz" -n -f "/Users/erin/Desktop/Projects/MRGFUS/dicoms/9011_BB/702-MIN_IP-/20180104121917_702-MIN_IP-.nii"
+Conversion required 0.111694 seconds (0.039156 for core code).
+Chris Rorden's dcm2niiX version v1.0.20170724 (OpenJPEG build) GCC6.1.0 (64-bit MacOS)
+Chris Rorden's dcm2niiX version v1.0.20170724 (OpenJPEG build) GCC6.1.0 (64-bit MacOS)
+Found 3648 DICOM image(s)
+Saving 48 DTI gradients. GE Reorienting PU:DWI_45dir_2mm_(ASSET) : please validate. isCol=1 sliceDir=3 flp=0 0 1
+Convert 3648 DICOM as /Users/erin/Desktop/Projects/MRGFUS/dicoms/9011_BB/1000-PUDWI_45dir_2mm_(ASSET)-/20180104121917_1000-PUDWI_45dir_2mm_(ASSET)- (120x120x76x48)
+compress: "/usr/local/bin/pigz" -n -f "/Users/erin/Desktop/Projects/MRGFUS/dicoms/9011_BB/1000-PUDWI_45dir_2mm_(ASSET)-/20180104121917_1000-PUDWI_45dir_2mm_(ASSET)-.nii"
+Conversion required 4.822383 seconds (1.085586 for core code).
+Chris Rorden's dcm2niiX version v1.0.20170724 (OpenJPEG build) GCC6.1.0 (64-bit MacOS)
+Found 684 DICOM image(s)
+Saving 9 DTI gradients. GE Reorienting PU:DWI_PE-REV_2mm_(ASSET) : please validate. isCol=1 sliceDir=3 flp=0 0 1
+Convert 684 DICOM as /Users/erin/Desktop/Projects/MRGFUS/dicoms/9011_BB/1200-PUDWI_PE-REV_2mm_(ASSET)-/20180104121917_1200-PUDWI_PE-REV_2mm_(ASSET)- (120x120x76x9)
+compress: "/usr/local/bin/pigz" -n -f "/Users/erin/Desktop/Projects/MRGFUS/dicoms/9011_BB/1200-PUDWI_PE-REV_2mm_(ASSET)-/20180104121917_1200-PUDWI_PE-REV_2mm_(ASSET)-.nii"
+Conversion required 0.713942 seconds (0.200487 for core code).
+0 120 0 120 0 76
+0 slices processed
+1 slices processed
+2 slices processed
+3 slices processed
+4 slices processed
+5 slices processed
+6 slices processed
+7 slices processed
+8 slices processed
+9 slices processed
+10 slices processed
+11 slices processed
+12 slices processed
+13 slices processed
+14 slices processed
+15 slices processed
+16 slices processed
+17 slices processed
+18 slices processed
+19 slices processed
+20 slices processed
+21 slices processed
+22 slices processed
+23 slices processed
+24 slices processed
+25 slices processed
+26 slices processed
+27 slices processed
+28 slices processed
+29 slices processed
+30 slices processed
+31 slices processed
+32 slices processed
+33 slices processed
+34 slices processed
+35 slices processed
+36 slices processed
+37 slices processed
+38 slices processed
+39 slices processed
+40 slices processed
+41 slices processed
+42 slices processed
+43 slices processed
+44 slices processed
+45 slices processed
+46 slices processed
+47 slices processed
+48 slices processed
+49 slices processed
+50 slices processed
+51 slices processed
+52 slices processed
+53 slices processed
+54 slices processed
+55 slices processed
+56 slices processed
+57 slices processed
+58 slices processed
+59 slices processed
+60 slices processed
+61 slices processed
+62 slices processed
+63 slices processed
+64 slices processed
+65 slices processed
+66 slices processed
+67 slices processed
+68 slices processed
+69 slices processed
+70 slices processed
+71 slices processed
+72 slices processed
+73 slices processed
+74 slices processed
+75 slices processed
+Chris Rorden's dcm2niiX version v1.0.20170724 (OpenJPEG build) GCC6.1.0 (64-bit MacOS)
+Found 10000 DICOM image(s)
+Convert 10000 DICOM as /Users/erin/Desktop/Projects/MRGFUS/dicoms/9011_BB/1400-PUrsBOLD-/20180104121917_1400-PUrsBOLD- (128x128x50x200)
+compress: "/usr/local/bin/pigz" -n -f "/Users/erin/Desktop/Projects/MRGFUS/dicoms/9011_BB/1400-PUrsBOLD-/20180104121917_1400-PUrsBOLD-.nii"
+Conversion required 7.889271 seconds (2.070332 for core code).
+9011_BB,20180104,MR Brain,YES,NO,YES,YES,7.051531 ,,,0.0441968,0.00389538
