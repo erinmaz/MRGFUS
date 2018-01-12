@@ -36,7 +36,7 @@ mv ${T1dir}/*.nii.gz ${ANATDIR}/T1.nii.gz
 #SPM Segment
 fslchfiletype NIFTI ${ANATDIR}/T1
 export MATLABPATH="${SPMDIR}:${SCRIPTSDIR}"
-matlab -nosplash -nodesktop -r "segment_job({'${ANATDIR}/T1.nii,1'}) ; quit"
+nice matlab -nosplash -nodesktop -r "segment_job({'${ANATDIR}/T1.nii,1'}) ; quit"
 fslmaths ${ANATDIR}/c1T1 -add ${ANATDIR}/c2T1 -add ${ANATDIR}/c3T1 -bin -fillh ${ANATDIR}/spm_mask
 fslmaths ${ANATDIR}/T1 -mas ${ANATDIR}/spm_mask ${ANATDIR}/T1_brain
 fsleyes ${ANATDIR}/T1 ${ANATDIR}/spm_mask &
