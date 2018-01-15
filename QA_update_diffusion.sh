@@ -39,11 +39,13 @@ for f in ${DICOMDIR}/${MYSUB}/*PUDWI_45*; do
 	fi
 	break
 done
-mkdir ${ANALYSISDIR}/${MYSUB}/diffusion/eddy_no_repol
-mv ${ANALYSISDIR}/${MYSUB}/diffusion/data.* ${ANALYSISDIR}/${MYSUB}/diffusion/eddy_no_repol/.
-mv ${ANALYSISDIR}/${MYSUB}/diffusion/xfms ${ANALYSISDIR}/${MYSUB}/diffusion/eddy_no_repol/.
-mv ${ANALYSISDIR}/${MYSUB}/diffusion/dti* ${ANALYSISDIR}/${MYSUB}/diffusion/eddy_no_repol/.
-mv ${ANALYSISDIR}/${MYSUB}/diffusion/dw* ${ANALYSISDIR}/${MYSUB}/diffusion/eddy_no_repol/.
+mkdir ${ANALYSISDIR}/${MYSUB}/diffusion_no_repol
+
+mv ${ANALYSISDIR}/${MYSUB}/diffusion/data.* ${ANALYSISDIR}/${MYSUB}/diffusion_no_repol/.
+mv ${ANALYSISDIR}/${MYSUB}/diffusion/xfms ${ANALYSISDIR}/${MYSUB}/diffusion_no_repol/.
+mv ${ANALYSISDIR}/${MYSUB}/diffusion/dti* ${ANALYSISDIR}/${MYSUB}/diffusion_no_repol/.
+mv ${ANALYSISDIR}/${MYSUB}/diffusion/dw* ${ANALYSISDIR}/${MYSUB}/diffusion_no_repol/.
+mv ${ANALYSISDIR}/${MYSUB}/diffusion.bedpostX ${ANALYSISDIR}/${MYSUB}/diffusion_no_repol.bedpostX
 eddy_cpu --imain=${ANALYSISDIR}/${MYSUB}/diffusion/data_uncorrected --mask=${ANALYSISDIR}/${MYSUB}/diffusion/nodif_brain_mask.nii.gz --acqp=${SCRIPTSDIR}/acqp_eddy.txt --index=${SCRIPTSDIR}/index.txt --bvecs=${SCRIPTSDIR}/bvecs --bvals=${SCRIPTSDIR}/bvals --topup=${ANALYSISDIR}/${MYSUB}/diffusion/topup_results --cnr_maps --repol --out=${ANALYSISDIR}/${MYSUB}/diffusion/data
 
 #HERE 
@@ -60,7 +62,7 @@ fslmaths ${ANALYSISDIR}/${MYSUB}/diffusion/dw -Tstd ${ANALYSISDIR}/${MYSUB}/diff
 fslmaths ${ANALYSISDIR}/${MYSUB}/diffusion/dw_mean -div ${ANALYSISDIR}/${MYSUB}/diffusion/dw_std ${ANALYSISDIR}/${MYSUB}/diffusion/dw_tsnr
 fsleyes ${ANALYSISDIR}/${MYSUB}/diffusion/dw_tsnr &
 difftsnr=`fslstats ${ANALYSISDIR}/${MYSUB}/diffusion/dw_tsnr -k ${ANALYSISDIR}/${MYSUB}/diffusion/nodif_brain_mask -M`
-diffcnr=`fslstats -t ${ANALYSISDIR}/${MYSUB}/diffusion/data.eddy_cnr_maps -${ANALYSISDIR}/${MYSUB}/diffusion/nodif_brain_mask -M`
+diffcnr=`fslstats -t ${ANALYSISDIR}/${MYSUB}/diffusion/data.eddy_cnr_maps -k ${ANALYSISDIR}/${MYSUB}/diffusion/nodif_brain_mask -M`
 if [ "$PURET1" = "YES" ] && [ "$PUREdiff" = "YES" ] 
 then
 	T1fordiffreg=${ANATDIR}/T1_brain
@@ -79,7 +81,6 @@ elif [ "$PUREdiff" = "YES" ]
 then
 	T1fordiffreg=${ANATDIR}/T1_brain
 	diffforreg=${ANALYSISDIR}/${MYSUB}/diffusion/dti_noPURE_unwarped_nodif_brain
-
 fi
 mkdir ${ANALYSISDIR}/${MYSUB}/diffusion/xfms
 flirt -in $diffforreg -ref $T1fordiffreg -omat ${ANALYSISDIR}/${MYSUB}/diffusion/xfms/diff2str.mat -searchrx -90 90 -searchry -90 90 -searchrz -90 90 -dof 6 -cost corratio -out ${ANALYSISDIR}/${MYSUB}/diffusion/xfms/diff2str 
