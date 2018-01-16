@@ -77,16 +77,16 @@ fsleyes ${ANALYSISDIR}/${MYSUB}/anat/flair.nii.gz &
 
 #################### Diffusion QA #######################################
 for f in ${DICOMDIR}/${MYSUB}/*PUDWI_45*; do
-    if [ -e "$f" ]; then
+	if [ -e "$f" ]; then
 		PUREdiff=YES
 		diff_fow_dir=$f
 		diff_rev_dir=${DICOMDIR}/${MYSUB}/*PUDWI_PE*
-    else
+	else
 		PUREdiff=NO
 		diff_fow_dir=${DICOMDIR}/${MYSUB}/*DWI_45*
 		diff_rev_dir=${DICOMDIR}/${MYSUB}/*DWI_PE*
-    fi
-    break
+	fi
+	break
 done
 mkdir ${ANALYSISDIR}/${MYSUB}/diffusion
 dcm2niix ${diff_fow_dir}
@@ -115,6 +115,7 @@ fslmaths ${ANALYSISDIR}/${MYSUB}/diffusion/dw -Tstd ${ANALYSISDIR}/${MYSUB}/diff
 fslmaths ${ANALYSISDIR}/${MYSUB}/diffusion/dw_mean -div ${ANALYSISDIR}/${MYSUB}/diffusion/dw_std ${ANALYSISDIR}/${MYSUB}/diffusion/dw_tsnr
 fsleyes ${ANALYSISDIR}/${MYSUB}/diffusion/dw_tsnr &
 difftsnr=`fslstats ${ANALYSISDIR}/${MYSUB}/diffusion/dw_tsnr -k ${ANALYSISDIR}/${MYSUB}/diffusion/nodif_brain_mask -M`
+diffcnr=`fslstats -t ${ANALYSISDIR}/${MYSUB}/diffusion/data.eddy_cnr_maps -k ${ANALYSISDIR}/${MYSUB}/diffusion/nodif_brain_mask -M`
 if [ "$PURET1" = "YES" ] && [ "$PUREdiff" = "YES" ] 
 then
 	T1fordiffreg=${ANATDIR}/T1_brain
@@ -131,7 +132,6 @@ then
 	mv ${DICOMDIR}/${MYSUB}/*-SAG_FSPGR_BRAVO*/*.nii.gz ${ANATDIR}/T1_noPURE.nii.gz
 	fslmaths ${ANATDIR}/T1_noPURE -mas ${ANATDIR}/spm_mask ${ANATDIR}/T1_noPURE_brain
 	T1fordiffreg=${ANATDIR}/T1_noPURE_brain
-	
 	diffforreg=${ANALYSISDIR}/${MYSUB}/diffusion/nodif_brain
 
 elif [ "$PUREdiff" = "YES" ]
@@ -147,7 +147,6 @@ then
 	fslroi ${ANALYSISDIR}/${MYSUB}/diffusion/dti_noPURE_unwarped_nodif ${ANALYSISDIR}/${MYSUB}/diffusion/dti_noPURE_unwarped_nodif 0 1
 	fslmaths ${ANALYSISDIR}/${MYSUB}/diffusion/dti_noPURE_unwarped_nodif -mas ${ANALYSISDIR}/${MYSUB}/diffusion/nodif_brain_mask ${ANALYSISDIR}/${MYSUB}/diffusion/dti_noPURE_unwarped_nodif_brain
 	diffforreg=${ANALYSISDIR}/${MYSUB}/diffusion/dti_noPURE_unwarped_nodif_brain
-
 fi
 mkdir ${ANALYSISDIR}/${MYSUB}/diffusion/xfms
 flirt -in $diffforreg -ref $T1fordiffreg -omat ${ANALYSISDIR}/${MYSUB}/diffusion/xfms/diff2str.mat -searchrx -90 90 -searchry -90 90 -searchrz -90 90 -dof 6 -cost corratio -out ${ANALYSISDIR}/${MYSUB}/diffusion/xfms/diff2str 
@@ -216,7 +215,7 @@ feat ${ANALYSISDIR}/${MYSUB}/fmri/reg.fsf
 	
 
 ################# SUMMARY OUTPUT ########################################
-echo $MYSUB,$DATE,$STUDYINFO,$PURET1,$PURET2,$PUREdiff,$PUREBOLD,$difftsnr,$rstsnr,$rstsnr_mc_only,`awk -v max=0 '{if($1>max){ max=$1}}END{print max} ' ${ANALYSISDIR}/${MYSUB}/fmri/rs_motion.rms`,`awk '{ total += $1 } END { print total/NR}' ${ANALYSISDIR}/${MYSUB}/fmri/rs_motion.rms`
+echo $MYSUB,$DATE,$STUDYINFO,$PURET1,$PURET2,$PUREdiff,$PUREBOLD,$difftsnr,$diffcnr,$rstsnr,$rstsnr_mc_only,`awk -v max=0 '{if($1>max){ max=$1}}END{print max} ' ${ANALYSISDIR}/${MYSUB}/fmri/rs_motion.rms`,`awk '{ total += $1 } END { print total/NR}' ${ANALYSISDIR}/${MYSUB}/fmri/rs_motion.rms`
 
 
 

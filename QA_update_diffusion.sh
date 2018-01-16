@@ -89,5 +89,5 @@ convert_xfm -omat ${ANALYSISDIR}/${MYSUB}/diffusion/xfms/str2diff.mat -inverse $
 
 
 ################# SUMMARY OUTPUT ########################################
-echo $MYSUB,$DATE,$STUDYINFO,UPDATE_DIFFUSION,$difftsnr
+echo $MYSUB,$DATE,$STUDYINFO,UPDATE_DIFFUSION,$difftsnr,$diffcnr
 
