@@ -1,0 +1,5 @@
+cd /Users/erin/Desktop/Projects/MRGFUS/analysis_lesion_masks 
+> do 
+> fsleyes $f/anat/SWAN_mag
+> done
+(manually compare to Horos view of dicoms for all images that have a 3M time point)
