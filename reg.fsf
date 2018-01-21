@@ -106,7 +106,7 @@ set fmri(st) 5
 set fmri(st_file) ""
 
 # BET brain extraction
-set fmri(bet_yn) 0
+set fmri(bet_yn) 1
 
 # Spatial smoothing FWHM (mm)
 set fmri(smooth) 4
