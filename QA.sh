@@ -43,7 +43,7 @@ nice matlab -nosplash -nodesktop -r "segment_job({'${ANATDIR}/T1.nii,1'}) ; quit
 fslchfiletype NIFTI_GZ ${ANATDIR}/T1
 fslmaths ${ANATDIR}/c1T1 -add ${ANATDIR}/c2T1 -add ${ANATDIR}/c3T1 -bin -fillh ${ANATDIR}/spm_mask
 fslmaths ${ANATDIR}/T1 -mas ${ANATDIR}/spm_mask ${ANATDIR}/T1_brain
-#fsleyes ${ANATDIR}/T1 ${ANATDIR}/spm_mask &
+fsleyes ${ANATDIR}/T1 ${ANATDIR}/spm_mask &
 
 #################### T2 QA #############################################
 for f in ${DICOMDIR}/${MYSUB}/*PUSag_CUBE_T2*; do
@@ -59,7 +59,7 @@ done
 
 dcm2niix ${T2dir}
 mv ${T2dir}/*.nii.gz ${ANALYSISDIR}/${MYSUB}/anat/T2.nii.gz
-#fsleyes ${ANALYSISDIR}/${MYSUB}/anat/T2.nii.gz &
+fsleyes ${ANALYSISDIR}/${MYSUB}/anat/T2.nii.gz &
 
 
 #################### SWAN QA ###########################################
@@ -69,14 +69,14 @@ dcm2niix ${DICOMDIR}/${MYSUB}/*MIN_IP*
 mv ${DICOMDIR}/${MYSUB}/*-Ax_SWAN*/*.nii.gz ${ANALYSISDIR}/${MYSUB}/anat/SWAN_mag.nii.gz
 mv ${DICOMDIR}/${MYSUB}/*-FILT_PHA_Ax_SWAN*/*.nii.gz ${ANALYSISDIR}/${MYSUB}/anat/SWAN_phase.nii.gz
 mv ${DICOMDIR}/${MYSUB}/*MIN_IP*/*.nii.gz ${ANALYSISDIR}/${MYSUB}/anat/SWAN_MIN_IP.nii.gz
-#fsleyes ${ANALYSISDIR}/${MYSUB}/anat/SWAN_mag ${ANALYSISDIR}/${MYSUB}/anat/SWAN_phase &
-#fsleyes ${ANALYSISDIR}/${MYSUB}/anat/SWAN_MIN_IP &
+fsleyes ${ANALYSISDIR}/${MYSUB}/anat/SWAN_mag ${ANALYSISDIR}/${MYSUB}/anat/SWAN_phase &
+fsleyes ${ANALYSISDIR}/${MYSUB}/anat/SWAN_MIN_IP &
 
 
 #################### FLAIR QA ###########################################
 dcm2niix ${DICOMDIR}/${MYSUB}/*Ax_FLAIR*
 mv ${DICOMDIR}/${MYSUB}/*FLAIR*/*.nii.gz ${ANALYSISDIR}/${MYSUB}/anat/flair.nii.gz
-#fsleyes ${ANALYSISDIR}/${MYSUB}/anat/flair &
+fsleyes ${ANALYSISDIR}/${MYSUB}/anat/flair &
 
 
 #################### Diffusion QA #######################################
@@ -97,8 +97,8 @@ dcm2niix ${diff_fow_dir}
 mv ${diff_fow_dir}/*.nii.gz ${ANALYSISDIR}/${MYSUB}/diffusion/dti_fow.nii.gz
 dcm2niix ${diff_rev_dir}
 mv ${diff_rev_dir}/*.nii.gz ${ANALYSISDIR}/${MYSUB}/diffusion/dti_rev.nii.gz
-#fsleyes ${ANALYSISDIR}/${MYSUB}/diffusion/dti_fow &
-#fsleyes ${ANALYSISDIR}/${MYSUB}/diffusion/dti_rev &
+fsleyes ${ANALYSISDIR}/${MYSUB}/diffusion/dti_fow &
+fsleyes ${ANALYSISDIR}/${MYSUB}/diffusion/dti_rev &
 fslroi ${ANALYSISDIR}/${MYSUB}/diffusion/dti_fow ${ANALYSISDIR}/${MYSUB}/diffusion/dti_fow_b0 0 3
 fslroi ${ANALYSISDIR}/${MYSUB}/diffusion/dti_rev ${ANALYSISDIR}/${MYSUB}/diffusion/dti_rev_b0 0 3
 fslmerge -t ${ANALYSISDIR}/${MYSUB}/diffusion/all_b0 ${ANALYSISDIR}/${MYSUB}/diffusion/dti_fow_b0 ${ANALYSISDIR}/${MYSUB}/diffusion/dti_rev_b0
@@ -107,9 +107,9 @@ fslmaths ${ANALYSISDIR}/${MYSUB}/diffusion/all_b0_unwarped -Tmean ${ANALYSISDIR}
 bet ${ANALYSISDIR}/${MYSUB}/diffusion/mean_b0_unwarped ${ANALYSISDIR}/${MYSUB}/diffusion/nodif_brain -m
 fslmerge -t ${ANALYSISDIR}/${MYSUB}/diffusion/data_uncorrected ${ANALYSISDIR}/${MYSUB}/diffusion/dti_fow ${ANALYSISDIR}/${MYSUB}/diffusion/dti_rev
 time eddy_cpu --imain=${ANALYSISDIR}/${MYSUB}/diffusion/data_uncorrected --mask=${ANALYSISDIR}/${MYSUB}/diffusion/nodif_brain_mask --acqp=${SCRIPTSDIR}/acqp_eddy.txt --index=${SCRIPTSDIR}/index.txt --bvecs=${SCRIPTSDIR}/bvecs --bvals=${SCRIPTSDIR}/bvals --topup=${ANALYSISDIR}/${MYSUB}/diffusion/topup_results --cnr_maps --repol --out=${ANALYSISDIR}/${MYSUB}/diffusion/data
-#fsleyes ${ANALYSISDIR}/${MYSUB}/diffusion/data &
+fsleyes ${ANALYSISDIR}/${MYSUB}/diffusion/data &
 dtifit -k ${ANALYSISDIR}/${MYSUB}/diffusion/data -o ${ANALYSISDIR}/${MYSUB}/diffusion/dtifit -m ${ANALYSISDIR}/${MYSUB}/diffusion/nodif_brain_mask -r ${ANALYSISDIR}/${MYSUB}/diffusion/data.eddy_rotated_bvecs -b ${SCRIPTSDIR}/bvals
-#fsleyes ${ANALYSISDIR}/${MYSUB}/diffusion/dtifit_FA ${ANALYSISDIR}/${MYSUB}/diffusion/dtifit_V1 &
+fsleyes ${ANALYSISDIR}/${MYSUB}/diffusion/dtifit_FA ${ANALYSISDIR}/${MYSUB}/diffusion/dtifit_V1 &
 #diffusion tsnr calc
 fslroi ${ANALYSISDIR}/${MYSUB}/diffusion/data ${ANALYSISDIR}/${MYSUB}/diffusion/dw_fow 3 45
 fslroi ${ANALYSISDIR}/${MYSUB}/diffusion/data ${ANALYSISDIR}/${MYSUB}/diffusion/dw_rev 51 6
@@ -117,7 +117,7 @@ fslmerge -t ${ANALYSISDIR}/${MYSUB}/diffusion/dw ${ANALYSISDIR}/${MYSUB}/diffusi
 fslmaths ${ANALYSISDIR}/${MYSUB}/diffusion/dw -Tmean ${ANALYSISDIR}/${MYSUB}/diffusion/dw_mean
 fslmaths ${ANALYSISDIR}/${MYSUB}/diffusion/dw -Tstd ${ANALYSISDIR}/${MYSUB}/diffusion/dw_std
 fslmaths ${ANALYSISDIR}/${MYSUB}/diffusion/dw_mean -div ${ANALYSISDIR}/${MYSUB}/diffusion/dw_std ${ANALYSISDIR}/${MYSUB}/diffusion/dw_tsnr
-#fsleyes ${ANALYSISDIR}/${MYSUB}/diffusion/dw_tsnr &
+fsleyes ${ANALYSISDIR}/${MYSUB}/diffusion/dw_tsnr &
 difftsnr=`fslstats ${ANALYSISDIR}/${MYSUB}/diffusion/dw_tsnr -k ${ANALYSISDIR}/${MYSUB}/diffusion/nodif_brain_mask -M`
 diffcnr=`fslstats -t ${ANALYSISDIR}/${MYSUB}/diffusion/data.eddy_cnr_maps -k ${ANALYSISDIR}/${MYSUB}/diffusion/nodif_brain_mask -M`
 if [ "$PURET1" = "YES" ] && [ "$PUREdiff" = "YES" ] 
@@ -154,7 +154,7 @@ then
 fi
 mkdir ${ANALYSISDIR}/${MYSUB}/diffusion/xfms
 flirt -in $diffforreg -ref $T1fordiffreg -omat ${ANALYSISDIR}/${MYSUB}/diffusion/xfms/diff2str.mat -searchrx -90 90 -searchry -90 90 -searchrz -90 90 -dof 6 -cost corratio -out ${ANALYSISDIR}/${MYSUB}/diffusion/xfms/diff2str 
-#fsleyes ${ANALYSISDIR}/${MYSUB}/diffusion/xfms/diff2str $T1fordiffreg &
+fsleyes ${ANALYSISDIR}/${MYSUB}/diffusion/xfms/diff2str $T1fordiffreg &
 convert_xfm -omat ${ANALYSISDIR}/${MYSUB}/diffusion/xfms/str2diff.mat -inverse ${ANALYSISDIR}/${MYSUB}/diffusion/xfms/diff2str.mat 
 
 	
@@ -172,21 +172,21 @@ done
 mkdir ${ANALYSISDIR}/${MYSUB}/fmri
 dcm2niix ${BOLDdir}
 mv ${BOLDdir}/*.nii.gz ${ANALYSISDIR}/${MYSUB}/fmri/rs.nii.gz
-#fsleyes ${ANALYSISDIR}/${MYSUB}/fmri/rs &
+fsleyes ${ANALYSISDIR}/${MYSUB}/fmri/rs &
 sed 's:MYINPUT:'${ANALYSISDIR}'/'${MYSUB}'/fmri/rs:g' ${SCRIPTSDIR}/QA.fsf > ${ANALYSISDIR}/${MYSUB}/fmri/QA.fsf
 feat ${ANALYSISDIR}/${MYSUB}/fmri/QA.fsf
 fslmaths ${ANALYSISDIR}/${MYSUB}/fmri/rs.feat/filtered_func_data -Tstd ${ANALYSISDIR}/${MYSUB}/fmri/rs.feat/std_func
 fslmaths ${ANALYSISDIR}/${MYSUB}/fmri/rs.feat/mean_func -div ${ANALYSISDIR}/${MYSUB}/fmri/rs.feat/std_func ${ANALYSISDIR}/${MYSUB}/fmri/rs.feat/tsnr_func
 rstsnr=`fslstats ${ANALYSISDIR}/${MYSUB}/fmri/rs.feat/tsnr_func -k ${ANALYSISDIR}/${MYSUB}/fmri/rs.feat/mask -M`
-#fsleyes ${ANALYSISDIR}/${MYSUB}/fmri/rs.feat/tsnr_func &
-#fsleyes ${ANALYSISDIR}/${MYSUB}/fmri/rs.feat/filtered_func_data.ica/melodic_IC &
+fsleyes ${ANALYSISDIR}/${MYSUB}/fmri/rs.feat/tsnr_func &
+fsleyes ${ANALYSISDIR}/${MYSUB}/fmri/rs.feat/filtered_func_data.ica/melodic_IC &
 fsl_motion_outliers -i ${ANALYSISDIR}/${MYSUB}/fmri/rs -s ${ANALYSISDIR}/${MYSUB}/fmri/rs_motion.rms -p ${ANALYSISDIR}/${MYSUB}/fmri/rs_motion.png -o ${ANALYSISDIR}/${MYSUB}/fmri/rs_motion_confounds.txt
 sed 's:MYINPUT:'${ANALYSISDIR}'/'${MYSUB}'/fmri/rs:g' ${SCRIPTSDIR}/QA_mc_only.fsf > ${ANALYSISDIR}/${MYSUB}/fmri/QA_mc_only.fsf
 feat ${ANALYSISDIR}/${MYSUB}/fmri/QA_mc_only.fsf
 fslmaths ${ANALYSISDIR}/${MYSUB}/fmri/rs+.feat/filtered_func_data -Tstd ${ANALYSISDIR}/${MYSUB}/fmri/rs+.feat/std_func
 fslmaths ${ANALYSISDIR}/${MYSUB}/fmri/rs+.feat/mean_func -div ${ANALYSISDIR}/${MYSUB}/fmri/rs+.feat/std_func ${ANALYSISDIR}/${MYSUB}/fmri/rs+.feat/tsnr_func
 rstsnr_mc_only=`fslstats ${ANALYSISDIR}/${MYSUB}/fmri/rs+.feat/tsnr_func -k ${ANALYSISDIR}/${MYSUB}/fmri/rs.feat/mask -M`
-#fsleyes ${ANALYSISDIR}/${MYSUB}/fmri/rs+.feat/tsnr_func &
+fsleyes ${ANALYSISDIR}/${MYSUB}/fmri/rs+.feat/tsnr_func &
 if [ "$PURET1" = "YES" ] && [ "$PUREBOLD" = "YES" ]
 then
 	T1forreg=${ANATDIR}/T1_brain

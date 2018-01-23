@@ -1,0 +1,5 @@
+fslmaths harvardoxford-cortical_prob_Precentral_Gyrus.nii.gz -thr 20 harvardoxford-cortical_prob_Precentral_Gyrus_thr20
+Erins-MacBook-Pro:scripts erin$ fslmaths harvardoxford-cortical_prob_Precentral_Gyrus.nii.gz -thr 20 -bin harvardoxford-cortical_prob_Precentral_Gyrus_thr20
+Erins-MacBook-Pro:scripts erin$ fslmaths harvardoxford-cortical_prob_Precentral_Gyrus_thr20.nii.gz -mas handknob_1voxel_mni_2mm_L_8mmdil.nii.gz handknob_L_final
+Erins-MacBook-Pro:scripts erin$ fslmaths handknob_1voxel_mni_2mm_R.nii.gz -kernel sphere 8 -dilM handknob_1voxel_mni_2mm_R_8mmdil
+Erins-MacBook-Pro:scripts erin$ fslmaths harvardoxford-cortical_prob_Precentral_Gyrus_thr20.nii.gz -mas handknob_1voxel_mni_2mm_R_8mmdil.nii.gz handknob_R_finalx
