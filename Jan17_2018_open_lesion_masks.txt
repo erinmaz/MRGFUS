@@ -1,0 +1,4 @@
+for f in `ls -d *`
+do
+fsleyes $f/anat/T12SWAN_mag_direct $f/anat/SWAN_mag $f/anat/T1_lesion_mask_filled2SWAN_mag -cm "Blue-LightBlue" $f/anat/SWAN_mag_lesion_mask -cm "Red-Yellow"&
+done

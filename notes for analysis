@@ -26,3 +26,8 @@ Ran brew doctor, got an error about sticky bit. followed instructions for that a
 then ran brew postinstall pigz and it seemed to work
 
 QA.sh 9001_SH-11692 > QA_9001_SH-11692.log
+
+time QA.sh 9002_RA-11833 &>/Users/erin/Desktop/Projects/MRGFUS/logs/QA_9002_RA-11833.log
+(check that &> saves stdout and stderr to log file)
+
+diffusion - ascending slices

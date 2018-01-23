@@ -1,0 +1,44 @@
+ for f in `ls -d *`
+> do 
+> fsleyes $f/anat/T1 /Users/erin/Desktop/Projects/MRGFUS/analysis/$f/fmri/rs_reg.feat/reg/highres
+> done
+Erins-MacBook-Pro:analysis_lesion_masks erin$ for f in `ls -d *`; do  fsleyes $f/anat/T1 /Users/erin/Desktop/Projects/MRGFUS/analysis/$f/fmri/r
+Erins-MacBook-Pro:analysis_lesion_masks erin$ for f in `ls -d *`
+> do
+> fslstats $f/anat/T1_lesion_mask_filled -V
+> done
+230 230.008530 
+141 141.012924 
+416 415.995422 
+180 180.049759 
+182 181.985947 
+202 202.000000 
+208 208.002579 
+396 396.019165 
+
+
+ 
+for f in `ls -d *`
+do
+fsleyes /Users/erin/Desktop/Projects/MRGFUS/analysis/${f}/fmri/rs_reg.feat/reg/highres2standard.nii.gz &
+done
+
+
+Erins-MacBook-Pro:analysis_lesion_masks erin$ pwd
+/Users/erin/Desktop/Projects/MRGFUS/analysis_lesion_masks
+
+fslchfiletype NIFTI_GZ 9004_EP-12203/anat/T1
+fslchfiletype NIFTI_GZ 9006_EO-12487/anat/T1
+fslchfiletype NIFTI_GZ 9007_RB-12910/anat/T1
+fslchfiletype NIFTI_GZ 9009_CRB-13043/anat/T1
+
+mkdir ~/Dropbox/BigBrainAnalysis
+mkdir ~/Dropbox/BigBrainAnalysis/day1_lesions
+mkdir ~/Dropbox/BigBrainAnalysis/day1_lesions/native_space
+for f in `ls -d *`
+do 
+mkdir ~/Dropbox/BigBrainAnalysis/day1_lesions/native_space/$f
+cp $f/anat/T1.nii.gz ~/Dropbox/BigBrainAnalysis/day1_lesions/native_space/$f/T1.nii.gz
+cp $f/anat/T1_lesion_mask_filled.nii.gz ~/Dropbox/BigBrainAnalysis/day1_lesions/native_space/$f/T1_lesion_mask_filled.nii.gz
+done
+
