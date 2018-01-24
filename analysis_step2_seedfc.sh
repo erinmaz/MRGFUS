@@ -31,7 +31,7 @@ fslmaths ${ANALYSISDIR}/${MYSUB}/anat/c1T1 -thr .95 -bin ${ANALYSISDIR}/${MYSUB}
 fslmaths ${MYFEAT}/${MASKNAME}2highres -mas ${ANALYSISDIR}/$MYSUB/anat/c1T1_thr95 ${MYFEAT}/${MASKNAME}2highres_gm
 flirt -applyxfm -init ${MYREG}/highres2example_func.mat -in ${MYFEAT}/${MASKNAME}2highres_gm -ref ${MYREG}/example_func -out ${MYFEAT}/${MASKNAME}2highres_gm2example_func -interp nearestneighbour
 
-fsleyes ${MYREG}/example_func  ${MYFEAT}/${MASKNAME}2highres_gm2example_func
+fsleyes ${MYREG}/example_func ${MYFEAT}/${MASKNAME}2highres_gm2example_func
 
 
 fslmeants -i ${MYFEAT}/filtered_func_data -m ${MYFEAT}/${MASKNAME}2highres_gm2example_func -o ${MYFEAT}/${MASKNAME}2highres_gm2example_func_ts.txt --eig
@@ -39,7 +39,8 @@ fslmeants -i ${MYFEAT}/filtered_func_data -m ${MYFEAT}/mask -o ${MYFEAT}/global_
 fslmeants -i ${MYFEAT}/filtered_func_data -m ${MYFEAT}/harvardoxford-subcortical_prob_Lateral_Ventricles2func -o ${MYFEAT}/lateral_ventricles_ts.txt --eig
 
 sed 's:MYSUB:'${MYSUB}':g' ${SCRIPTSDIR}/fc.fsf > ${ANALYSISDIR}/${MYSUB}/fmri/fc_${MASKNAME}.fsf
-sed -i '' 's:MASKNAME:'${MYFEAT}'/'${MASKNAME}'2highres_gm2example_func_ts.txt:g' ${ANALYSISDIR}/${MYSUB}/fmri/fc_${MASKNAME}.fsf
+sed -i '' 's:MYFEAT:'${MYFEAT}':g'  ${ANALYSISDIR}/${MYSUB}/fmri/fc_${MASKNAME}.fsf
+sed -i '' 's:MASKNAME:'${MASKNAME}'2highres_gm2example_func_ts.txt:g' ${ANALYSISDIR}/${MYSUB}/fmri/fc_${MASKNAME}.fsf
 
 feat ${ANALYSISDIR}/${MYSUB}/fmri/fc_${MASKNAME}.fsf
 
