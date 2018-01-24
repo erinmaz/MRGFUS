@@ -5,6 +5,6 @@ MAINDIR=/Users/erin/Desktop/Projects/MRGFUS
 SCRIPTSDIR=${MAINDIR}/scripts
 ANALYSISDIR=${MAINDIR}/analysis
 DIFFDIR=${ANALYSISDIR}/${MYSUB}/diffusion
-cp ${SCRIPTSDIR}/bvecs ${DIFFDIR}/.
+cp ${DIFFDIR}/data.eddy_rotated_bvecs ${DIFFDIR}/bvecs
 cp ${SCRIPTSDIR}/bvals ${DIFFDIR}/.
 bedpostx ${DIFFDIR} 
