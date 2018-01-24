@@ -3,8 +3,6 @@
 
 MYSUB=$1
 
-#full path of mask (in standard space)
-MYMASK=`imglob $2`
 
 #full path of pre-processed feat (rs.feat in my current pipeline)
 MYFEAT=$3
@@ -12,10 +10,7 @@ MYFEAT=$3
 #full path of reg folder to use (rs_reg.feat/reg in my current pipeline)
 MYREG=$4
 
-ANALYSISDIR=~/Desktop/Projects/MRGFUS/analysis
-SCRIPTSDIR=~/Desktop/Projects/MRGFUS/scripts
 MASKNAME=`basename $MYMASK`
-
 
 #get lateral ventricles in func space for nuisance regressor
 invwarp -w ${MYREG}/example_func2standard_warp -o ${MYREG}/standard2example_func_warp -r ${MYREG}/example_func
@@ -34,15 +29,12 @@ flirt -applyxfm -init ${MYREG}/highres2example_func.mat -in ${MYFEAT}/${MASKNAME
 fsleyes ${MYREG}/example_func ${MYFEAT}/${MASKNAME}2highres_gm2example_func
 
 
-fslmeants -i ${MYFEAT}/filtered_func_data -m ${MYFEAT}/${MASKNAME}2highres_gm2example_func -o ${MYFEAT}/${MASKNAME}2highres_gm2example_func_ts.txt --eig
 fslmeants -i ${MYFEAT}/filtered_func_data -m ${MYFEAT}/mask -o ${MYFEAT}/global_ts.txt --eig
-fslmeants -i ${MYFEAT}/filtered_func_data -m ${MYFEAT}/harvardoxford-subcortical_prob_Lateral_Ventricles2func -o ${MYFEAT}/lateral_ventricles_ts.txt --eig
 
 sed 's:MYSUB:'${MYSUB}':g' ${SCRIPTSDIR}/fc.fsf > ${ANALYSISDIR}/${MYSUB}/fmri/fc_${MASKNAME}.fsf
 sed -i '' 's:MYFEAT:'${MYFEAT}':g'  ${ANALYSISDIR}/${MYSUB}/fmri/fc_${MASKNAME}.fsf
 sed -i '' 's:MASKNAME:'${MASKNAME}'2highres_gm2example_func_ts.txt:g' ${ANALYSISDIR}/${MYSUB}/fmri/fc_${MASKNAME}.fsf
 
-feat ${ANALYSISDIR}/${MYSUB}/fmri/fc_${MASKNAME}.fsf
 
 
 
