@@ -1,8 +1,5 @@
 #!/bin/bash
 #subject IDs as input
-
-
-
 MYSUB=$1
 MAINDIR=/Users/erin/Desktop/Projects/MRGFUS
 SCRIPTSDIR=${MAINDIR}/scripts

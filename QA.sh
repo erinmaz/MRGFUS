@@ -174,16 +174,16 @@ mkdir ${ANALYSISDIR}/${MYSUB}/fmri
 dcm2niix ${BOLDdir}
 mv ${BOLDdir}/*.nii.gz ${ANALYSISDIR}/${MYSUB}/fmri/rs.nii.gz
 fsleyes ${ANALYSISDIR}/${MYSUB}/fmri/rs &
-sed 's:MYINPUT:'${ANALYSISDIR}'/'${MYSUB}'/fmri/rs:g' ${SCRIPTSDIR}/QA_$(MYCOIL}.fsf > ${ANALYSISDIR}/${MYSUB}/fmri/QA_$(MYCOIL}.fsf
-feat ${ANALYSISDIR}/${MYSUB}/fmri/QA_$(MYCOIL}.fsf
+sed 's:MYINPUT:'${ANALYSISDIR}'/'${MYSUB}'/fmri/rs:g' ${SCRIPTSDIR}/QA_${MYCOIL}.fsf > ${ANALYSISDIR}/${MYSUB}/fmri/QA_${MYCOIL}.fsf
+feat ${ANALYSISDIR}/${MYSUB}/fmri/QA_${MYCOIL}.fsf
 fslmaths ${ANALYSISDIR}/${MYSUB}/fmri/rs.feat/filtered_func_data -Tstd ${ANALYSISDIR}/${MYSUB}/fmri/rs.feat/std_func
 fslmaths ${ANALYSISDIR}/${MYSUB}/fmri/rs.feat/mean_func -div ${ANALYSISDIR}/${MYSUB}/fmri/rs.feat/std_func ${ANALYSISDIR}/${MYSUB}/fmri/rs.feat/tsnr_func
 rstsnr=`fslstats ${ANALYSISDIR}/${MYSUB}/fmri/rs.feat/tsnr_func -k ${ANALYSISDIR}/${MYSUB}/fmri/rs.feat/mask -M`
 fsleyes ${ANALYSISDIR}/${MYSUB}/fmri/rs.feat/tsnr_func &
 fsleyes ${ANALYSISDIR}/${MYSUB}/fmri/rs.feat/filtered_func_data.ica/melodic_IC &
 fsl_motion_outliers -i ${ANALYSISDIR}/${MYSUB}/fmri/rs -s ${ANALYSISDIR}/${MYSUB}/fmri/rs_motion.rms -p ${ANALYSISDIR}/${MYSUB}/fmri/rs_motion.png -o ${ANALYSISDIR}/${MYSUB}/fmri/rs_motion_confounds.txt
-sed 's:MYINPUT:'${ANALYSISDIR}'/'${MYSUB}'/fmri/rs:g' ${SCRIPTSDIR}/QA_mc_only_$(MYCOIL}.fsf > ${ANALYSISDIR}/${MYSUB}/fmri/QA_mc_only_$(MYCOIL}.fsf
-feat ${ANALYSISDIR}/${MYSUB}/fmri/QA_mc_only_$(MYCOIL}.fsf
+sed 's:MYINPUT:'${ANALYSISDIR}'/'${MYSUB}'/fmri/rs:g' ${SCRIPTSDIR}/QA_mc_only_${MYCOIL}.fsf > ${ANALYSISDIR}/${MYSUB}/fmri/QA_mc_only_${MYCOIL}.fsf
+feat ${ANALYSISDIR}/${MYSUB}/fmri/QA_mc_only_${MYCOIL}.fsf
 fslmaths ${ANALYSISDIR}/${MYSUB}/fmri/rs+.feat/filtered_func_data -Tstd ${ANALYSISDIR}/${MYSUB}/fmri/rs+.feat/std_func
 fslmaths ${ANALYSISDIR}/${MYSUB}/fmri/rs+.feat/mean_func -div ${ANALYSISDIR}/${MYSUB}/fmri/rs+.feat/std_func ${ANALYSISDIR}/${MYSUB}/fmri/rs+.feat/tsnr_func
 rstsnr_mc_only=`fslstats ${ANALYSISDIR}/${MYSUB}/fmri/rs+.feat/tsnr_func -k ${ANALYSISDIR}/${MYSUB}/fmri/rs.feat/mask -M`
@@ -213,10 +213,10 @@ then
 	T1forreg=${ANATDIR}/T1_brain
 	BOLDforreg=${ANALYSISDIR}/${MYSUB}/fmri/rs_noPURE
 fi
-sed 's:MYINPUT:'${BOLDforreg}':g' ${SCRIPTSDIR}/reg_$(MYCOIL}.fsf > ${ANALYSISDIR}/${MYSUB}/fmri/reg_$(MYCOIL}.fsf
-sed -i "" 's:MYT1:'${T1forreg}':g' ${ANALYSISDIR}/${MYSUB}/fmri/reg_$(MYCOIL}.fsf
-sed -i "" 's:MYOUTPUT:'${ANALYSISDIR}'/'${MYSUB}'/fmri/rs_reg.feat:g'  ${ANALYSISDIR}/${MYSUB}/fmri/reg_$(MYCOIL}.fsf
-feat ${ANALYSISDIR}/${MYSUB}/fmri/reg_$(MYCOIL}.fsf
+sed 's:MYINPUT:'${BOLDforreg}':g' ${SCRIPTSDIR}/reg_${MYCOIL}.fsf > ${ANALYSISDIR}/${MYSUB}/fmri/reg_${MYCOIL}.fsf
+sed -i "" 's:MYT1:'${T1forreg}':g' ${ANALYSISDIR}/${MYSUB}/fmri/reg_${MYCOIL}.fsf
+sed -i "" 's:MYOUTPUT:'${ANALYSISDIR}'/'${MYSUB}'/fmri/rs_reg.feat:g'  ${ANALYSISDIR}/${MYSUB}/fmri/reg_${MYCOIL}.fsf
+feat ${ANALYSISDIR}/${MYSUB}/fmri/reg_${MYCOIL}.fsf
 	
 
 ################# SUMMARY OUTPUT ########################################
