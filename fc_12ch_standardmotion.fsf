@@ -135,7 +135,7 @@ set fmri(prewhiten_yn) 1
 # Add motion parameters to model
 # 0 : No
 # 1 : Yes
-set fmri(motionevs) 0
+set fmri(motionevs) 1
 set fmri(motionevsbeta) ""
 set fmri(scriptevsbeta) ""
 
@@ -276,10 +276,7 @@ set fmri(ncopeinputs) 0
 set feat_files(1) "/Users/erin/Desktop/Projects/MRGFUS/analysis/MYSUB/fmri/rs.feat"
 
 # Add confound EVs text file
-set fmri(confoundevs) 1
-
-# Confound EVs text file for analysis 1
-set confoundev_files(1) "/Users/erin/Desktop/Projects/MRGFUS/analysis/MYSUB/fmri/rs_motion_confounds.txt"
+set fmri(confoundevs) 0
 
 # EV 1 title
 set fmri(evtitle1) "MASKNAME"
@@ -313,7 +310,7 @@ set fmri(tempfilt_yn1) 0
 set fmri(deriv_yn1) 0
 
 # Custom EV file (EV 1)
-set fmri(custom1) "/Users/erin/Desktop/Projects/MRGFUS/analysis/MYSUB/fmri/rs.feat/MASKNAME"
+set fmri(custom1) "/Users/erin/Desktop/Projects/MRGFUS/analysis/MYSUB/fmri/rs.feat/MASKNAME2highres_gm2example_func_ts.txt"
 
 # Orthogonalise EV 1 wrt EV 0
 set fmri(ortho1.0) 0

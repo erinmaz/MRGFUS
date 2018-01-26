@@ -31,3 +31,6 @@ time QA.sh 9002_RA-11833 &>/Users/erin/Desktop/Projects/MRGFUS/logs/QA_9002_RA-1
 (check that &> saves stdout and stderr to log file)
 
 diffusion - ascending slices
+
+Erins-MacBook-Pro:harvardoxford-subcortical erin$ fslmaths thalamus_L -thr 50 -bin thalamus_L_final
+Erins-MacBook-Pro:harvardoxford-subcortical erin$ fslmaths thalamus_R -thr 50 -bin thalamus_R_final
