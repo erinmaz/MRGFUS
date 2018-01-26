@@ -34,3 +34,6 @@ diffusion - ascending slices
 
 Erins-MacBook-Pro:harvardoxford-subcortical erin$ fslmaths thalamus_L -thr 50 -bin thalamus_L_final
 Erins-MacBook-Pro:harvardoxford-subcortical erin$ fslmaths thalamus_R -thr 50 -bin thalamus_R_final
+
+
+time analysis_seedfc_step1B_highresspace.sh 9005_BG-13126 12ch /Users/erin/Desktop/Projects/MRGFUS/analysis_lesion_masks/9005_BG-13126/anat/T1_lesion_mask_filled.nii.gz /Users/erin/Desktop/Projects/MRGFUS/analysis/9005_BG-13126/fmri/rs.feat /Users/erin/Desktop/Projects/MRGFUS/analysis/9005_BG-13126/fmri/rs_reg.feat/reg &>/Users/erin/Desktop/Projects/MRGFUS/logs/analysis_seedfc_step1B_highresspace_T1lesion.log 

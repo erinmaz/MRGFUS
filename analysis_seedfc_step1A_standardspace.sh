@@ -21,14 +21,14 @@ FEATNAME=`basename $MYFEAT`
 cp -r $MYFEAT ${ANALYSISDIR}/${MYSUB}/fmri/${FEATNAME}.backup
 
 #get lateral ventricles in func space for nuisance regressor
+if [ ! -f ${MYREG}/standard2example_func_warp.nii.gz ]
+then
 invwarp -w ${MYREG}/example_func2standard_warp -o ${MYREG}/standard2example_func_warp -r ${MYREG}/example_func
+fi
 
 applywarp -i /Users/erin/Desktop/Projects/MRGFUS/scripts/harvardoxford-subcortical_prob_Lateral_Ventricles -w ${MYREG}/standard2example_func_warp -r ${MYREG}/example_func -o ${MYFEAT}/harvardoxford-subcortical_prob_Lateral_Ventricles2func --interp=nn
 
 #applywarp -i ${MYMASK} -w ${MYREG}/standard2example_func_warp -r ${MYREG}/example_func -o ${MYFEAT}/${MASKNAME}2func --interp=nn
-
-invwarp -w ${MYREG}/highres2standard_warp -o ${MYREG}/standard2highres_warp -r ${MYREG}/highres
-
 #applywarp -i ${MYMASK} -w ${MYREG}/standard2highres_warp -r ${MYREG}/highres -o ${MYFEAT}/${MASKNAME}2highres --interp=nn
 #fslmaths ${ANALYSISDIR}/${MYSUB}/anat/c1T1 -thr .95 -bin ${ANALYSISDIR}/${MYSUB}/anat/c1T1_thr95
 #fslmaths ${MYFEAT}/${MASKNAME}2highres -mas ${ANALYSISDIR}/$MYSUB/anat/c1T1_thr95 ${MYFEAT}/${MASKNAME}2highres_gm
@@ -55,6 +55,9 @@ sed -i '' 's:MASKNAME:'${MASKNAME}'2example_func_ts.txt:g' ${ANALYSISDIR}/${MYSU
 
 feat ${ANALYSISDIR}/${MYSUB}/fmri/fc_${MASKNAME}.fsf
 
+FEATPREFIX=`basename $FEATNAME .feat`
+mv $MYFEAT ${ANALYSISDIR}/${MYSUB}/fmri/${FEATPREFIX}_${MASKNAME}.feat
+mv ${ANALYSISDIR}/${MYSUB}/fmri/${FEATNAME}.backup ${ANALYSISDIR}/${MYSUB}/fmri/${FEATNAME}
 
 
 
