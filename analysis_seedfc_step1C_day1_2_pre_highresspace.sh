@@ -1,6 +1,12 @@
 #!/bin/bash
 #seed based functional connectivity analysis
+
 MYSUB=$1
+ANALYSISDIR=~/Desktop/Projects/MRGFUS/analysis
+SCRIPTSDIR=~/Desktop/Projects/MRGFUS/scripts
+
+
+
 
 MYCOIL=$2 
 #full path of mask (in highres space)
@@ -9,31 +15,28 @@ MYMASK=`imglob $3`
 #full path of pre-processed feat (rs.feat in my current pipeline)
 MYFEAT=$4
 
-#full path of reg folder to use (rs_reg.feat/reg in my current pipeline)
-MYREG=$5
+#full path of standard2example_func_warp to use
+MYREG_STANDARD=$5
 
-ANALYSISDIR=~/Desktop/Projects/MRGFUS/analysis
-SCRIPTSDIR=~/Desktop/Projects/MRGFUS/scripts
+#full path of mask2example_func.mat to use
+MYREG_MASK2EXAMPLE_FUNC=$6
+
+
+FEATNAME=`basename $MYFEAT`
+MASKNAME=`basename $MYMASK`
 
 #save a copy of this script to the analysis dir, so I know what I've run
 cp $0 ${ANALYSISDIR}/${MYSUB}/.
 
-MASKNAME=`basename $MYMASK`
-
-FEATNAME=`basename $MYFEAT`
 cp -r $MYFEAT ${ANALYSISDIR}/${MYSUB}/fmri/${FEATNAME}.backup
 
 #get lateral ventricles in func space for nuisance regressor
-if [ ! -f ${MYREG}/standard2example_func_warp.nii.gz ]
-then
-invwarp -w ${MYREG}/example_func2standard_warp -o ${MYREG}/standard2example_func_warp -r ${MYREG}/example_func
-fi
 
-applywarp -i /Users/erin/Desktop/Projects/MRGFUS/scripts/harvardoxford-subcortical_prob_Lateral_Ventricles -w ${MYREG}/standard2example_func_warp -r ${MYREG}/example_func -o ${MYFEAT}/harvardoxford-subcortical_prob_Lateral_Ventricles2func --interp=nn
+applywarp -i /Users/erin/Desktop/Projects/MRGFUS/scripts/harvardoxford-subcortical_prob_Lateral_Ventricles -w ${MYREG_STANDARD} -r ${MYFEAT}/example_func -o ${MYFEAT}/harvardoxford-subcortical_prob_Lateral_Ventricles2func --interp=nn
 
-flirt -applyxfm -init ${MYREG}/highres2example_func.mat -in $MYMASK -ref ${MYREG}/example_func -o ${MYFEAT}/${MASKNAME}2example_func -interp nearestneighbour
+flirt -applyxfm -init ${MYREG_MASK2EXAMPLE_FUNC} -in $MYMASK -ref ${MYFEAT}/example_func -o ${MYFEAT}/${MASKNAME}2example_func -interp nearestneighbour
 
-fsleyes ${MYREG}/example_func ${MYFEAT}/${MASKNAME}2example_func ${MYFEAT}/harvardoxford-subcortical_prob_Lateral_Ventricles2func ${MYFEAT}/filtered_func_data ${MYFEAT}/mask
+fsleyes ${MYFEAT}/example_func ${MYFEAT}/${MASKNAME}2example_func ${MYFEAT}/harvardoxford-subcortical_prob_Lateral_Ventricles2func ${MYFEAT}/filtered_func_data ${MYFEAT}/mask
 
 fslmeants -i ${MYFEAT}/filtered_func_data -m ${MYFEAT}/${MASKNAME}2example_func -o ${MYFEAT}/${MASKNAME}2example_func_ts.txt --eig
 

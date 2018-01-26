@@ -1,0 +1,29 @@
+analysis_longitudinal_step1.sh 9002_RA 11764 11833
+analysis_longitudinal_step1.sh 9001_SH 11644 11692
+analysis_longitudinal_step1.sh 9003_RB 12013 12064
+analysis_longitudinal_step1.sh 9004_EP 12126 12203
+
+analysis_longitudinal_step1.sh 9005_BG 13004 13126 &
+analysis_longitudinal_step1.sh 9006_EO 12389 12487
+
+analysis_longitudinal_step1.sh 9007_RB 12461 12910 &
+analysis_longitudinal_step1.sh 9008_JO 12613 12667 &
+analysis_longitudinal_step1.sh 9009_CRB 12609 13043
+
+
+analysis_longitudinal_step2.sh 9002_RA 11764 11833 /Users/erin/Desktop/Projects/MRGFUS/analysis/9002_RA-11764/fmri/rs_reg.feat/reg/highres2example_func.mat 
+
+analysis_longitudinal_step2.sh 9003_RB 12013 12064 /Users/erin/Desktop/Projects/MRGFUS/analysis/9003_RB-12013/fmri/rs_reg.feat/reg/highres2example_func.mat 
+
+analysis_longitudinal_step2.sh 9004_EP 12126 12203 /Users/erin/Desktop/Projects/MRGFUS/analysis/9004_EP-12126/fmri/rs_reg.feat/reg/highres2example_func.mat 
+
+analysis_longitudinal_step2.sh 9005_BG 13004 13126 /Users/erin/Desktop/Projects/MRGFUS/analysis/9005_BG-13004/fmri/rs_reg.feat/reg/highres2example_func.mat 
+
+analysis_longitudinal_step2.sh 9006_EO 12389 12487 /Users/erin/Desktop/Projects/MRGFUS/analysis/9006_EO-12389/fmri/rs_reg.feat/reg/highres2example_func.mat 
+
+analysis_longitudinal_step2.sh 9007_RB 12461 12910 /Users/erin/Desktop/Projects/MRGFUS/analysis/9007_RB-12461/fmri/rs_reg.feat/reg/highres2example_func.mat 
+
+
+analysis_longitudinal_step2.sh 9008_JO 12613 12667 /Users/erin/Desktop/Projects/MRGFUS/analysis/9008_JO-12613/fmri/rs_reg.feat/reg/highres2example_func.mat 
+
+analysis_longitudinal_step2.sh 9009_CRB 12609 13043 /Users/erin/Desktop/Projects/MRGFUS/analysis/9009_CRB-12609/fmri/rs_reg.feat/reg/highres2example_func.mat 

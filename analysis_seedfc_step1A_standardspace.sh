@@ -14,6 +14,10 @@ MYFEAT=$4
 MYREG=$5
 
 ANALYSISDIR=~/Desktop/Projects/MRGFUS/analysis
+
+#save a copy of this script to the analysis dir, so I know what I've run
+cp $0 ${ANALYSISDIR}/${MYSUB}/.
+
 SCRIPTSDIR=~/Desktop/Projects/MRGFUS/scripts
 MASKNAME=`basename $MYMASK`
 

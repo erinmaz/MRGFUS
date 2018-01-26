@@ -36,4 +36,20 @@ Erins-MacBook-Pro:harvardoxford-subcortical erin$ fslmaths thalamus_L -thr 50 -b
 Erins-MacBook-Pro:harvardoxford-subcortical erin$ fslmaths thalamus_R -thr 50 -bin thalamus_R_final
 
 
-time analysis_seedfc_step1B_highresspace.sh 9005_BG-13126 12ch /Users/erin/Desktop/Projects/MRGFUS/analysis_lesion_masks/9005_BG-13126/anat/T1_lesion_mask_filled.nii.gz /Users/erin/Desktop/Projects/MRGFUS/analysis/9005_BG-13126/fmri/rs.feat /Users/erin/Desktop/Projects/MRGFUS/analysis/9005_BG-13126/fmri/rs_reg.feat/reg &>/Users/erin/Desktop/Projects/MRGFUS/logs/analysis_seedfc_step1B_highresspace_T1lesion.log 
+analysis_seedfc_step1C_day1_2_pre_highresspace.sh 9001_SH-11644 12ch /Users/erin/Desktop/Projects/MRGFUS/analysis_lesion_masks/9001_SH-11692/anat/T1_lesion_mask_filled.nii.gz /Users/erin/Desktop/Projects/MRGFUS/analysis/9001_SH-11644/fmri/rs.feat /Users/erin/Desktop/Projects/MRGFUS/analysis/9001_SH-11644/fmri/rs_reg.feat/reg/standard2example_func_warp.nii.gz /Users/erin/Desktop/Projects/MRGFUS/analysis/9001_SH_longitudinal_xfms/T1_day1_2_func_pre.mat 
+
+
+Erins-MacBook-Pro:analysis erin$ for f in `ls -d *-*`; do cp -r ${f}/fmri/rs_reg.feat/reg ${f}/fmri/rs_T1_lesion_mask_filled.feat/.; done
+
+
+/Users/erin/Desktop/Projects/MRGFUS/analysis/9001_SH-11692/fmri/rs_T1_lesion_mask_filled.feat
+/Users/erin/Desktop/Projects/MRGFUS/analysis/9002_RA-11833/fmri/rs_T1_lesion_mask_filled.feat
+/Users/erin/Desktop/Projects/MRGFUS/analysis/9003_RB-12064/fmri/rs_T1_lesion_mask_filled.feat
+/Users/erin/Desktop/Projects/MRGFUS/analysis/9004_EP-12203/fmri/rs_T1_lesion_mask_filled.feat
+/Users/erin/Desktop/Projects/MRGFUS/analysis/9005_BG-13126/fmri/rs_T1_lesion_mask_filled.feat
+/Users/erin/Desktop/Projects/MRGFUS/analysis/9006_EO-12487/fmri/rs_T1_lesion_mask_filled.feat
+/Users/erin/Desktop/Projects/MRGFUS/analysis/9007_RB-12910/fmri/rs_T1_lesion_mask_filled.feat
+/Users/erin/Desktop/Projects/MRGFUS/analysis/9008_JO-12667/fmri/rs_T1_lesion_mask_filled.feat
+/Users/erin/Desktop/Projects/MRGFUS/analysis/9009_CRB-13043/fmri/rs_T1_lesion_mask_filled.feat
+
+
