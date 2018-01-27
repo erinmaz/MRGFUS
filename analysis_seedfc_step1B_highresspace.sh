@@ -49,5 +49,5 @@ feat ${ANALYSISDIR}/${MYSUB}/fmri/fc_${MASKNAME}.fsf
 FEATPREFIX=`basename $FEATNAME .feat`
 mv $MYFEAT ${ANALYSISDIR}/${MYSUB}/fmri/${FEATPREFIX}_${MASKNAME}.feat
 mv ${ANALYSISDIR}/${MYSUB}/fmri/${FEATNAME}.backup ${ANALYSISDIR}/${MYSUB}/fmri/${FEATNAME}
-
+cp -r $MYREG $MYFEAT ${ANALYSISDIR}/${MYSUB}/fmri/${FEATPREFIX}_${MASKNAME}.feat/.
 
