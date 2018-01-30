@@ -1,7 +1,4 @@
 #!/bin/bash
-
-ANALYSISDIR=~/Desktop/Projects/MRGFUS/analysis
-
 MYFEAT=$1
 
 cp -r $MYFEAT ${MYFEAT}.backup
