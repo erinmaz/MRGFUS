@@ -38,6 +38,7 @@ Erins-MacBook-Pro:harvardoxford-subcortical erin$ fslmaths thalamus_R -thr 50 -b
 
 analysis_seedfc_step1C_day1_2_pre_highresspace.sh 9001_SH-11644 12ch /Users/erin/Desktop/Projects/MRGFUS/analysis_lesion_masks/9001_SH-11692/anat/T1_lesion_mask_filled.nii.gz /Users/erin/Desktop/Projects/MRGFUS/analysis/9001_SH-11644/fmri/rs.feat /Users/erin/Desktop/Projects/MRGFUS/analysis/9001_SH-11644/fmri/rs_reg.feat/reg/standard2example_func_warp.nii.gz /Users/erin/Desktop/Projects/MRGFUS/analysis/9001_SH_longitudinal_xfms/T1_day1_2_func_pre.mat 
 
+time analysis_seedfc_step1B_highresspace.sh 9001_SH-11692 12ch /Users/erin/Desktop/Projects/MRGFUS/analysis_lesion_masks/9001_SH-11692/anat/T1_lesion_mask_filled.nii.gz /Users/erin/Desktop/Projects/MRGFUS/analysis/9001_SH-11692/fmri/rs.feat /Users/erin/Desktop/Projects/MRGFUS/analysis/9001_SH-11692/fmri/rs_reg.feat/reg &>/Users/erin/Desktop/Projects/MRGFUS/logs/analysis_seedfc_step1B_highresspace_T1lesion_9001_SH-11692.log 
 
 Erins-MacBook-Pro:analysis erin$ for f in `ls -d *-*`; do cp -r ${f}/fmri/rs_reg.feat/reg ${f}/fmri/rs_T1_lesion_mask_filled.feat/.; done
 
@@ -53,3 +54,15 @@ Erins-MacBook-Pro:analysis erin$ for f in `ls -d *-*`; do cp -r ${f}/fmri/rs_reg
 /Users/erin/Desktop/Projects/MRGFUS/analysis/9009_CRB-13043/fmri/rs_T1_lesion_mask_filled.feat
 
 
+/Users/erin/Desktop/Projects/MRGFUS/analysis/9001_SH-11644/fmri/rs_L_foot_COG_8mm.feat
+/Users/erin/Desktop/Projects/MRGFUS/analysis/9002_RA-11764/fmri/rs_L_foot_COG_8mm.feat
+/Users/erin/Desktop/Projects/MRGFUS/analysis/9006_EO-12389/fmri/rs_L_foot_COG_8mm.feat
+/Users/erin/Desktop/Projects/MRGFUS/analysis/9008_JO-12613/fmri/rs_L_foot_COG_8mm.feat
+/Users/erin/Desktop/Projects/MRGFUS/analysis/9009_CRB-12609/fmri/rs_L_foot_COG_8mm.feat
+
+
+fslmaths /usr/local/fsl/data/standard/MNI152_T1_2mm -add 1 -roi 45 45 0 -1 0 -1 0 -1 -bin mask_MNI2mm_L
+fslmaths /usr/local/fsl/data/standard/MNI152_T1_2mm -add 1 -roi 0 45 0 -1 0 -1 0 -1 -bin mask_MNI2mm_R 
+
+
+analysis_longitudinal_step1_3M.sh 9001_SH 11692 12271

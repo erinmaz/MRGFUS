@@ -22,7 +22,7 @@ cp $0 ${ANALYSISDIR}/${MYSUB}/.
 
 mkdir $DIFFDIR/rois
 
-flirt -applyxfm -init ${MYREG_diff} -in $MYMASK -ref ${DIFFDIR}/nodif_brain -o DIFFDIR/rois/$MASKNAME -interp nearestneighbour
+flirt -applyxfm -init ${MYREG_diff} -in $MYMASK -ref ${DIFFDIR}/nodif_brain -o ${DIFFDIR}/rois/$MASKNAME -interp nearestneighbour
 
 fsleyes ${DIFFDIR}/nodif_brain $DIFFDIR/rois/$MASKNAME
 
