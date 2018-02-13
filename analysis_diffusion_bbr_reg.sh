@@ -49,5 +49,5 @@ fi
 #echo epi_reg --epi=${diffforreg} --t1=${T1fordiffreg} --t1brain=${T1fordiffreg}_brain --out=${DIFFDIR}/xfms/diff_2_T1_bbr > ${MAINDIR}/logs/analysis_diffusion_bbr_reg_${MYSUB}.log
 
 epi_reg --epi=${diffforreg} --t1=${T1fordiffreg} --t1brain=${T1fordiffreg}_brain --out=${DIFFDIR}/xfms/diff_2_T1_bbr
-convert_xfm -omat ${DIFFDIR}/xfms/T1_2_diff_bbr.mat -inverse ${DIFFDIR}/xfms/diff_2_T1_bbr
+convert_xfm -omat ${DIFFDIR}/xfms/T1_2_diff_bbr.mat -inverse ${DIFFDIR}/xfms/diff_2_T1_bbr.mat
 fsleyes ${DIFFDIR}/xfms/diff_2_T1_bbr ${T1fordiffreg}
