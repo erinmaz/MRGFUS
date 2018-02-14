@@ -1,6 +1,10 @@
 #!/bin/bash
 
 # get T1 Day1 lesion in pre diff space and track
+# Input 1: subject ID (e.g., 9001_SH)
+# Input 2: exam # of pre scan
+# Input 3: exam # of day1 scan
+# Input 4: full path of mask in day1 T1 space
 
 MAINDIR=/Users/erin/Desktop/Projects/MRGFUS
 SCRIPTSDIR=${MAINDIR}/scripts
@@ -49,6 +53,7 @@ applywarp -i  ${ANALYSISDIR}/${MYSUB_PRE}/diffusion.bedpostX/${TRACT_OUTPUT}/fdt
 
 fsleyes $FSLDIR/data/standard/FMRIB58_FA_1mm /Users/erin/Desktop/Projects/MRGFUS/analysis/${MYSUB}_diffusion_longitudinal/day1_T1_lesion/fdt_paths_norm_thr0.01_bin_nolesion_pre_to_target
 
+#tbss images generated in Feb8_2018_run_tbss_preproc.sh
 for f in `ls -d ${ANALYSISDIR}/${MYSUB}_diffusion_longitudinal/tbss_images/*`
 do
 echo -n $f " "

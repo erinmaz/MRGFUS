@@ -94,10 +94,18 @@ fslstats -t /Users/erin/Desktop/Projects/MRGFUS/tbss/stats/all_FA_skeletonised.n
 analysis_diffusion_day1_T1_lesion_longitudinal.sh 9002_RA 11764 11833 12388
 f=9002_RA
 g=11764
+
+applywarp -i  /Users/erin/Desktop/Projects/MRGFUS/analysis/${f}-${g}/diffusion.bedpostX/T1_lesion_mask_filled/fdt_paths_norm -o /Users/erin/Desktop/Projects/MRGFUS/analysis/${f}_diffusion_longitudinal/day1_T1_lesion/fdt_paths_norm_pre_to_target -r $FSLDIR/data/standard/FMRIB58_FA_1mm -w /Users/erin/Desktop/Projects/MRGFUS/tbss/FA/${f}-${g}_FA_FA_to_target_warp --interp=nn
+
+
 applywarp -i  /Users/erin/Desktop/Projects/MRGFUS/analysis/${f}-${g}/diffusion/rois/T1_lesion_mask_filled -o /Users/erin/Desktop/Projects/MRGFUS/analysis/${f}_diffusion_longitudinal/day1_T1_lesion/T1_lesion_mask_filled_to_target -r $FSLDIR/data/standard/FMRIB58_FA_1mm -w /Users/erin/Desktop/Projects/MRGFUS/tbss/FA/${f}-${g}_FA_FA_to_target_warp --interp=nn
 
-fslmaths /Users/erin/Desktop/Projects/MRGFUS/analysis/${f}_diffusion_longitudinal/day1_T1_lesion/fdt_paths_norm_pre_to_target_thr0.01_bin -sub /Users/erin/Desktop/Projects/MRGFUS/analysis/${f}_diffusion_longitudinal/day1_T1_lesion/T1_lesion_mask_filled_to_target /Users/erin/Desktop/Projects/MRGFUS/analysis/${f}_diffusion_longitudinal/day1_T1_lesion/fdt_paths_norm_pre_to_target_thr0.01_bin_nolesion
+fslmaths /Users/erin/Desktop/Projects/MRGFUS/analysis/${f}_diffusion_longitudinal/day1_T1_lesion/fdt_paths_norm_pre_to_target -thr 0.01 -bin -sub /Users/erin/Desktop/Projects/MRGFUS/analysis/${f}_diffusion_longitudinal/day1_T1_lesion/T1_lesion_mask_filled_to_target /Users/erin/Desktop/Projects/MRGFUS/analysis/${f}_diffusion_longitudinal/day1_T1_lesion/fdt_paths_norm_pre_to_target_thr0.01_bin_nolesion
 
 fsleyes $FSLDIR/data/standard/FMRIB58_FA_1mm /Users/erin/Desktop/Projects/MRGFUS/analysis/${f}_diffusion_longitudinal/day1_T1_lesion/fdt_paths_norm_pre_to_target_thr0.01_bin_nolesion
 
 fslstats -t /Users/erin/Desktop/Projects/MRGFUS/tbss/stats/all_FA_skeletonised.nii.gz -k /Users/erin/Desktop/Projects/MRGFUS/analysis/${f}_diffusion_longitudinal/day1_T1_lesion/fdt_paths_norm_pre_to_target_thr0.01_bin_nolesion -M
+
+0.560674 
+0.549354 
+0.553182 

@@ -1,0 +1,2 @@
+analysis_diffusion_day1_T1_lesion_2_pre.sh 9002_RA 11764 11833 /Users/erin/Desktop/Projects/MRGFUS/analysis_lesion_masks/9002_RA-11833/anat/T1_lesion_mask_filled.nii.gz
+analysis_diffusion_day1_T1_lesion_2_pre.sh 9001_SH 11644 11692 /Users/erin/Desktop/Projects/MRGFUS/analysis_lesion_masks/9001_SH-11692/anat/T1_lesion_mask_filled.nii.gz
