@@ -1,0 +1,25 @@
+cd ~/Desktop/Projects/MRGFUS/analysis
+myimages=""
+for f in `ls -d *diffusion_longitudinal`
+do
+myimages=`echo $myimages ${f}/day1_T1_lesion/day1_T1_lesion_to_pre_to_target -add`
+done
+echo $myimages
+
+echo $myimages
+9001_SH_diffusion_longitudinal/day1_T1_lesion/day1_T1_lesion_to_pre_to_target -add 9002_RA_diffusion_longitudinal/day1_T1_lesion/day1_T1_lesion_to_pre_to_target -add 9004_EP_diffusion_longitudinal/day1_T1_lesion/day1_T1_lesion_to_pre_to_target -add 9006_EO_diffusion_longitudinal/day1_T1_lesion/day1_T1_lesion_to_pre_to_target -add
+Erins-MacBook-Pro:analysis erin$ fslmaths 9001_SH_diffusion_longitudinal/day1_T1_lesion/day1_T1_lesion_to_pre_to_target -add 9002_RA_diffusion_longitudinal/day1_T1_lesion/day1_T1_lesion_to_pre_to_target -add 9004_EP_diffusion_longitudinal/day1_T1_lesion/day1_T1_lesion_to_pre_to_target -add 9006_EO_diffusion_longitudinal/day1_T1_lesion/day1_T1_lesion_to_pre_to_target day1_lesions_heatmap
+
+
+Erins-MacBook-Pro:day1_lesions erin$ cd /Users/erin/Dropbox/BigBrainAnalysis/day1_lesions/mni_1mm 
+Erins-MacBook-Pro:mni_1mm erin$ for f in `ls -d 9*`
+> do
+> 
+Erins-MacBook-Pro:mni_1mm erin$ myimages=""
+Erins-MacBook-Pro:mni_1mm erin$ for f in `ls -d 9*`
+> do
+> myimages=`echo $myimages ${f}/T1_lesion_mask_filled2MNI_1mm -add`
+> done
+Erins-MacBook-Pro:mni_1mm erin$ echo $myimages
+9001_SH-11692/T1_lesion_mask_filled2MNI_1mm -add 9002_RA-11833/T1_lesion_mask_filled2MNI_1mm -add 9003_RB-12064/T1_lesion_mask_filled2MNI_1mm -add 9004_EP-12203/T1_lesion_mask_filled2MNI_1mm -add 9005_BG-13126/T1_lesion_mask_filled2MNI_1mm -add 9006_EO-12487/T1_lesion_mask_filled2MNI_1mm -add 9007_RB-12910/T1_lesion_mask_filled2MNI_1mm -add 9008_JO-12667/T1_lesion_mask_filled2MNI_1mm -add 9009_CRB-13043/T1_lesion_mask_filled2MNI_1mm heatmap
+
