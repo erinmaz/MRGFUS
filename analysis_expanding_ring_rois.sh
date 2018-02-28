@@ -26,6 +26,7 @@ fslmaths ${ANALYSISDIR}/${MYSUB}_diffusion_longitudinal/day1_T1_lesion/${SEED}_t
 
 fslmaths ${ANALYSISDIR}/${MYSUB}_diffusion_longitudinal/day1_T1_lesion/${SEED}_to_pre_to_target_sphere${i} -sub ${ANALYSISDIR}/${MYSUB}_diffusion_longitudinal/day1_T1_lesion/${SEED}_to_pre_to_target_sphere${j} ${ANALYSISDIR}/${MYSUB}_diffusion_longitudinal/day1_T1_lesion/${SEED}_to_pre_to_target_ring${i}
 
+
 fslmaths ${ANALYSISDIR}/${MYSUB}_diffusion_longitudinal/day1_T1_lesion/${SEED}_to_pre_to_target_ring${i} -mas  ${ANALYSISDIR}/${MYSUB}_diffusion_longitudinal/day1_T1_lesion/fdt_paths_norm_thr0.01_bin_nolesion_pre_to_target ${ANALYSISDIR}/${MYSUB}_diffusion_longitudinal/day1_T1_lesion/fdt_paths_norm_thr0.01_bin_nolesion_pre_to_target_ring${i}
 mystring=`echo $mystring ${ANALYSISDIR}/${MYSUB}_diffusion_longitudinal/day1_T1_lesion/fdt_paths_norm_thr0.01_bin_nolesion_pre_to_target_ring${i}`
 

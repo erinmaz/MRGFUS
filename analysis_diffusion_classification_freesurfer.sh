@@ -23,7 +23,8 @@ ROIS_standard=(/Users/erin/Desktop/Projects/MRGFUS/scripts/rois_standardspace/ha
 /Users/erin/Desktop/Projects/MRGFUS/scripts/rois_standardspace/mni_prob_FrontalLobe_thr25_bin_L.nii.gz
 /Users/erin/Desktop/Projects/MRGFUS/scripts/rois_standardspace/mni_prob_ParietalLobe_thr25_bin_L.nii.gz)
 
-ROIS_freesurfer=(lh.BA4_bin_nooverlap lh.BA6_bin_nooverlap lh.BA123_bin_nooverlap)
+#NEED TO MASK THRESE WITH GRAY MATTER?
+ROIS_freesurfer=(lh.BA4_clean lh.BA6_clean lh.BA123_clean)
 DIFFDIR=${ANALYSISDIR}/${MYSUB_PRE}/diffusion
 FREESURFER_DIR=${ANALYSISDIR}/${MYSUB_PRE}/freesurfer_output
 OUTPUT_ROI=$DIFFDIR/rois_classification_freesurfer
@@ -31,10 +32,9 @@ OUTPUT_CLASS=${DIFFDIR}.bedpostX/thalamus_classification_freesurfer
 
 
 #need to register freesurfer T1 to my T1
-
+regdir=`dirname ${MYREG_highres}`
 if [ ! -f ${MYREG_highres} ]
 then
-	regdir=`dirname ${MYREG_highres}`
 	invwarp -w ${regdir}/highres2standard_warp -o ${MYREG_highres} -r ${regdir}/highres
 fi
 
@@ -43,8 +43,7 @@ mymasks=""
 for i in `seq 0 4`
 do
 MASKNAME=`basename ${ROIS_standard[$i]} .nii.gz`
-applywarp -i ${ROIS_standard[$i]} -r ${DIFFDIR}/nodif_brain -o ${OUTPUT_ROI}/$MASKNAME -w ${MYREG_highres} --postmat=${MYREG_diff} 
-#--interp=nn
+applywarp -i ${ROIS_standard[$i]} -r ${DIFFDIR}/nodif_brain -o ${OUTPUT_ROI}/$MASKNAME -w ${MYREG_highres} --postmat=${MYREG_diff} --interp=nn
 mymasks=`echo $mymasks ${OUTPUT_ROI}/$MASKNAME`
 #applywarp -i ${ROIS[$i]} -r ${ANALYSISDIR}/${MYSUB_PRE}/anat/mT1 -o ${OUTPUT_ROI}/${MASKNAME}_T1 -w ${MYREG_highres}  
 #--interp=nn
@@ -54,24 +53,42 @@ done
 for i in `seq 0 2`
 do
 MASKNAME=`basename ${ROIS_freesurfer[$i]} .nii.gz`
-applywarp -i ${FREESURFER_DIR}/${ROIS_freesurfer[$i]} -r ${DIFFDIR}/nodif_brain -o ${OUTPUT_ROI}/$MASKNAME --postmat=${MYREG_diff} 
+applywarp -i ${FREESURFER_DIR}/${ROIS_freesurfer[$i]} -r ${DIFFDIR}/nodif_brain -o ${OUTPUT_ROI}/$MASKNAME --postmat=${MYREG_diff} --interp=nn
 mymasks=`echo $mymasks ${OUTPUT_ROI}/$MASKNAME`
 done
-fsleyes ${DIFFDIR}/nodif_brain $mymasks
 
-fslmaths ${OUTPUT_ROI}/mni_prob_FrontalLobe_thr25_bin_L -sub ${FREESURFER_DIR}/lh.BA4_bin_nooverlap -sub ${FREESURFER_DIR}/lh.BA6_bin_nooverlap -sub -thr 
+#thresholded to make thickness about the same as freesurfer masks, by eye on 9001_SH in left hemisphere on T1
+fslmaths ${ANALYSISDIR}/${MYSUB_PRE}/anat/c1T1 -thr .1 -bin ${ANALYSISDIR}/${MYSUB_PRE}/anat/c1T1_thr0.1_bin
+applywarp -i ${ANALYSISDIR}/${MYSUB_PRE}/anat/c1T1_thr0.1_bin -r ${DIFFDIR}/nodif_brain -o ${OUTPUT_ROI}/c1T1_thr0.01_bin --postmat=${MYREG_diff} --interp=nn
 
+fslmaths ${OUTPUT_ROI}/mni_prob_FrontalLobe_thr25_bin_L -mas ${OUTPUT_ROI}/c1T1_thr0.01_bin  ${OUTPUT_ROI}/mni_prob_FrontalLobe_thr25_bin_L_gm
+fslmaths ${OUTPUT_ROI}/mni_prob_ParietalLobe_thr25_bin_L -mas ${OUTPUT_ROI}/c1T1_thr0.01_bin  ${OUTPUT_ROI}/mni_prob_ParietalLobe_thr25_bin_L_gm
+fslmaths ${OUTPUT_ROI}/mni_prob_OccipitalLobe_thr25_bin_L -mas ${OUTPUT_ROI}/c1T1_thr0.01_bin  ${OUTPUT_ROI}/mni_prob_OccipitalLobe_thr25_bin_L_gm
+fslmaths ${OUTPUT_ROI}/mni_prob_TemporalLobe_thr25_bin_L -mas ${OUTPUT_ROI}/c1T1_thr0.01_bin  ${OUTPUT_ROI}/mni_prob_TemporalLobe_thr25_bin_L_gm
 
-#fsleyes ${DIFFDIR}/nodif_brain $mymasks
-fsleyes ${ANALYSISDIR}/${MYSUB_PRE}/anat/mT1 $mymasks
+fslmaths ${OUTPUT_ROI}/lh.BA4_clean -mas ${OUTPUT_ROI}/c1T1_thr0.01_bin ${OUTPUT_ROI}/lh.BA4_clean_gm 
+fslmaths ${OUTPUT_ROI}/lh.BA6_clean -mas ${OUTPUT_ROI}/c1T1_thr0.01_bin ${OUTPUT_ROI}/lh.BA6_clean_gm 
+fslmaths ${OUTPUT_ROI}/lh.BA123_clean -mas ${OUTPUT_ROI}/c1T1_thr0.01_bin ${OUTPUT_ROI}/lh.BA123_clean_gm 
 
-rm -rf ${OUTPUT_CLASS}
+fslmaths ${OUTPUT_ROI}/mni_prob_FrontalLobe_thr25_bin_L_gm -sub ${OUTPUT_ROI}/lh.BA4_clean -sub ${OUTPUT_ROI}/lh.BA6_clean -sub ${OUTPUT_ROI}/lh.BA123_clean -thr 0 -bin ${OUTPUT_ROI}/mni_prob_FrontalLobe_L_gm_remainder
+
+fslmaths ${OUTPUT_ROI}/mni_prob_ParietalLobe_thr25_bin_L_gm -sub ${OUTPUT_ROI}/lh.BA123_clean -sub ${OUTPUT_ROI}/lh.BA4_clean -sub ${OUTPUT_ROI}/lh.BA6_clean -thr 0 -bin ${OUTPUT_ROI}/mni_prob_ParietalLobe_L_gm_remainder
+
 mkdir -p ${OUTPUT_CLASS}
+echo ${OUTPUT_ROI}/mni_prob_FrontalLobe_L_gm_remainder >> ${OUTPUT_CLASS}/targets.txt
+echo ${OUTPUT_ROI}/mni_prob_ParietalLobe_L_gm_remainder >> ${OUTPUT_CLASS}/targets.txt
+echo ${OUTPUT_ROI}/mni_prob_OccipitalLobe_thr25_bin_L_gm >> ${OUTPUT_CLASS}/targets.txt
+echo ${OUTPUT_ROI}/mni_prob_TemporalLobe_thr25_bin_L_gm >> ${OUTPUT_CLASS}/targets.txt
+echo ${OUTPUT_ROI}/lh.BA4_clean_gm >> ${OUTPUT_CLASS}/targets.txt
+echo ${OUTPUT_ROI}/lh.BA6_clean_gm >> ${OUTPUT_CLASS}/targets.txt
+echo ${OUTPUT_ROI}/lh.BA123_clean_gm >> ${OUTPUT_CLASS}/targets.txt
+
 /usr/local/fsl/bin/probtrackx2  -x ${OUTPUT_ROI}/harvox_sub_thalamus_L_final.nii.gz  -l --onewaycondition -c 0.2 -S 2000 --steplength=0.5 -P 5000 --fibthresh=0.01 --distthresh=0.0 --sampvox=0.0 --forcedir --opd -s ${DIFFDIR}.bedpostX/merged -m ${DIFFDIR}.bedpostX/nodif_brain_mask  --dir=${OUTPUT_CLASS} --targetmasks=${OUTPUT_CLASS}/targets.txt --os2t 
 
-find_the_biggest ${OUTPUT_CLASS}/seeds_to_harvardoxford-cortical_prob_Juxtapositional_Lobule_Cortex_thr25_bin_L.nii.gz ${OUTPUT_CLASS}/seeds_to_harvardoxford-cortical_prob_Postcentral_Gyrus_thr25_bin_L.nii.gz ${OUTPUT_CLASS}/seeds_to_harvardoxford-cortical_prob_Precentral_Gyrus_thr25_bin_L.nii.gz ${OUTPUT_CLASS}/seeds_to_mni_prob_FrontalLobe_thr25_bin_nomotor_L.nii.gz ${OUTPUT_CLASS}/seeds_to_mni_prob_OccipitalLobe_thr25_bin_L.nii.gz ${OUTPUT_CLASS}/seeds_to_mni_prob_ParietalLobe_thr25_bin_nosensory_L.nii.gz ${OUTPUT_CLASS}/seeds_to_mni_prob_TemporalLobe_thr25_bin_L.nii.gz ${OUTPUT_CLASS}/thalamus_classification 
+find_the_biggest ${OUTPUT_CLASS}/seeds_to_lh.BA4_clean_gm.nii.gz ${OUTPUT_CLASS}/seeds_to_lh.BA6_clean_gm.nii.gz ${OUTPUT_CLASS}/seeds_to_lh.BA123_clean_gm.nii.gz ${OUTPUT_CLASS}/seeds_to_mni_prob_FrontalLobe_L_gm_remainder.nii.gz ${OUTPUT_CLASS}/seeds_to_mni_prob_ParietalLobe_L_gm_remainder.nii.gz ${OUTPUT_CLASS}/seeds_to_mni_prob_OccipitalLobe_thr25_bin_L_gm.nii.gz ${OUTPUT_CLASS}/seeds_to_mni_prob_TemporalLobe_thr25_bin_L_gm ${OUTPUT_CLASS}/find_the_biggest
 
 convert_xfm -omat ${ANALYSISDIR}/${MYSUB}_longitudinal_xfms/diff_pre_bbr_6dof_2_mT1_day1.mat -inverse ${ANALYSISDIR}/${MYSUB}_longitudinal_xfms/mT1_day1_2_diff_pre_bbr_6dof.mat
 
-flirt -applyxfm -init ${ANALYSISDIR}/${MYSUB}_longitudinal_xfms/diff_pre_bbr_6dof_2_mT1_day1.mat -in ${OUTPUT_CLASS}/thalamus_classification -ref ${ANALYSISDIR}/${MYSUB_DAY1}/anat/mT1 -out ${ANALYSISDIR}/${MYSUB}_diffusion_longitudinal/pre_thalamus_classification_2_day1_T1 -interp nearestneighbour
+flirt -applyxfm -init ${ANALYSISDIR}/${MYSUB}_longitudinal_xfms/diff_pre_bbr_6dof_2_mT1_day1.mat -in ${OUTPUT_CLASS}/find_the_biggest -ref ${ANALYSISDIR}/${MYSUB_DAY1}/anat/mT1 -out ${ANALYSISDIR}/${MYSUB}_diffusion_longitudinal/pre_thalamus_classification_freesurfer2_day1_T1 -interp nearestneighbour
 
+applywarp -w ${regdir}/highres2standard_warp --premat=${DIFFDIR}/xfms/diff_2_T1_bbr.mat -i ${OUTPUT_CLASS}/find_the_biggest -r ${regdir}/standard -o ${OUTPUT_CLASS}/find_the_biggest2standard --interp=nn
