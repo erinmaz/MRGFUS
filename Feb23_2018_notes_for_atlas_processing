@@ -1,0 +1,5 @@
+/Users/erin/Desktop/Projects/MRGFUS/atlases/labels2colin.mat output by FSLeyes, making sure source and ref image were set correctly
+
+/usr/local/fsl/bin/flirt -in /Users/erin/Desktop/Projects/MRGFUS/atlases/labels_on_colin_Nov2010_nifti.nii -applyxfm -init /Users/erin/Desktop/Projects/MRGFUS/atlases/labels2colin.mat -out /Users/erin/Desktop/Projects/MRGFUS/atlases/labels_on_colin_Nov2010_nifti2colin.nii -paddingsize 0.0 -interp nearestneighbour -ref /Users/erin/Desktop/Projects/MRGFUS/atlases/colin2mni_1mm/mni_colin27_1998_nifti/colin27_t1_tal_lin.nii
+
+applywarp -i /Users/erin/Desktop/Projects/MRGFUS/atlases/labels_on_colin_Nov2010_nifti --premat=/Users/erin/Desktop/Projects/MRGFUS/atlases/labels2colin.mat -r /Users/erin/Desktop/Projects/MRGFUS/atlases/colin2mni_1mm/MNI152_T1_1mm.nii.gz -w /Users/erin/Desktop/Projects/MRGFUS/atlases/colin2mni_1mm/colin2mni_1mm_warp.nii.gz -o /Users/erin/Desktop/Projects/MRGFUS/atlases/labels_on_colin_Nov2010_nifti2MNI_1mm_warp --interp=nn
