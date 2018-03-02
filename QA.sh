@@ -62,6 +62,15 @@ dcm2niix ${T2dir}
 mv ${T2dir}/*.nii.gz ${ANALYSISDIR}/${MYSUB}/anat/T2.nii.gz
 fsleyes ${ANALYSISDIR}/${MYSUB}/anat/T2.nii.gz &
 
+for f in ${DICOMDIR}/${MYSUB}/*PUSag_CUBE_T2*; do
+	if [ "$f" != "$T2dir" ]; then
+	dcm2niix $f
+	mv ${f}/*.nii.gz ${ANALYSISDIR}/${MYSUB}/anat/T2_2.nii.gz
+	fi
+	fsleyes ${ANALYSISDIR}/${MYSUB}/anat/T2_2.nii.gz &
+done
+
+
 
 #################### SWAN QA ###########################################
 dcm2niix ${DICOMDIR}/${MYSUB}/*-Ax_SWAN*
