@@ -1,0 +1,2 @@
+cd /Users/erin/Desktop/Projects/MRGFUS/atlases/HistThalAtlas_rois
+fslmaths 91.nii.gz -add 94.nii.gz -add 104.nii.gz -bin Vim
