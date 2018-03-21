@@ -1,2 +1,13 @@
 cd /Users/erin/Desktop/Projects/MRGFUS/atlases/HistThalAtlas_rois
 fslmaths 91.nii.gz -add 94.nii.gz -add 104.nii.gz -bin Vim
+
+cd /Users/erin/Dropbox/BigBrainAnalysis/day1_lesions/mni_1mm
+for f in `ls -d 9*`
+do 
+fslstats $f/T1_lesion_mask_filled2MNI_1mm.nii.gz -k /Users/erin/Desktop/Projects/MRGFUS/atlases/HistThalAtlas_rois/Vim -V
+done
+
+
+for f in `ls -d 9*`
+do fslstats ${f)/T1_lesion_mask_filled2MNI_1mm -V
+done
