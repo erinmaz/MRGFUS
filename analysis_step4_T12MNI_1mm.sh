@@ -1,7 +1,7 @@
 #!/bin/bash
 MYSUB=$1
 MAINDIR=/Users/erin/Desktop/Projects/MRGFUS
-
+mkdir ${MAINDIR}/analysis_lesion_masks/${MYSUB}/xfms
 fslmaths ${MAINDIR}/analysis/${MYSUB}/anat/T1_brain ${MAINDIR}/analysis_lesion_masks/${MYSUB}/xfms/T1_brain
 /usr/local/fsl/bin/flirt -in ${MAINDIR}/analysis_lesion_masks/${MYSUB}/xfms/T1_brain -ref /usr/local/fsl/data/standard/MNI152_T1_1mm_brain -out ${MAINDIR}/analysis_lesion_masks/${MYSUB}/xfms/T12MNI_1mm -omat ${MAINDIR}/analysis_lesion_masks/${MYSUB}/xfms/T12MNI_1mm.mat -cost corratio -dof 12 -searchrx -90 90 -searchry -90 90 -searchrz -90 90 -interp trilinear 
 
