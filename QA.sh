@@ -66,8 +66,8 @@ for f in ${DICOMDIR}/${MYSUB}/*PUSag_CUBE_T2*; do
 	if [ "$f" != "$T2dir" ]; then
 	dcm2niix $f
 	mv ${f}/*.nii.gz ${ANALYSISDIR}/${MYSUB}/anat/T2_2.nii.gz
-	fi
 	fsleyes ${ANALYSISDIR}/${MYSUB}/anat/T2_2.nii.gz &
+	fi
 done
 
 
@@ -132,12 +132,12 @@ difftsnr=`fslstats ${ANALYSISDIR}/${MYSUB}/diffusion/dw_tsnr -k ${ANALYSISDIR}/$
 diffcnr=`fslstats -t ${ANALYSISDIR}/${MYSUB}/diffusion/data.eddy_cnr_maps -k ${ANALYSISDIR}/${MYSUB}/diffusion/nodif_brain_mask -M`
 if [ "$PURET1" = "YES" ] && [ "$PUREdiff" = "YES" ] 
 then
-	T1fordiffreg=${ANATDIR}/T1_brain
-	diffforreg=${ANALYSISDIR}/${MYSUB}/diffusion/nodif_brain
+	T1fordiffreg=${ANATDIR}/T1
+	diffforreg=${ANALYSISDIR}/${MYSUB}/diffusion/nodif
 elif [ "$PURET1" = "NO" ] && [ "$PUREdiff" = "NO" ] 
 then
-	T1fordiffreg=${ANATDIR}/T1_brain
-	diffforreg=${ANALYSISDIR}/${MYSUB}/diffusion/nodif_brain
+	T1fordiffreg=${ANATDIR}/T1
+	diffforreg=${ANALYSISDIR}/${MYSUB}/diffusion/nodif
 
 elif [ "$PURET1" = "YES" ]
 then
@@ -145,12 +145,12 @@ then
 	dcm2niix ${DICOMDIR}/${MYSUB}/*-SAG_FSPGR_BRAVO*
 	mv ${DICOMDIR}/${MYSUB}/*-SAG_FSPGR_BRAVO*/*.nii.gz ${ANATDIR}/T1_noPURE.nii.gz
 	fslmaths ${ANATDIR}/T1_noPURE -mas ${ANATDIR}/spm_mask ${ANATDIR}/T1_noPURE_brain
-	T1fordiffreg=${ANATDIR}/T1_noPURE_brain
-	diffforreg=${ANALYSISDIR}/${MYSUB}/diffusion/nodif_brain
+	T1fordiffreg=${ANATDIR}/T1_noPURE
+	diffforreg=${ANALYSISDIR}/${MYSUB}/diffusion/nodif
 
 elif [ "$PUREdiff" = "YES" ]
 then
-	T1fordiffreg=${ANATDIR}/T1_brain
+	T1fordiffreg=${ANATDIR}/T1
 	dcm2niix ${DICOMDIR}/${MYSUB}/*-DWI_45*
 	mv ${DICOMDIR}/${MYSUB}/*-DWI_45*/*.nii.gz ${ANALYSISDIR}/${MYSUB}/diffusion/dti_fow_noPURE.nii.gz
 	fslroi ${ANALYSISDIR}/${MYSUB}/diffusion/dti_fow_noPURE ${ANALYSISDIR}/${MYSUB}/diffusion/dti_fow_noPURE_nodif 0 3
@@ -160,7 +160,7 @@ then
 	applytopup --imain=${ANALYSISDIR}/${MYSUB}/diffusion/dti_fow_noPURE_nodif,${ANALYSISDIR}/${MYSUB}/diffusion/dti_rev_noPURE_nodif -t ${ANALYSISDIR}/${MYSUB}/diffusion/topup_results -o ${ANALYSISDIR}/${MYSUB}/diffusion/dti_noPURE_unwarped_nodif -a ${SCRIPTSDIR}/acqp_eddy.txt --inindex=1,2
 	fslroi ${ANALYSISDIR}/${MYSUB}/diffusion/dti_noPURE_unwarped_nodif ${ANALYSISDIR}/${MYSUB}/diffusion/dti_noPURE_unwarped_nodif 0 1
 	fslmaths ${ANALYSISDIR}/${MYSUB}/diffusion/dti_noPURE_unwarped_nodif -mas ${ANALYSISDIR}/${MYSUB}/diffusion/nodif_brain_mask ${ANALYSISDIR}/${MYSUB}/diffusion/dti_noPURE_unwarped_nodif_brain
-	diffforreg=${ANALYSISDIR}/${MYSUB}/diffusion/dti_noPURE_unwarped_nodif_brain
+	diffforreg=${ANALYSISDIR}/${MYSUB}/diffusion/dti_noPURE_unwarped_nodif
 fi
 mkdir ${ANALYSISDIR}/${MYSUB}/diffusion/xfms
 #flirt -in $diffforreg -ref $T1fordiffreg -omat ${ANALYSISDIR}/${MYSUB}/diffusion/xfms/diff2str.mat -searchrx -90 90 -searchry -90 90 -searchrz -90 90 -dof 6 -cost corratio -out ${ANALYSISDIR}/${MYSUB}/diffusion/xfms/diff2str 

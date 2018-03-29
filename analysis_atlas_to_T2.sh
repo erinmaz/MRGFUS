@@ -48,10 +48,10 @@ fslmaths ${ANATDIR}/Vim_to_T2_avg -binv ${ANATDIR}/Vim_to_T2_avg_mask
 
 fslmaths ${ANATDIR}/T2_avg -mas ${ANATDIR}/Vim_to_T2_avg_mask ${ANATDIR}/T2_avg_Vim_burned_low
 
-range=`fslstats ${ANATDIR}/T2_avg -R`
+rangearray=(`fslstats ${ANATDIR}/T2_avg -R`)
 
 #NOT WORKING
-rangerray=($range)
+
 
 fslmaths ${ANATDIR}/Vim_to_T2_avg -mul 2 -mul ${rangearray[1]} ${ANATDIR}/Vim_to_T2_avg_mul
 

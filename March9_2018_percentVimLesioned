@@ -1,13 +1,41 @@
 cd /Users/erin/Desktop/Projects/MRGFUS/atlases/HistThalAtlas_rois
 fslmaths 91.nii.gz -add 94.nii.gz -add 104.nii.gz -bin Vim
 
+
+Erins-MacBook-Pro:HistThalAtlas_rois erin$ fslmaths Vim.nii.gz -roi 90 -1 0 -1 0 -1 0 1 Vim_L 
+Erins-MacBook-Pro:HistThalAtlas_rois erin$ fslmaths Vim.nii.gz -roi 0 90 0 -1 0 -1 0 1 Vim_R 
+
+
 cd /Users/erin/Dropbox/BigBrainAnalysis/day1_lesions/mni_1mm
 for f in `ls -d 9*`
 do 
-fslstats $f/T1_lesion_mask_filled2MNI_1mm.nii.gz -k /Users/erin/Desktop/Projects/MRGFUS/atlases/HistThalAtlas_rois/Vim -V
+fslstats $f/T1_lesion_mask_filled2MNI_1mm.nii.gz -k /Users/erin/Desktop/Projects/MRGFUS/atlases/HistThalAtlas_rois/Vim_L -V
+done
+
+for f in `ls -d 9*`
+do 
+fslstats $f/T1_lesion_mask_filled2MNI_1mm.nii.gz -k /Users/erin/Desktop/Projects/MRGFUS/atlases/HistThalAtlas_rois/Vim_R -V
 done
 
 
 for f in `ls -d 9*`
 do fslstats ${f)/T1_lesion_mask_filled2MNI_1mm -V
+done
+
+cd /Users/erin/Desktop/Projects/MRGFUS/atlases/HistThalAtlas_rois 
+fslmaths 25 -roi 90 -1 0 -1 0 -1 0 1 Zi_L
+fslmaths 25 -roi 0 90 0 -1 0 -1 0 1 Zi_R
+
+fslstats Zi_L -V
+fslstats Zi_R -V
+
+cd /Users/erin/Dropbox/BigBrainAnalysis/day1_lesions/mni_1mm
+for f in `ls -d 9*`
+do 
+fslstats $f/T1_lesion_mask_filled2MNI_1mm.nii.gz -k /Users/erin/Desktop/Projects/MRGFUS/atlases/HistThalAtlas_rois/Zi_L -V
+done
+
+for f in `ls -d 9*`
+do 
+fslstats $f/T1_lesion_mask_filled2MNI_1mm.nii.gz -k /Users/erin/Desktop/Projects/MRGFUS/atlases/HistThalAtlas_rois/Zi_R -V
 done
