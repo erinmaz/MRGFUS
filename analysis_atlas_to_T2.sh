@@ -9,11 +9,11 @@ bet ${ANATDIR}/T2 ${ANATDIR}/T2_brain -m -f .25 -S
 
 bet ${ANATDIR}/T2_2 ${ANATDIR}/T2_2_brain -m -f .25 -S
 
-flirt -in ${ANATDIR}/T2_2 -ref ${ANATDIR}/T2 -out ${ANATDIR}/T2_2_to_T2_ns -dof 6 -omat ${XFMSDIR}/T2_2_to_T2_ns.mat -nosearch
+flirt -in ${ANATDIR}/T2_2 -ref ${ANATDIR}/T2 -out ${ANATDIR}/T2_2_to_T2 -dof 6 -omat ${XFMSDIR}/T2_2_to_T2.mat -nosearch
 
 #flirt -in ${ANATDIR}/T2_2_brain -ref ${ANATDIR}/T2_brain -out ${ANATDIR}/T2_2_brain_to_T2_brain_ns -dof 6 -omat ${XFMSDIR}/T2_2_brain_to_T2_brain_ns.mat -nosearch
 
-fsleyes ${ANATDIR}/T2_2_to_T2_ns  ${ANATDIR}/T2
+fsleyes ${ANATDIR}/T2_2_to_T2 ${ANATDIR}/T2
 
 #the results of this command were basically the same as the non brain extracted versoin
 #fsleyes ${ANATDIR}/T2_2_brain_to_T2_brain_ns  ${ANATDIR}/T2_brain
@@ -49,9 +49,6 @@ fslmaths ${ANATDIR}/Vim_to_T2_avg -binv ${ANATDIR}/Vim_to_T2_avg_mask
 fslmaths ${ANATDIR}/T2_avg -mas ${ANATDIR}/Vim_to_T2_avg_mask ${ANATDIR}/T2_avg_Vim_burned_low
 
 rangearray=(`fslstats ${ANATDIR}/T2_avg -R`)
-
-#NOT WORKING
-
 
 fslmaths ${ANATDIR}/Vim_to_T2_avg -mul 2 -mul ${rangearray[1]} ${ANATDIR}/Vim_to_T2_avg_mul
 
