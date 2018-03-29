@@ -133,11 +133,11 @@ diffcnr=`fslstats -t ${ANALYSISDIR}/${MYSUB}/diffusion/data.eddy_cnr_maps -k ${A
 if [ "$PURET1" = "YES" ] && [ "$PUREdiff" = "YES" ] 
 then
 	T1fordiffreg=${ANATDIR}/T1
-	diffforreg=${ANALYSISDIR}/${MYSUB}/diffusion/nodif
+	diffforreg=${ANALYSISDIR}/${MYSUB}/diffusion/mean_b0_unwarped
 elif [ "$PURET1" = "NO" ] && [ "$PUREdiff" = "NO" ] 
 then
 	T1fordiffreg=${ANATDIR}/T1
-	diffforreg=${ANALYSISDIR}/${MYSUB}/diffusion/nodif
+	diffforreg=${ANALYSISDIR}/${MYSUB}/diffusion/mean_b0_unwarped
 
 elif [ "$PURET1" = "YES" ]
 then
@@ -146,7 +146,7 @@ then
 	mv ${DICOMDIR}/${MYSUB}/*-SAG_FSPGR_BRAVO*/*.nii.gz ${ANATDIR}/T1_noPURE.nii.gz
 	fslmaths ${ANATDIR}/T1_noPURE -mas ${ANATDIR}/spm_mask ${ANATDIR}/T1_noPURE_brain
 	T1fordiffreg=${ANATDIR}/T1_noPURE
-	diffforreg=${ANALYSISDIR}/${MYSUB}/diffusion/nodif
+	diffforreg=${ANALYSISDIR}/${MYSUB}/diffusion/mean_b0_unwarped
 
 elif [ "$PUREdiff" = "YES" ]
 then
