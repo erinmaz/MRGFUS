@@ -7,3 +7,7 @@ convert_xfm -omat /Users/erin/Desktop/Projects/MRGFUS/analysis/9012_AT-13418/xfm
 aff2rigid /Users/erin/Desktop/Projects/MRGFUS/analysis/9012_AT-13418/xfms/T2_2_MNI.mat /Users/erin/Desktop/Projects/MRGFUS/analysis/9012_AT-13418/xfms/T2_2_ACPC_aligned.mat
 
 flirt -applyxfm -init /Users/erin/Desktop/Projects/MRGFUS/analysis/9012_AT-13418/xfms/T2_2_ACPC_aligned.mat -in /Users/erin/Desktop/Projects/MRGFUS/analysis/9012_AT-13418/anat/T2_avg.nii.gz -out /Users/erin/Desktop/Projects/MRGFUS/analysis/9012_AT-13418/anat/T2_avg_ACPC_aligned -ref /Users/erin/Desktop/Projects/MRGFUS/analysis/9012_AT-13418/anat/T2.nii.gz
+
+flirt -applyxfm -init /Users/erin/Desktop/Projects/MRGFUS/analysis/9012_AT-13418/xfms/T2_2_ACPC_aligned.mat -in /Users/erin/Desktop/Projects/MRGFUS/analysis/9012_AT-13418/anat/T2_avg_ACPCmask -out /Users/erin/Desktop/Projects/MRGFUS/analysis/9012_AT-13418/anat/T2_avg_ACPC_mask_ACPC_aligned -ref /Users/erin/Desktop/Projects/MRGFUS/analysis/9012_AT-13418/anat/T2.nii.gz
+
+

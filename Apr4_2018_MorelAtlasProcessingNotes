@@ -1,0 +1,72 @@
+cd /Users/erin/Desktop/Projects/MRGFUS/atlases/Zurich/MorelAtlasMNI152/left-vols-1mm
+rm MAX_VOLUME.nii.gz
+rm global.nii.gz
+n=1
+for f in `ls -d *`
+do
+fslmaths $f -mul $n $f
+echo $n $f
+let n++
+done
+
+1 AD.nii.gz
+2 AM.nii.gz
+3 AV.nii.gz
+4 CL.nii.gz
+5 CM.nii.gz
+6 CeM.nii.gz
+7 Hb.nii.gz
+8 LD.nii.gz
+9 LGNmc.nii.gz
+10 LGNpc.nii.gz
+11 LP.nii.gz
+12 Li.nii.gz
+13 MDmc.nii.gz
+14 MDpc.nii.gz
+15 MGN.nii.gz
+16 MV.nii.gz
+17 Pf.nii.gz
+18 Po.nii.gz
+19 PuA.nii.gz
+20 PuI.nii.gz
+21 PuL.nii.gz
+22 PuM.nii.gz
+23 Pv.nii.gz
+24 RN.nii.gz
+25 SG.nii.gz
+26 STh.nii.gz
+27 VAmc.nii.gz
+28 VApc.nii.gz
+29 VLa.nii.gz
+30 VLpd.nii.gz
+31 VLpv.nii.gz
+32 VM.nii.gz
+33 VPI.nii.gz
+34 VPLa.nii.gz
+35 VPLp.nii.gz
+36 VPM.nii.gz
+37 mtt.nii.gz
+38 sPf.nii.gz
+39 thalamus_body.nii.gz
+
+mystring=""
+for f in `ls -d *`
+do
+mystring=`echo $mystring $f -add`
+done
+
+echo $mystring
+
+
+AD.nii.gz -add AM.nii.gz -add AV.nii.gz -add CL.nii.gz -add CM.nii.gz -add CeM.nii.gz -add Hb.nii.gz -add LD.nii.gz -add LGNmc.nii.gz -add LGNpc.nii.gz -add LP.nii.gz -add Li.nii.gz -add MDmc.nii.gz -add MDpc.nii.gz -add MGN.nii.gz -add MV.nii.gz -add Pf.nii.gz -add Po.nii.gz -add PuA.nii.gz -add PuI.nii.gz -add PuL.nii.gz -add PuM.nii.gz -add Pv.nii.gz -add RN.nii.gz -add SG.nii.gz -add STh.nii.gz -add VAmc.nii.gz -add VApc.nii.gz -add VLa.nii.gz -add VLpd.nii.gz -add VLpv.nii.gz -add VM.nii.gz -add VPI.nii.gz -add VPLa.nii.gz -add VPLp.nii.gz -add VPM.nii.gz -add mtt.nii.gz -add sPf.nii.gz -add thalamus_body.nii.gz -add
+
+
+fslmaths AD.nii.gz -add AM.nii.gz -add AV.nii.gz -add CL.nii.gz -add CM.nii.gz -add CeM.nii.gz -add Hb.nii.gz -add LD.nii.gz -add LGNmc.nii.gz -add LGNpc.nii.gz -add LP.nii.gz -add Li.nii.gz -add MDmc.nii.gz -add MDpc.nii.gz -add MGN.nii.gz -add MV.nii.gz -add Pf.nii.gz -add Po.nii.gz -add PuA.nii.gz -add PuI.nii.gz -add PuL.nii.gz -add PuM.nii.gz -add Pv.nii.gz -add RN.nii.gz -add SG.nii.gz -add STh.nii.gz -add VAmc.nii.gz -add VApc.nii.gz -add VLa.nii.gz -add VLpd.nii.gz -add VLpv.nii.gz -add VM.nii.gz -add VPI.nii.gz -add VPLa.nii.gz -add VPLp.nii.gz -add VPM.nii.gz -add mtt.nii.gz -add sPf.nii.gz -add thalamus_body.nii.gz MorelThalamusAtlas
+
+Regions in the atlas overlap, but they are all binary masks (i.e., no probabilistic info)
+
+
+/usr/local/fsl/data/atlases/bin/locate-label-centres MorelThalamusAtlas MorelThalamusAtlas.xml
+ 
+ 
+
