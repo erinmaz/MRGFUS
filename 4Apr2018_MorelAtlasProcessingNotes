@@ -1,0 +1,4 @@
+cd /Users/erin/Desktop/Projects/MRGFUS/atlases/Zurich/MorelAtlasMNI152/left-vols-1mm
+mkdir other
+mv MAX_VOLUME.nii.gz other/.
+mv global.nii.gz other/.

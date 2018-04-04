@@ -30,7 +30,7 @@ bet ${ANATDIR}/T2_avg ${ANATDIR}/T2_avg_brain -m -f 0.25 -S
 
 flirt -in ${ANATDIR}/T1_brain -ref ${ANATDIR}/T2_avg_brain -out ${XFMSDIR}/T1_brain_to_T2_avg_brain -dof 6 -omat ${XFMSDIR}/T1_brain_to_T2_avg_brain.mat
 
-fsleyes ${XFMSDIR}/T2_avg_brain ${XFMSDIR}/T1_brain_to_T2_avg_brain
+fsleyes ${ANATDIR}/T2_avg_brain ${XFMSDIR}/T1_brain_to_T2_avg_brain
 
 /usr/local/fsl/bin/flirt -in ${ANATDIR}/T1_brain -ref /usr/local/fsl/data/standard/MNI152_T1_1mm_brain -out ${XFMSDIR}/T12MNI_1mm -omat ${XFMSDIR}/T12MNI_1mm.mat -cost corratio -dof 12 -searchrx -90 90 -searchry -90 90 -searchrz -90 90 -interp trilinear 
 
@@ -60,8 +60,8 @@ fslchfiletype NIFTI ${ANATDIR}/T2_avg_Vim_burned_high
 fslchfiletype NIFTI ${ANATDIR}/T2_avg_Vim_burned_low 
 
 #did this swapdim although I still end up flipping things in matlab. Final output dicom does not appear to be l-r flipped
-fslswapdim T2_avg_Vim_burned_high.nii z y -x T2_avg_Vim_burned_high_swap
-
+fslswapdim  ${ANATDIR}/T2_avg_Vim_burned_high.nii z y -x  ${ANATDIR}/T2_avg_Vim_burned_high_swap
+fslchfiletype NIFTI ${ANATDIR}/T2_avg_Vim_burned_high_swap
 #then todicom.m
 
 #other ideas for nii2dcm:

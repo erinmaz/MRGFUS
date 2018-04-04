@@ -1,6 +1,7 @@
 function ModDCM
 
-cd /Users/erin/Desktop/Projects/MRGFUS/dicoms/9013_JD-13455/400-PUSag_CUBE_T2-
+%cd /Users/erin/Desktop/Projects/MRGFUS/dicoms/9013_JD-13455/400-PUSag_CUBE_T2-
+cd /Users/erin/Desktop/Projects/MRGFUS/dicoms/9012_AT-13418/500-PUSag_CUBE_T2-
 %   Get file listing in current directory
 files = dir;
 nfiles = size(files);
@@ -37,12 +38,12 @@ ref_file = ref_file(inst);
 
 %   Modify as needed
 %img = smile_erin(img);
-cd /Users/erin/Desktop/Projects/MRGFUS/analysis/9013_JD-13455/anat
+cd /Users/erin/Desktop/Projects/MRGFUS/analysis/9012_AT-13418/anat
 new = niftiread('T2_avg_Vim_burned_high_swap.nii');
 newflip=flipud(new);
 img=fliplr(newflip);
 
-cd /Users/erin/Desktop/Projects/MRGFUS/dicoms/9013_JD-13455/400-PUSag_CUBE_T2-
+cd /Users/erin/Desktop/Projects/MRGFUS/dicoms/9012_AT-13418/500-PUSag_CUBE_T2-
 %   Write new dicoms based on reference images
 mkdir('Mod');
 for i = 1:size(img,3)

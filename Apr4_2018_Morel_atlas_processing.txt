@@ -1,0 +1,17 @@
+cd /Users/erin/Desktop/Projects/MRGFUS/atlases/Zurich/MorelAtlasMNI152
+
+Erins-MacBook-Pro:MorelAtlasMNI152 erin$ fslstats right-vols-1mm/VLpv -V
+746 746.000000 
+Erins-MacBook-Pro:MorelAtlasMNI152 erin$ fslstats left-vols-1mm/VLpv -V
+743 743.000000 
+
+cd /Users/erin/Dropbox/BigBrainAnalysis/day1_lesions/mni_1mm
+for f in `ls -d 9*`
+do 
+fslstats $f/T1_lesion_mask_filled2MNI_1mm.nii.gz -k /Users/erin/Desktop/Projects/MRGFUS/atlases/Zurich/MorelAtlasMNI152/left-vols-1mm/VLpv -V
+done
+
+for f in `ls -d 9*`
+do 
+fslstats $f/T1_lesion_mask_filled2MNI_1mm.nii.gz -k /Users/erin/Desktop/Projects/MRGFUS/atlases/Zurich/MorelAtlasMNI152/right-vols-1mm/VLpv -V
+done

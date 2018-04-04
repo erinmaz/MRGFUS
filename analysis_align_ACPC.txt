@@ -1,0 +1,9 @@
+convert_xfm -omat /Users/erin/Desktop/Projects/MRGFUS/analysis/9012_AT-13418/xfms/T2_avg_brain_2_T1_brain.mat -inverse /Users/erin/Desktop/Projects/MRGFUS/analysis/9012_AT-13418/xfms/T1_brain_to_T2_avg_brain.mat 
+
+ convert_xfm -omat /Users/erin/Desktop/Projects/MRGFUS/analysis/9012_AT-13418/xfms/T2_2_MNI.mat -concat /Users/erin/Desktop/Projects/MRGFUS/analysis/9012_AT-13418/xfms/T12MNI_1mm.mat /Users/erin/Desktop/Projects/MRGFUS/analysis/9012_AT-13418/xfms/T2_avg_brain_2_T1_brain.mat 
+ 
+  flirt -applyxfm -init /Users/erin/Desktop/Projects/MRGFUS/analysis/9012_AT-13418/xfms/T2_2_MNI.mat -in /Users/erin/Desktop/Projects/MRGFUS/analysis/9012_AT-13418/anat/T2_avg.nii.gz -ref /Users/erin/Desktop/Projects/MRGFUS/analysis/9012_AT-13418/xfms/T12MNI_1mm.nii.gz -out /Users/erin/Desktop/Projects/MRGFUS/analysis/9012_AT-13418/anat/T2_avg_2_MNI_aff
+
+aff2rigid /Users/erin/Desktop/Projects/MRGFUS/analysis/9012_AT-13418/xfms/T2_2_MNI.mat /Users/erin/Desktop/Projects/MRGFUS/analysis/9012_AT-13418/xfms/T2_2_ACPC_aligned.mat
+
+flirt -applyxfm -init /Users/erin/Desktop/Projects/MRGFUS/analysis/9012_AT-13418/xfms/T2_2_ACPC_aligned.mat -in /Users/erin/Desktop/Projects/MRGFUS/analysis/9012_AT-13418/anat/T2_avg.nii.gz -out /Users/erin/Desktop/Projects/MRGFUS/analysis/9012_AT-13418/anat/T2_avg_ACPC_aligned -ref /Users/erin/Desktop/Projects/MRGFUS/analysis/9012_AT-13418/anat/T2.nii.gz
