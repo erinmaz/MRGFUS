@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#subject ID as input
+#subject ID as first input, coil (12ch or 32ch) as 2nd input
 MYSUB=$1
 MYCOIL=$2
 MAINDIR=/Users/erin/Desktop/Projects/MRGFUS
