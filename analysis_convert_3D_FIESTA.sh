@@ -1,7 +1,13 @@
 #!/bin/bash
+#INPUTS
+#1 - subject ID (pretreatment)
+#2 - subject ID (treatment)
+#3 - flirt format mat as 2nd input (treatment 2 pretreatment)
 
-#subject ID as input
-MYSUB=$1
+MYSUB_PRE=$1
+MYSUB=$2
+MYXFM=$3
+
 
 MAINDIR=/Users/erin/Desktop/Projects/MRGFUS
 DICOMDIR=${MAINDIR}/dicoms
@@ -15,11 +21,6 @@ mkdir ${ANATDIR}
 rm ${DICOMDIR}/${MYSUB}/*-3D_FIESTA*/*.nii*
 dcm2niix ${DICOMDIR}/${MYSUB}/*-3D_FIESTA*
 mv ${DICOMDIR}/${MYSUB}/*-3D_FIESTA*/*.nii.gz ${ANATDIR}/3D_FIESTA.nii.gz
-fsleyes ${ANATDIR}/3D_FIESTA.nii.gz
 
-
-MYSUB_PRE=$1
-MYSUB_PRE=9002_RA-11764
-Erins-MacBook-Pro:~ erin$ flirt -in ${ANATDIR}/3D_FIESTA -applyxfm -init /Users/erin/Desktop/Projects/MRGFUS/InsightecData/ExablateMatrices/9002-ExablateMat-IntraOp-To-Pretreatment.csv -ref /Users/erin/Desktop/Projects/MRGFUS/analysis/9002_RA-11764/anat/T2.nii.gz -out /Users/erin/Desktop/Projects/MRGFUS/analysis/9002_RA-11764/anat/3D_FIESTA_to_T2
-Erins-MacBook-Pro:~ erin$ fsleyes /Users/erin/Desktop/Projects/MRGFUS/analysis/9002_RA-11764/anat/3D_FIESTA_to_T2 /Users/erin/Desktop/Projects/MRGFUS/analysis/9002_RA-11764/anat/T2
-Totally off
+flirt -in ${ANATDIR}/3D_FIESTA -applyxfm -init ${MYXFM} -ref ${ANALYSISDIR}/${MYSUB_PRE}/anat/T2 -out ${ANALYSISDIR}/${MYSUB_PRE}/anat/3D_FIESTA_to_T2
+fsleyes ${ANALYSISDIR}/${MYSUB_PRE}/anat/3D_FIESTA_to_T2 ${ANALYSISDIR}/${MYSUB_PRE}/anat/T2

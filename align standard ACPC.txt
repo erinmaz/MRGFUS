@@ -1,0 +1,61 @@
+rot x of 5 to get MNI 1mm aligned ACPC
+
+ flirt -in /usr/local/fsl/data/standard/MNI152_T1_1mm.nii.gz -applyxfm -init /Users/erin/Desktop/Projects/MRGFUS/MNI152_T1_1mm_2_ACPCaligned.mat -out /Users/erin/Desktop/Projects/MRGFUS/MNI152_T1_1mm_ACPCaligned -ref /usr/local/fsl/data/standard/MNI152_T1_1mm.nii.gz 
+Erins-MacBook-Pro:~ erin$ fsleyes /Users/erin/Desktop/Projects/MRGFUS/MNI152_T1_1mm_ACPCaligned.nii.gz 
+
+flirt -in /Users/erin/Desktop/Projects/MRGFUS/MNI152_T1_1mm_ACPCmask.nii.gz -applyxfm -init /Users/erin/Desktop/Projects/MRGFUS/MNI152_T1_1mm_2_ACPCaligned.mat -ref /usr/local/fsl/data/standard/MNI152_T1_1mm.nii.gz -out /Users/erin/Desktop/Projects/MRGFUS/MNI152_T1_1mm_ACPCmask_ACPCaligned.nii.gz -interp nearestneighbour
+
+mv /Users/erin/Desktop/Projects/MRGFUS/MNI152_T1_1mm* /Users/erin/Desktop/Projects/MRGFUS/atlases/InsightecTargeting/. 
+
+doesn't look quite right after resampling, use rot x=4.5
+
+flirt -in /usr/local/fsl/data/standard/MNI152_T1_1mm.nii.gz -applyxfm -init /Users/erin/Desktop/Projects/MRGFUS/atlases/InsightecTargeting/MNI152_T1_1mm_2_ACPCaligned.mat -ref /Users/erin/Desktop/Projects/MRGFUS/atlases/InsightecTargeting/MNI152_T1_1mm_ACPCmask.nii.gz -out /Users/erin/Desktop/Projects/MRGFUS/atlases/InsightecTargeting/MNI152_T1_1mm_ACPCaligned.nii.gz 
+
+Erins-MacBook-Pro:~ erin$ flirt -in /Users/erin/Desktop/Projects/MRGFUS/atlases/InsightecTargeting/MNI152_T1_1mm_ACPCmask.nii.gz -applyxfm -init /Users/erin/Desktop/Projects/MRGFUS/atlases/InsightecTargeting/MNI152_T1_1mm_2_ACPCaligned.mat -ref /usr/local/fsl/data/standard/MNI152_T1_1mm.nii.gz -out /Users/erin/Desktop/Projects/MRGFUS/atlases/InsightecTargeting/MNI152_T1_1mm_ACPCmask_ACPCaligned.nii.gz -interp nearestneighbour
+
+y coord PC -23
+y coord AC 4
+difference = 27 mm
+25% = 6.75
+-23+6.75==-16.25
+
+x=0
+x-target = +-14
+
+
+ convert_xfm -omat /Users/erin/Desktop/Projects/MRGFUS/atlases/InsightecTargeting/ACPCaligned2MNI.mat -inverse /Users/erin/Desktop/Projects/MRGFUS/atlases/InsightecTargeting/MNI152_T1_1mm_2_ACPCaligned.mat 
+
+Erins-MacBook-Pro:~ erin$ flirt -in /Users/erin/Desktop/Projects/MRGFUS/atlases/InsightecTargeting/MNI152_T1_1mm_ACPCaligned_targets.nii.gz -applyxfm -init /Users/erin/Desktop/Projects/MRGFUS/atlases/InsightecTargeting/ACPCaligned2MNI.mat -ref /usr/local/fsl/data/standard/MNI152_T1_1mm.nii.gz -out /Users/erin/Desktop/Projects/MRGFUS/atlases/InsightecTargeting/MNI152_T1_1mm_targets.nii.gz -interp nearestneighbour
+
+
+
+6 Apr 2018 
+Redo after Zelma marked AC and PC on 0.5 mm MNI
+
+
+rot x = 4.5 again
+Mine were pretty close I/S but a bit off A/P, because I didn't know these were done "ventricularly" so you mark the edge closest to the ventricle.
+
+flirt -in /usr/local/fsl/data/standard/MNI152_T1_0.5mm.nii.gz -applyxfm -init /Users/erin/Desktop/Projects/MRGFUS/atlases/InsightecTargeting/MNI152_0.5mm_KissACPC/MNI2ACPCaligned.mat -out /Users/erin/Desktop/Projects/MRGFUS/atlases/InsightecTargeting/MNI152_0.5mm_KissACPC/MNI152_T1_0.5mm_ACPCaligned.nii.gz -ref /Users/erin/Desktop/Projects/MRGFUS/atlases/InsightecTargeting/MNI152_0.5mm_KissACPC/MNI152_T1_0.5mm_ACPCmask_Kiss.nii.gz 
+ 
+ flirt -in /Users/erin/Desktop/Projects/MRGFUS/atlases/InsightecTargeting/MNI152_0.5mm_KissACPC/MNI152_T1_0.5mm_ACPCmask_Kiss.nii.gz -applyxfm -init /Users/erin/Desktop/Projects/MRGFUS/atlases/InsightecTargeting/MNI152_0.5mm_KissACPC/MNI2ACPCaligned.mat -out /Users/erin/Desktop/Projects/MRGFUS/atlases/InsightecTargeting/MNI152_0.5mm_KissACPC/MNI152_T1_0.5mm_ACPCmask_Kiss_ACPCaligned.nii.gz -ref /usr/local/fsl/data/standard/MNI152_T1_0.5mm.nii.gz -interp nearestneighbour 
+ 
+ distance
+ AC y = 2.5
+ PC y = -23
+ dist = 25.5 mm
+ 25% = 6.25
+ ycoord = -16.75
+ 
+ AC & PC x = 0.5
+ target = 14.5 and -13.5
+ z = -2.5
+ 
+ 
+ flirt -in /Users/erin/Desktop/Projects/MRGFUS/atlases/InsightecTargeting/MNI152_0.5mm_KissACPC/MNI152_T1_0.5mm_ACPCmask_Kiss_ACPCaligned_targets.nii.gz -applyxfm -init /Users/erin/Desktop/Projects/MRGFUS/atlases/InsightecTargeting/MNI152_0.5mm_KissACPC/ACPCaligned2MNI0.5.mat -ref /usr/local/fsl/data/standard/MNI152_T1_0.5mm.nii.gz -out /Users/erin/Desktop/Projects/MRGFUS/atlases/InsightecTargeting/MNI152_0.5mm_KissACPC/MNI152_T1_0.5mm_ACPCmask_Kiss_ACPCaligned_targets2MNI0.5.nii.gz -interp nearestneighbour 
+ 
+ zelma's check for Vc
+ 1 mm up, 2-4 post
+ 
+ 
+ 

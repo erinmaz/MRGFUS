@@ -1,0 +1,25 @@
+Took to convert itk 2 fsl matrix :https://sourceforge.net/p/c3d/git/ci/master/tree/doc/c3d.md
+but it doesn't work for me
+Erins-MacBook-Pro:~ erin$ c3d_affine_tool -ref /Users/erin/Desktop/Projects/MRGFUS/analysis/9002_RA-11764/anat/T2.nii.gz -src /Users/erin/Desktop/Projects/MRGFUS/analysis/9002_RA-11828/anat/3D_FIESTA.nii.gz /Users/erin/Desktop/Projects/MRGFUS/InsightecData/ExablateMatricesCorrectedBySam/9002-ExablateMat-IntraOp-To-Pretreatment.csv -ras2fsl -o /Users/erin/Desktop/Projects/MRGFUS/analysis/9002_RA-11828/anat/intra2pre.mat 
+Erins-MacBook-Pro:~ erin$ flirt -in /Users/erin/Desktop/Projects/MRGFUS/analysis/9002_RA-11828/anat/3D_FIESTA -ref /Users/erin/Desktop/Projects/MRGFUS/analysis/9002_RA-11764/anat/T2 -applyxfm -init /Users/erin/Desktop/Projects/MRGFUS/analysis/9002_RA-11828/anat/intra2pre.mat  -out /Users/erin/Desktop/Projects/MRGFUS/analysis/9002_RA-11828/anat/intra2pre -info-full
+Matrix #1:
+     0.99843        0.05509        0.00977       67.15241
+    -0.04942        0.95022       -0.30764       39.44297
+    -0.02623        0.30667        0.95145       63.06157
+     0.00000        0.00000        0.00000        1.00000
+Rotation matrix:
+     0.99843        0.05509       -0.00977
+    -0.04942        0.95022        0.30764
+     0.02623       -0.30667        0.95145
+Affine parameters:  T=(-67.152409, -39.442967, 63.061566); R = (17.917888, 0.559960, 3.158065); S = (100.000000, 100.000000, 100.000000); K = (0.000000, -0.000000, -0.000000)
+Quaternion:
+    -0.15553       -0.00912       -0.02646       0.98743
+Rotation angle:
+18.185174 degrees
+Rotation axis:
+    -0.98420       -0.05769       -0.16743
+
+
+Erins-MacBook-Pro:~ erin$ fsleyes /Users/erin/Desktop/Projects/MRGFUS/analysis/9002_RA-11828/anat/intra2pre /Users/erin/Desktop/Projects/MRGFUS/analysis/9002_RA-11764/anat/T2
+
+
