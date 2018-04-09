@@ -1,0 +1,26 @@
+nudge colin into ACPC
+x rot 4.5 
+z rot 1
+flirt -in /Users/erin/Desktop/Projects/MRGFUS/atlases/colin2mni_1mm/mni_colin27_1998_nifti/colin27_t1_tal_lin.nii -applyxfm -init /Users/erin/Desktop/Projects/MRGFUS/atlases/colin2mni_1mm/mni_colin27_1998_nifti/colin27_t1_tal_lin2ACPCaligned.mat -ref /Users/erin/Desktop/Projects/MRGFUS/atlases/colin2mni_1mm/mni_colin27_1998_nifti/colin27_t1_tal_lin_ACPCmask.nii.gz -out /Users/erin/Desktop/Projects/MRGFUS/atlases/colin2mni_1mm/mni_colin27_1998_nifti/colin27_t1_tal_lin2ACPCaligned.nii 
+flirt -in /Users/erin/Desktop/Projects/MRGFUS/atlases/colin2mni_1mm/mni_colin27_1998_nifti/colin27_t1_tal_lin_ACPCmask.nii.gz -applyxfm -init /Users/erin/Desktop/Projects/MRGFUS/atlases/colin2mni_1mm/mni_colin27_1998_nifti/colin27_t1_tal_lin2ACPCaligned.mat -out /Users/erin/Desktop/Projects/MRGFUS/atlases/colin2mni_1mm/mni_colin27_1998_nifti/colin27_t1_tal_lin_ACPCmask2ACPCaligned -ref /Users/erin/Desktop/Projects/MRGFUS/atlases/colin2mni_1mm/mni_colin27_1998_nifti/colin27_t1_tal_lin.nii  -interp nearestneighbour
+
+PC y = -22
+AC y = 5
+
+distance = 27 = outside normal range? Zelma said 23-26 today
+27/4= 6.75
+ycoord target=-15.25
+x=0
+xtarget=+/-14
+
+flirt -in /Users/erin/Desktop/Projects/MRGFUS/atlases/colin2mni_1mm/mni_colin27_1998_nifti/colin27_t1_tal_lin_ACPCmask.nii.gz -applyxfm -init /Users/erin/Desktop/Projects/MRGFUS/atlases/colin2mni_1mm/mni_colin27_1998_nifti/colin27_t1_tal_lin2ACPCaligned.mat -out /Users/erin/Desktop/Projects/MRGFUS/atlases/colin2mni_1mm/mni_colin27_1998_nifti/colin27_t1_tal_lin_ACPCmask2ACPCaligned -ref /Users/erin/Desktop/Projects/MRGFUS/atlases/colin2mni_1mm/mni_colin27_1998_nifti/colin27_t1_tal_lin.nii  -interp nearestneighbour
+
+convert_xfm -omat /Users/erin/Desktop/Projects/MRGFUS/atlases/colin2mni_1mm/mni_colin27_1998_nifti/ACPCaligned2colin.mat -inverse /Users/erin/Desktop/Projects/MRGFUS/atlases/colin2mni_1mm/mni_colin27_1998_nifti/colin27_t1_tal_lin2ACPCaligned.mat 
+
+convert_xfm -omat /Users/erin/Desktop/Projects/MRGFUS/atlases/colin2mni_1mm/mni_colin27_1998_nifti/ACPCaligned2colin.mat -inverse /Users/erin/Desktop/Projects/MRGFUS/atlases/colin2mni_1mm/mni_colin27_1998_nifti/colin27_t1_tal_lin2ACPCaligned.mat 
+
+fsleyes /Users/erin/Desktop/Projects/MRGFUS/atlases/colin2mni_1mm/mni_colin27_1998_nifti/targets2colin.nii.gz /Users/erin/Desktop/Projects/MRGFUS/atlases/colin2mni_1mm/mni_colin27_1998_nifti/colin27_t1_tal_lin.nii /Users/erin/Desktop/Projects/MRGFUS/atlases/labels_on_colin_Nov2010_nifti.nii 
+
+targets are in
+25 Zona incerta (Z.i.), 24 Nucleus Reticulatus.Polaris (Rt.po.) and 71 Ventro-caudalis parvocell (V.c.pc) on the right
+25 Zona incerta (Z.i.) and 94 Ventro-intermedius externus (V.im.e) on the left

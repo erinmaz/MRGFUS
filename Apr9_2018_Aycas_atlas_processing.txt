@@ -1,0 +1,25 @@
+Erins-MacBook-Pro:~ erin$ cd /Users/erin/Desktop/Projects/MRGFUS/atlases/FromAyca 
+Erins-MacBook-Pro:FromAyca erin$ fslmaths /Users/erin/Desktop/Projects/MRGFUS/atlases/FromAyca/mallar_bertrand_thalamus_atlas_to_icbm_nifti.nii -thr 90.5 -uthr 91.5 -bin /Users/erin/Desktop/Projects/MRGFUS/atlases/FromAyca/91 
+Erins-MacBook-Pro:FromAyca erin$ fslmaths /Users/erin/Desktop/Projects/MRGFUS/atlases/FromAyca/mallar_bertrand_thalamus_atlas_to_icbm_nifti.nii -thr 93.5 -uthr 94.5 -bin /Users/erin/Desktop/Projects/MRGFUS/atlases/FromAyca/94 
+Erins-MacBook-Pro:FromAyca erin$ fslmaths /Users/erin/Desktop/Projects/MRGFUS/atlases/FromAyca/mallar_bertrand_thalamus_atlas_to_icbm_nifti.nii -thr 103.5 -uthr 104.5 -bin /Users/erin/Desktop/Projects/MRGFUS/atlases/FromAyca/104 
+
+Erins-MacBook-Pro:FromAyca erin$ fslmaths 91.nii.gz -add 94.nii.gz -add 104.nii.gz Vim
+Erins-MacBook-Pro:FromAyca erin$ fslstats Vim -R
+0.000000 1.000000 
+
+on file from Ayca
+Random voxel assigned 91 (Vim).- checked that this was on minc too but it's hard to get a screenshot with the value of the voxel on display
+in fsleyes - voxel 81, 118, 92
+
+
+ applywarp -i /Users/erin/Desktop/Projects/MRGFUS/atlases/FromAyca/mallar_bertrand_thalamus_atlas_to_icbm_nifti.nii -w /Users/erin/Desktop/Projects/MRGFUS/atlases/colin2mni_1mm/colin2mni_1mm_warp -r  /Users/erin/Desktop/Projects/MRGFUS/atlases/colin2mni_1mm/MNI152_T1_1mm.nii.gz  -o /Users/erin/Desktop/Projects/MRGFUS/atlases/FromAyca/atlas2MNI_warp_for_mallars --premat=/Users/erin/Desktop/Projects/MRGFUS/atlases/FromAyca/labels2colin_fsleyes.mat --interp=nn  
+
+Erins-MacBook-Pro:FromAyca erin$ 
+Erins-MacBook-Pro:FromAyca erin$ fsleyes /Users/erin/Desktop/Projects/MRGFUS/atlases/FromAyca/atlas2MNI_warp_for_mallars.nii.gz /Users/erin/Desktop/Projects/MRGFUS/atlases/colin2mni_1mm/MNI152_T1_1mm.nii.gz 
+
+Erins-MacBook-Pro:FromAyca erin$ fslmaths /Users/erin/Desktop/Projects/MRGFUS/atlases/FromAyca/atlas2MNI_warp_for_mallars.nii.gz -thr 90.5 -uthr 91.5 -bin /Users/erin/Desktop/Projects/MRGFUS/atlases/FromAyca/91_xfmed.nii.gz 
+Erins-MacBook-Pro:FromAyca erin$ fslmaths /Users/erin/Desktop/Projects/MRGFUS/atlases/FromAyca/atlas2MNI_warp_for_mallars.nii.gz -thr 103.5 -uthr 104.5 -bin /Users/erin/Desktop/Projects/MRGFUS/atlases/FromAyca/104_xfmed.nii.gz 
+Erins-MacBook-Pro:FromAyca erin$ fslmaths /Users/erin/Desktop/Projects/MRGFUS/atlases/FromAyca/atlas2MNI_warp_for_mallars.nii.gz -thr 93.5 -uthr 94.5 -bin /Users/erin/Desktop/Projects/MRGFUS/atlases/FromAyca/94_xfmed.nii.gz 
+Erins-MacBook-Pro:FromAyca erin$ fslmaths /Users/erin/Desktop/Projects/MRGFUS/atlases/FromAyca/91_xfmed.nii.gz -add /Users/erin/Desktop/Projects/MRGFUS/atlases/FromAyca/94_xfmed.nii.gz -add /Users/erin/Desktop/Projects/MRGFUS/atlases/FromAyca/104_xfmed.nii.gz /Users/erin/Desktop/Projects/MRGFUS/atlases/FromAyca/Vim_xfmed.nii.gz
+
+ for f in `ls -d 9*`; do fslstats /Users/erin/Desktop/Projects/MRGFUS/atlases/FromAyca/Vim_xfmed.nii.gz -k $f/T1_lesion_mask_filled2MNI_1mm -V; done

@@ -1,0 +1,6 @@
+#pre T2 to day 1 T1
+
+convert_xfm -omat /Users/erin/Desktop/Projects/MRGFUS/analysis/9002_RA_longitudinal_xfms/preT2_2_day1_T1.mat -concat /Users/erin/Desktop/Projects/MRGFUS/analysis/9002_RA_longitudinal_xfms/mT1_pre_2_day1_6dof.mat /Users/erin/Desktop/Projects/MRGFUS/analysis/9002_RA-11764/xfms/T1_brain_to_T2_avg_brain.mat
+flirt -in /Users/erin/Desktop/Projects/MRGFUS/analysis/9002_RA-11764/anat/Vim_to_T2_avg -applyxfm -init /Users/erin/Desktop/Projects/MRGFUS/analysis/9002_RA_longitudinal_xfms/preT2_2_day1_T1.mat -ref /Users/erin/Desktop/Projects/MRGFUS/analysis/9002_RA-11833/anat/mT1 -out /Users/erin/Desktop/Projects/MRGFUS/analysis/9002_RA-11833/anat/Vim_to_T2_avg_pre_2_T1_day1 
+
+flirt -in /Users/erin/Desktop/Projects/MRGFUS/analysis/9002_RA-11764/anat/3D_FIESTA_Treatment_to_T2 -applyxfm -init /Users/erin/Desktop/Projects/MRGFUS/analysis/9002_RA_longitudinal_xfms/preT2_2_day1_T1.mat  -ref /Users/erin/Desktop/Projects/MRGFUS/analysis/9002_RA-11833/anat/mT1 -out /Users/erin/Desktop/Projects/MRGFUS/analysis/9002_RA-11833/anat/3D_FIESTA_Treatment_to_T2_avg_pre_2_T1_day1
