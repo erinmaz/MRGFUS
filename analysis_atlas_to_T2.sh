@@ -3,6 +3,7 @@ MYSUB=$1 #pretatment
 MAINDIR=/Users/erin/Desktop/Projects/MRGFUS
 ANATDIR=${MAINDIR}/analysis/${MYSUB}/anat
 XFMSDIR=${MAINDIR}/analysis/${MYSUB}/xfms
+REGDIR=${MAINDIR}/analysis/${MYSUB}/fmri/rs_reg.feat/reg
 mkdir $XFMSDIR
 
 if [ -e ${MAINDIR}/analysis/${MYSUB}/anat/T2_2.nii.gz ]; then
@@ -40,15 +41,15 @@ flirt -in ${ANATDIR}/T1_brain -ref ${ANATDIR}/T2_avg_brain -out ${XFMSDIR}/T1_br
 
 fsleyes ${ANATDIR}/T2_avg_brain ${XFMSDIR}/T1_brain_to_T2_avg_brain
 
-/usr/local/fsl/bin/flirt -in ${ANATDIR}/T1_brain -ref /usr/local/fsl/data/standard/MNI152_T1_1mm_brain -out ${XFMSDIR}/T12MNI_1mm -omat ${XFMSDIR}/T12MNI_1mm.mat -cost corratio -dof 12 -searchrx -90 90 -searchry -90 90 -searchrz -90 90 -interp trilinear 
+#/usr/local/fsl/bin/flirt -in ${ANATDIR}/T1_brain -ref /usr/local/fsl/data/standard/MNI152_T1_1mm_brain -out ${XFMSDIR}/T12MNI_1mm -omat ${XFMSDIR}/T12MNI_1mm.mat -cost corratio -dof 12 -searchrx -90 90 -searchry -90 90 -searchrz -90 90 -interp trilinear 
 
-/usr/local/fsl/bin/fnirt --in=${ANATDIR}/T1 --aff=${XFMSDIR}/T12MNI_1mm.mat --cout=${XFMSDIR}/T12MNI_1mm_warp --iout=${XFMSDIR}/T12MNI_1mm --jout=${XFMSDIR}/T12MNI_1mm_jac --config=T1_2_MNI152_2mm --ref=/usr/local/fsl/data/standard/MNI152_T1_1mm --refmask=/usr/local/fsl/data/standard/MNI152_T1_1mm_brain_mask_dil --warpres=10,10,10
+#/usr/local/fsl/bin/fnirt --in=${ANATDIR}/T1 --aff=${XFMSDIR}/T12MNI_1mm.mat --cout=${XFMSDIR}/T12MNI_1mm_warp --iout=${XFMSDIR}/T12MNI_1mm --jout=${XFMSDIR}/T12MNI_1mm_jac --config=T1_2_MNI152_2mm --ref=/usr/local/fsl/data/standard/MNI152_T1_1mm --refmask=/usr/local/fsl/data/standard/MNI152_T1_1mm_brain_mask_dil --warpres=10,10,10
 
-fsleyes ${XFMSDIR}/T12MNI_1mm /usr/local/fsl/data/standard/MNI152_T1_1mm 
+#fsleyes ${XFMSDIR}/T12MNI_1mm /usr/local/fsl/data/standard/MNI152_T1_1mm 
 
-invwarp -w ${XFMSDIR}/T12MNI_1mm_warp -o ${XFMSDIR}/MNI_1mm2T1_warp -r ${ANATDIR}/T1 
+#invwarp -w ${XFMSDIR}/T12MNI_1mm_warp -o ${XFMSDIR}/MNI_1mm2T1_warp -r ${ANATDIR}/T1 
 
-/usr/local/fsl/bin/applywarp -i ${MAINDIR}/atlases/HistThalAtlas_rois/Vim -r ${ANATDIR}/T2_avg -o ${ANATDIR}/Vim_to_T2_avg -w ${XFMSDIR}/MNI_1mm2T1_warp --postmat=${XFMSDIR}/T1_brain_to_T2_avg_brain.mat --interp=nn
+/usr/local/fsl/bin/applywarp -i ${MAINDIR}/atlases/HistThalAtlas_rois/Vim -r ${ANATDIR}/T2_avg -o ${ANATDIR}/Vim_to_T2_avg -w ${REGDIR}/standard2highres_warp --postmat=${XFMSDIR}/T1_brain_to_T2_avg_brain.mat --interp=nn
  
 fsleyes ${ANATDIR}/T2_avg ${ANATDIR}/Vim_to_T2_avg
 

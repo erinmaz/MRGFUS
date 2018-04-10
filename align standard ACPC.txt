@@ -57,5 +57,5 @@ flirt -in /usr/local/fsl/data/standard/MNI152_T1_0.5mm.nii.gz -applyxfm -init /U
  zelma's check for Vc
  1 mm up, 2-4 post
  
- 
+ flirt -in /Users/erin/Desktop/Projects/MRGFUS/atlases/InsightecTargeting/MNI152_0.5mm_KissACPC/MNI152_T1_0.5mm_ACPCmask_Kiss_ACPCaligned_Vc_targets.nii.gz -applyxfm -init /Users/erin/Desktop/Projects/MRGFUS/atlases/InsightecTargeting/MNI152_0.5mm_KissACPC/ACPCaligned2MNI0.5.mat -ref /usr/local/fsl/data/standard/MNI152_T1_0.5mm.nii.gz -out /Users/erin/Desktop/Projects/MRGFUS/atlases/InsightecTargeting/MNI152_0.5mm_KissACPC/MNI152_T1_0.5mm_ACPCmask_Kiss_ACPCaligned_Vc_targets2MNI0.5.nii.gz 
  

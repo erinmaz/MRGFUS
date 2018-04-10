@@ -1,0 +1,36 @@
+cd /Users/erin/Desktop/Projects/MRGFUS/analysis/9001_SH-11644/diffusion.bedpostX/thalamus_classification_freesurfer
+for i in `seq 1 7`
+do
+let j=i-1;
+let k=i+1;
+fslmaths find_the_biggest2standard -thr ${j}.5 -uthr ${k}.5 roi_${i}_standard
+done
+for f in `ls -d roi*`
+> do
+> fslstats $f -k /Users/erin/Dropbox/BigBrainAnalysis/day1_lesions/mni_1mm/9001_SH-11692/T1_lesion_mask_filled2MNI_1mm.nii.gz -V
+> done
+Mask and image must be the same size
+Mask and image must be the same size
+Mask and image must be the same size
+Mask and image must be the same size
+Mask and image must be the same size
+Mask and image must be the same size
+Mask and image must be the same size
+
+rm roi*
+
+applywarp -i find_the_biggest -r  /Users/erin/Dropbox/BigBrainAnalysis/day1_lesions/mni_1mm/MNI152_T1_1mm -w  /Users/erin/Desktop/Projects/MRGFUS/analysis_lesion_masks/9001_SH-11692/xfms/T12MNI_1mm_warp --premat=/Users/erin/Desktop/Projects/MRGFUS/analysis/9001_SH_longitudinal_xfms/diff_pre_bbr_6dof_2_mT1_day1.mat -o find_the_biggest2standard_1mm --interp=nn
+
+for i in `seq 1 7`
+do
+let j=i-1;
+let k=i+1;
+fslmaths find_the_biggest2standard_1mm -thr ${j}.5 -uthr ${k}.5 roi_${i}_standard_1mm
+done
+
+for f in `ls -d roi*`
+do
+fslstats $f -k /Users/erin/Dropbox/BigBrainAnalysis/day1_lesions/mni_1mm/9001_SH-11692/T1_lesion_mask_filled2MNI_1mm.nii.gz -V
+done
+
+applywarp -i /Users/erin/Desktop/Projects/MRGFUS/analysis/9001_SH-11644/diffusion/rois_classification_freesurfer/all_seeds  -r  /Users/erin/Dropbox/BigBrainAnalysis/day1_lesions/mni_1mm/MNI152_T1_1mm -w  /Users/erin/Desktop/Projects/MRGFUS/analysis_lesion_masks/9001_SH-11692/xfms/T12MNI_1mm_warp --premat=/Users/erin/Desktop/Projects/MRGFUS/analysis/9001_SH_longitudinal_xfms/diff_pre_bbr_6dof_2_mT1_day1.mat -o all_seeds2standard_1mm --interp=nn
