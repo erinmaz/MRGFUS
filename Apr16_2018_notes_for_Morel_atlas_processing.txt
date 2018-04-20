@@ -1,0 +1,78 @@
+cd /Users/erin/Desktop/Projects/MRGFUS/atlases/Zurich/MorelAtlasMNI152
+cp -r left-vols-0.5mm left-vols-0.5mm-edit
+cd left-vols-0.5mm-edit
+Erins-MacBook-Pro:left-vols-0.5mm-edit erin$ rm thalamus_body.nii.gz medial_group.nii.gz MAX_VOLUME.nii.gz MAX_VOLUME_05.nii.gz global.nii.gz 
+fslmaths VLpv -rand VLpv_noise
+fslmaths VLpv_noise -sub VLpv noise
+mv noise.nii.gz ../noise_0.5mm.nii.gz
+mkdir labels
+
+i=1
+mystr=""
+for f in `ls -d *.nii.gz`
+do
+g=`basename $f .nii.gz`
+fslmaths $f -mul $i labels/$g
+let i=$i+1
+mystr=`echo $mystr -add labels/$g`
+done
+
+fslmaths labels/AD -add labels/AM -add labels/AV -add labels/CL -add labels/CM -add labels/CeM -add labels/Hb -add labels/LD -add labels/LGNmc -add labels/LGNpc -add labels/LP -add labels/Li -add labels/MDmc -add labels/MDpc -add labels/MGN -add labels/MV -add labels/Pf -add labels/Po -add labels/PuA -add labels/PuI -add labels/PuL -add labels/PuM -add labels/Pv -add labels/RN -add labels/SG -add labels/STh -add labels/VAmc -add labels/VApc -add labels/VLa -add labels/VLpd -add labels/VLpv -add labels/VM -add labels/VPI -add labels/VPLa -add labels/VPLp -add labels/VPM -add labels/mtt -add labels/sPf labels/all
+
+i=1
+for f in `ls -d *.nii.gz`
+do
+g=`basename $f .nii.gz`
+echo $i $g
+let i=$i+1
+done
+
+1 AD
+2 AM
+3 AV
+4 CL
+5 CM
+6 CeM
+7 Hb
+8 LD
+9 LGNmc
+10 LGNpc
+11 LP
+12 Li
+13 MDmc
+14 MDpc
+15 MGN
+16 MV
+17 Pf
+18 Po
+19 PuA
+20 PuI
+21 PuL
+22 PuM
+23 Pv
+24 RN
+25 SG
+26 STh
+27 VAmc
+28 VApc
+29 VLa
+30 VLpd
+31 VLpv
+32 VM
+33 VPI
+34 VPLa
+35 VPLp
+36 VPM
+37 mtt
+38 sPf
+
+#check which pairs overlap.... what to do if it overlaps 3 ways?
+for f in `ls -d *.nii.gz`
+do
+for g in `ls -d *.nii.gz`
+do
+fslmaths $f -add $g ${f}_${g}
+range=(`fslstats ${f}_${g} -R`)
+echo ${f}_${g} ${range[1]}
+done
+done
