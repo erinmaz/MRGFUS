@@ -67,6 +67,7 @@ done
 38 sPf
 
 #check which pairs overlap.... what to do if it overlaps 3 ways?
+pick which of the pair it belongs to, then keep it in the list for the next one, and pick again. Does that work out to the same probability? door #3 problem...
 for f in `ls -d *.nii.gz`
 do
 for g in `ls -d *.nii.gz`
@@ -76,3 +77,19 @@ range=(`fslstats ${f}_${g} -R`)
 echo ${f}_${g} ${range[1]}
 done
 done
+
+mystr="fslmaths"
+for f in `ls -d *.nii.gz`
+do
+mycommand=`echo $mystr $f -add`
+
+done
+
+
+overlap up to 5!
+
+fslmaths all -thr 1.5 all_overlap
+
+for f in `ls -d *`
+do
+

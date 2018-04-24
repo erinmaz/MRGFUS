@@ -14,7 +14,12 @@ fslmaths ${MAINDIR}/analysis_lesion_masks/${MYSUB}/anat/T1 ${MAINDIR}/analysis_l
 fsleyes /usr/local/fsl/data/standard/MNI152_T1_1mm ${MAINDIR}/analysis_lesion_masks/${MYSUB}/xfms/T12MNI_1mm ${MAINDIR}/analysis_lesion_masks/${MYSUB}/anat/T1_lesion_mask_filled2MNI_1mm 
 
 mkdir /Users/erin/Dropbox/BigBrainAnalysis/day1_lesions/mni_1mm/${MYSUB}
+mkdir /Users/erin/Dropbox/BigBrainAnalysis/day1_lesions/native_space/${MYSUB}
 
 fslmaths ${MAINDIR}/analysis_lesion_masks/${MYSUB}/xfms/T12MNI_1mm /Users/erin/Dropbox/BigBrainAnalysis/day1_lesions/mni_1mm/${MYSUB}/T12MNI_1mm
 
 fslmaths ${MAINDIR}/analysis_lesion_masks/${MYSUB}/anat/T1_lesion_mask_filled2MNI_1mm  /Users/erin/Dropbox/BigBrainAnalysis/day1_lesions/mni_1mm/${MYSUB}/T1_lesion_mask_filled2MNI_1mm  
+
+fslmaths ${MAINDIR}/analysis_lesion_masks/${MYSUB}/anat/T1   /Users/erin/Dropbox/BigBrainAnalysis/day1_lesions/native_space/${MYSUB}/T1
+
+fslmaths ${MAINDIR}/analysis_lesion_masks/${MYSUB}/anat/T1_lesion_mask_filled /Users/erin/Dropbox/BigBrainAnalysis/day1_lesions/native_space/${MYSUB}/T1_lesion_mask_filled

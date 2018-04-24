@@ -17,3 +17,5 @@ fslmaths ${ANATDIR}/T1 ${LESIONANATDIR}/T1
 
 #Trace lesion on post scan's T1
 fsleyes ${LESIONANATDIR}/T1
+
+fslstats ${LESIONANATDIR}/T1_lesion_mask_filled -V
