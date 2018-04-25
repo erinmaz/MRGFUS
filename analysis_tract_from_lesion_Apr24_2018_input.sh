@@ -4,30 +4,33 @@ MAINDIR=/Users/erin/Desktop/Projects/MRGFUS
 SCRIPTSDIR=${MAINDIR}/scripts
 ANALYSISDIR=${MAINDIR}/analysis
 MYSUB=${1}-${2}
-MYSUB_XFMS=${1}_longitudinal_xfms
-THALAMUS_ROI=${3}
-lesion=${4}
+#day1 standard2highres warp from rs_reg
+WARP=${3}
+#postmat used in applywarp, varies depending on timepoint being analyzed
+POSTMAT=${4}
+THALAMUS_ROI=${5}
+lesion=${6}
 
 #get midsag plane from standard space to diffusion space
 
 mkdir ${ANALYSISDIR}/${MYSUB}/diffusion/rois_Apr24_2018
 
-invwarp -w ${ANALYSISDIR}/${MYSUB}/fmri/rs_reg.feat/reg/highres2standard_warp -o ${ANALYSISDIR}/${MYSUB}/fmri/rs_reg.feat/reg/standard2highres_warp -r ${ANALYSISDIR}/${MYSUB}/fmri/rs_reg.feat/reg/highres 
+#invwarp -w ${ANALYSISDIR}/${MYSUB}/fmri/rs_reg.feat/reg/highres2standard_warp -o ${WARP} -r ${ANALYSISDIR}/${MYSUB}/fmri/rs_reg.feat/reg/highres 
 
 #get into 3m diff space
 #standard to day1 T1 to pre T1 to pre diff
 
-applywarp -i ${SCRIPTSDIR}/rois_standardspace/midsag_plane_CC_MNI152_T1_2mm -r ${ANALYSISDIR}/${MYSUB}/diffusion/nodif_brain -w ${ANALYSISDIR}/${MYSUB}/fmri/rs_reg.feat/reg/standard2highres_warp  --postmat=${ANALYSISDIR}/${MYSUB_XFMS}/mT1_day1_2_diff_3M_bbr_6dof.mat -o ${ANALYSISDIR}/${MYSUB}/diffusion/rois_Apr24_2018/midsag_plane_CC
+applywarp -i ${SCRIPTSDIR}/rois_standardspace/midsag_plane_CC_MNI152_T1_2mm -r ${ANALYSISDIR}/${MYSUB}/diffusion/nodif_brain -w ${WARP}  --postmat=${POSTMAT} -o ${ANALYSISDIR}/${MYSUB}/diffusion/rois_Apr24_2018/midsag_plane_CC
 
 #get into 3, space
-applywarp -i ${THALAMUS_ROI} -r ${ANALYSISDIR}/${MYSUB}/diffusion/nodif_brain -w ${ANALYSISDIR}/${MYSUB}/fmri/rs_reg.feat/reg/standard2highres_warp --postmat=${ANALYSISDIR}/${MYSUB_XFMS}/mT1_day1_2_diff_3M_bbr_6dof.mat -o ${ANALYSISDIR}/${MYSUB}/diffusion/rois_Apr24_2018/thalamus_treatment_side --interp=nn 
+applywarp -i ${THALAMUS_ROI} -r ${ANALYSISDIR}/${MYSUB}/diffusion/nodif_brain -w ${WARP} --postmat=${POSTMAT} -o ${ANALYSISDIR}/${MYSUB}/diffusion/rois_Apr24_2018/thalamus_treatment_side --interp=nn 
 
 fslmaths ${ANALYSISDIR}/${MYSUB}/diffusion/rois_Apr24_2018/thalamus_treatment_side -binv ${ANALYSISDIR}/${MYSUB}/diffusion/rois_Apr24_2018/thalamus_treatment_side_inv
 
 fslmaths ${ANALYSISDIR}/${MYSUB}/diffusion/rois_Apr24_2018/midsag_plane_CC -bin ${ANALYSISDIR}/${MYSUB}/diffusion/rois_Apr24_2018/midsag_plane_CC_bin
 
 #Get into 3m-space
-applywarp -i ${lesion} -r ${ANALYSISDIR}/${MYSUB}/diffusion/nodif_brain -o ${ANALYSISDIR}/${MYSUB}/diffusion/rois_Apr24_2018/day1_T1_lesion --postmat=${ANALYSISDIR}/${MYSUB_XFMS}/mT1_day1_2_diff_3M_bbr_6dof.mat --interp=nn
+applywarp -i ${lesion} -r ${ANALYSISDIR}/${MYSUB}/diffusion/nodif_brain -o ${ANALYSISDIR}/${MYSUB}/diffusion/rois_Apr24_2018/day1_T1_lesion --postmat=${POSTMAT} --interp=nn
 
 mkdir ${ANALYSISDIR}/${MYSUB}/diffusion.bedpostX/Apr24_2018
 
@@ -63,6 +66,6 @@ FA_tract_nolesion_superior=`fslstats ${ANALYSISDIR}/${MYSUB}/diffusion/dtifit_FA
 FA_tract_nolesion_superior_outside_thal=`fslstats ${ANALYSISDIR}/${MYSUB}/diffusion/dtifit_FA -k ${ANALYSISDIR}/${MYSUB}/diffusion.bedpostX/Apr24_2018/day1_lesion_exclude_midsag_plane_CC/fdt_paths_norm_thr0.01_bin_nolesion_superior_outside_thalamus -M`
 
 FA_tract_nolesion_inside_thal=`fslstats ${ANALYSISDIR}/${MYSUB}/diffusion/dtifit_FA -k ${ANALYSISDIR}/${MYSUB}/diffusion.bedpostX/Apr24_2018/day1_lesion_exclude_midsag_plane_CC/fdt_paths_norm_thr0.01_bin_nolesion_thalamus -M`
-echo $MYSUB ${FA_lesion} ${FA_tract_nolesion} ${FA_tract_nolesion_superior} ${FA_tract_nolesion_superior_outside_thal} ${FA_tract_nolesion_inside_thal}
+echo $MYSUB ${FA_lesion} ${FA_tract_nolesion} ${FA_tract_nolesion_superior} ${FA_tract_nolesion_superior_outside_thal} ${FA_tract_nolesion_inside_thal} >> ${MAINDIR}/analysis/Apr24_2018_FA.txt
 
 #get rings in sub diffusion space
