@@ -1,7 +1,0 @@
-analysis_tract_from_contralateral_lesion_Apr24_2018_input.sh 9001_SH 11692 /Users/erin/Desktop/Projects/MRGFUS/analysis/9001_SH-11692/fmri/rs_reg.feat/reg /Users/erin/Desktop/Projects/MRGFUS/analysis/9001_SH-11692/fmri/rs_reg.feat/reg/standard2highres_warp /Users/erin/Desktop/Projects/MRGFUS/analysis/9001_SH-11692/diffusion/xfms/T1_2_diff_bbr.mat /Users/erin/Desktop/Projects/MRGFUS/scripts/harvardoxford-subcortical/thalamus_R_final /Users/erin/Desktop/Projects/MRGFUS/analysis_lesion_masks/9001_SH-11692/anat/T1_lesion_mask_filled
-
-
-analysis_tract_from_contralateral_lesion_Apr24_2018_input.sh 9001_SH 11644 /Users/erin/Desktop/Projects/MRGFUS/analysis/9001_SH-11692/fmri/rs_reg.feat/reg/ /Users/erin/Desktop/Projects/MRGFUS/analysis/9001_SH-11644/fmri/rs_reg.feat/reg/standard2highres_warp /Users/erin/Desktop/Projects/MRGFUS/analysis/9001_SH_longitudinal_xfms/mT1_day1_2_diff_pre_bbr_6dof.mat /Users/erin/Desktop/Projects/MRGFUS/scripts/harvardoxford-subcortical/thalamus_R_final /Users/erin/Desktop/Projects/MRGFUS/analysis_lesion_masks/9001_SH-11692/anat/T1_lesion_mask_filled
-
-
-analysis_tract_from_lesion_Apr24_2018_input.sh 9001_SH 12271 /Users/erin/Desktop/Projects/MRGFUS/analysis/9001_SH-11692/fmri/rs_reg.feat/reg/standard2highres_warp /Users/erin/Desktop/Projects/MRGFUS/analysis/9001_SH_longitudinal_xfms/mT1_day1_2_diff_3M_bbr_6dof.mat /Users/erin/Desktop/Projects/MRGFUS/scripts/harvardoxford-subcortical/thalamus_L_final /Users/erin/Desktop/Projects/MRGFUS/analysis_lesion_masks/9001_SH-11692/anat/T1_lesion_mask_filled
