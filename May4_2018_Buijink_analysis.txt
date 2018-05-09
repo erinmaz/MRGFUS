@@ -1,0 +1,95 @@
+cd /Users/erin/Desktop/Projects/MRGFUS/scripts/rois_standardspace
+fslmaths jhu-labels_label_Middle_cerebellar_peduncle.nii.gz -roi 0 90 0 -1 0 -1 0 -1 jhu-labels_label_Middle_cerebellar_peduncle_R
+fslmaths jhu-labels_label_Middle_cerebellar_peduncle.nii.gz -roi 90 -1 0 -1 0 -1 0 -1 jhu-labels_label_Middle_cerebellar_peduncle_L
+cd /Users/erin/Desktop/Projects/MRGFUS/tbss_Apr24_2018/stats
+
+Erins-MacBook-Pro:stats erin$ fslstats -t all_FA -k /Users/erin/Desktop/Projects/MRGFUS/scripts/rois_standardspace/jhu-labels_label_Middle_cerebellar_peduncle_L.nii.gz -M
+0.479947 
+0.480876 
+0.483042 
+0.430661 
+0.435020 
+0.443319 
+0.434128 
+0.433062 
+0.434962 
+0.475497 
+0.466138 
+0.462947 
+0.459705 
+0.460429 
+0.464988 
+0.454383 
+0.445688 
+0.443781 
+Erins-MacBook-Pro:stats erin$ fslstats -t all_FA -k /Users/erin/Desktop/Projects/MRGFUS/scripts/rois_standardspace/jhu-labels_label_Middle_cerebellar_peduncle_R.nii.gz -M
+0.464553 
+0.463922 
+0.468690 
+0.429968 
+0.430942 
+0.433061 
+0.423408 
+0.425560 
+0.425960 
+0.460044 
+0.447617 
+0.448203 
+0.458352 
+0.454516 
+0.459809 
+0.466895 
+0.455807 
+0.459119 
+Erins-MacBook-Pro:stats erin$ fslstats -t all_FA -k /Users/erin/Desktop/Projects/MRGFUS/scripts/rois_standardspace/jhu-labels_label_Superior_cerebellar_peduncle_L -M
+0.576337 
+0.576598 
+0.562490 
+0.503929 
+0.501210 
+0.519079 
+0.493936 
+0.494525 
+0.505083 
+0.536051 
+0.514490 
+0.509557 
+0.547700 
+0.548728 
+0.542174 
+0.525112 
+0.509979 
+0.505267 
+Erins-MacBook-Pro:stats erin$ fslstats -t all_FA -k /Users/erin/Desktop/Projects/MRGFUS/scripts/rois_standardspace/jhu-labels_label_Superior_cerebellar_peduncle_R -M
+0.588142 
+0.591872 
+0.587848 
+0.525250 
+0.526661 
+0.532483 
+0.518829 
+0.511491 
+0.515736 
+0.543403 
+0.525676 
+0.525376 
+0.562437 
+0.565927 
+0.576246 
+0.552970 
+0.539484 
+0.534336 
+
+Try just the area shown as significant in the y-coordinate figure
+-50 to -40 mm for SCP=
+-50 mm = y 76, size 10
+
+cd /Users/erin/Desktop/Projects/MRGFUS/scripts/rois_standardspace
+for side in L R
+do
+fslmaths jhu-labels_label_Superior_cerebellar_peduncle_${side}.nii.gz -roi 0 -1 76 10 0 -1 0 -1 jhu-labels_label_Superior_cerebellar_peduncle_${side}_subroi
+done
+
+fslstats -t /Users/erin/Desktop/Projects/MRGFUS/tbss_Apr24_2018/stats/all_FA -k jhu-labels_label_Superior_cerebellar_peduncle_L_subroi -M
+
+
