@@ -4,7 +4,6 @@
 
 # PREVIOUSLY NEED TO HAVE RUN:
 # analysis_diffusion_step1A_bedpostX.sh for pre timepoint
-# analysis_diffusion_step1B_run_tbss_preproc.sh
 # analysis_step1_T1_lesion_trace.sh for day 1 (because it will be input as seed)
 # analysis_longitudinal_step1.sh 
 
@@ -32,10 +31,24 @@ MYXFM=${ANALYSISDIR}/${MYSUB}_longitudinal_xfms/mT1_day1_2_diff_pre_bbr.mat
 
 applywarp -i $MYSEED -r ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/nodif_brain --postmat=${MYXFM} --interp=nn -o ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/${TRACT_OUTPUT}
 
+# get contralateral equivalent of lesion for tracking in untreated hemisphere
+
+applywarp -i $MYSEED -r ${ANALYSISDIR}/${MYSUB_DAY1}/fmri/rs_reg.feat/reg/standard -w ${ANALYSISDIR}/${MYSUB_DAY1}/fmri/rs_reg.feat/reg/highres2standard_warp -o ${MYSEED}2standard --interp=nn
+
+fslswapdim ${MYSEED}2standard -x y z ${MYSEED}2standard_contralateral
+
+applywarp -i ${MYSEED}2standard_contralateral -r ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/nodif_brain -w ${ANALYSISDIR}/${MYSUB_DAY1}/fmri/rs_reg.feat/reg/standard2highres_warp -o ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/${TRACT_OUTPUT}_contralateral --postmat=${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/xfms/T1_2_diff_bbr.mat --interp=nn
+
+# threshold CSF mask 
 fslmaths ${ANALYSISDIR}/${MYSUB_TOTRACK}/anat/c3T1 -thr .99 ${ANALYSISDIR}/${MYSUB_TOTRACK}/anat/c3T1.99
 
-#without nn interp the CSF mask is too big
+#without nn interp, the CSF mask is too big
 applywarp -i ${ANALYSISDIR}/${MYSUB_TOTRACK}/anat/c3T1.99 --interp=nn --postmat=${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/xfms/T1_2_diff_bbr.mat -r ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/nodif_brain -o ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/csf
+
+#check that this warp exists and if not generate it
+if [ ! -f ${ANALYSISDIR}/${MYSUB_TOTRACK}/fmri/rs_reg.feat/reg/standard2highres_warp.nii.gz ]; then
+invwarp -w ${ANALYSISDIR}/${MYSUB_TOTRACK}/fmri/rs_reg.feat/reg/highres2standard_warp -o ${ANALYSISDIR}/${MYSUB_TOTRACK}/fmri/rs_reg.feat/reg/standard2highres_warp -r ${ANALYSISDIR}/${MYSUB_TOTRACK}/fmri/rs_reg.feat/reg/highres
+fi
 
 applywarp -i ${SCRIPTSDIR}/rois_standardspace/midsag_plane_CC_MNI152_T1_2mm -w ${ANALYSISDIR}/${MYSUB_TOTRACK}/fmri/rs_reg.feat/reg/standard2highres_warp --postmat=${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/xfms/T1_2_diff_bbr.mat -o ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/midsag_plane_CC_MNI152_T1_2mm2diff -r ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/nodif_brain
 

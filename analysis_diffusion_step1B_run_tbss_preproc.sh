@@ -1,5 +1,5 @@
 #Every time a new session is acquired, we need to edit this file to include it and then re-run
-#NOTE lesions are on the actual treated side i.e., not all flipped into one hemisphere, so it does not make sense to run TBSS stats on these.
+#NOTE lesions are on the actual treated side i.e., not all flipped into one hemisphere, so it does not make sense to run TBSS stats on these. In general running TBSS on the whole skeleton probably will not make sense due to the different lesion locations UNLESS we are correlating with an outcome measure
 
 #ALL OF THIS PREPROCESSING CAN OCCUR BEFORE BEDPOST IS FINISHED
 
@@ -44,6 +44,16 @@ do
 done
 tbss_non_FA RD
 
+# Set up directories
+for s in "${SUBS[@]}"
+do
+	if [ ! -d ${ANALYSISDIR}/${s}_diffusion_longitudinal ]; then
+		mkdir ${ANALYSISDIR}/${s}_diffusion_longitudinal
+	fi
+	mkdir ${ANALYSISDIR}/${s}_diffusion_longitudinal/${TBSSNAME}_skeleton
+	mkdir ${ANALYSISDIR}/${s}_diffusion_longitudinal/${TBSSNAME}_image
+done
+
 #split TBSS images so that the correct ones are associated with the correct subjects/timepoints
 for measure in FA MD L1 RD
 do
@@ -52,9 +62,6 @@ do
 	index=0
 	for s in "${SUBS[@]}"
 	do
-		#when does ${ANALYSISDIR}/${s}_diffusion_longitudinal get created?
-		mkdir ${ANALYSISDIR}/${s}_diffusion_longitudinal/${TBSSNAME}_skeleton
-		mkdir ${ANALYSISDIR}/${s}_diffusion_longitudinal/${TBSSNAME}_image
 		fslmaths stats/${measure}_skeleton`printf '%04d\n' $index` ${ANALYSISDIR}/${s}_diffusion_longitudinal/${TBSSNAME}_skeleton/${measure}_pre
 		fslmaths stats/${measure}_image`printf '%04d\n' $index` ${ANALYSISDIR}/${s}_diffusion_longitudinal/${TBSSNAME}_image/${measure}_pre
 		let index=$index+1

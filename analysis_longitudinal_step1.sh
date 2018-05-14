@@ -22,7 +22,7 @@ convert_xfm -omat ${RESULTSDIR}/mT1_day1_2_pre_6dof.mat -inverse ${RESULTSDIR}/m
 #day1 T1 to diff pre
 convert_xfm -omat ${RESULTSDIR}/mT1_day1_2_diff_pre_bbr.mat -concat ${DIFFDIR_PRE}/xfms/T1_2_diff_bbr.mat ${RESULTSDIR}/mT1_day1_2_pre_6dof.mat 
 
-fsleyes ${ANATDIR_DAY1}/mT1 ${RESULTSDIR}/mT1_brain_pre_2_day1_6dof
+fsleyes ${ANATDIR_DAY1}/mT1 ${RESULTSDIR}/mT1_brain_pre_2_day1_6dof &
 
 flirt -applyxfm -init ${RESULTSDIR}/mT1_day1_2_diff_pre_bbr.mat -ref ${ANALYSISDIR}/${PRE}/diffusion/mean_B0_unwarped -in ${ANALYSISDIR}/${DAY1}/anat/T1 -out ${RESULTSDIR}/mT1_day1_2_diff_pre_bbr 
 
