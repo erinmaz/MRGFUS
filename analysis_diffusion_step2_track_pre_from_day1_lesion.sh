@@ -79,8 +79,6 @@ mkdir -p ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion.bedpostX/${theseed}
 
 /usr/local/fsl/bin/probtrackx2  -x ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/${theseed} -l --onewaycondition -c 0.2 -S 2000 --steplength=0.5 -P 5000 --fibthresh=0.01 --distthresh=10.0 --sampvox=0.0 --avoid=${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/exclude --forcedir --opd -s /Users/erin/Desktop/Projects/MRGFUS/analysis/${MYSUB_TOTRACK}/diffusion.bedpostX/merged -m /Users/erin/Desktop/Projects/MRGFUS/analysis/${MYSUB_TOTRACK}/diffusion.bedpostX/nodif_brain_mask --dir=${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion.bedpostX/${theseed}
 
-EDIT BELOW TO WORK IN A LOOP? OR JUST DO IT ALL TWICE...
-
 #################
 
 waytotal=`more ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion.bedpostX/${theseed}/waytotal`
@@ -89,7 +87,7 @@ fslmaths ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion.bedpostX/${theseed}/fdt_paths
 
 fslmaths ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion.bedpostX/${theseed}/fdt_paths_norm -thr 0.01 -bin ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion.bedpostX/${theseed}/fdt_paths_norm_thr0.01_bin
 
-fslmaths ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion.bedpostX/${theseed}/fdt_paths_norm_thr0.01_bin -sub ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/${TRACT_OUTPUT} -thr 0.5 ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion.bedpostX/${theseed}/fdt_paths_norm_thr0.01_bin_nolesion
+fslmaths ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion.bedpostX/${theseed}/fdt_paths_norm_thr0.01_bin -sub ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/${theseed} -thr 0.5 ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion.bedpostX/${theseed}/fdt_paths_norm_thr0.01_bin_nolesion
 
 fslmaths ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion.bedpostX/${theseed}/fdt_paths_norm_thr0.01_bin_nolesion -mas ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/thalamus_${sides[$sidei]}_final  ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion.bedpostX/${theseed}/fdt_paths_norm_thr0.01_bin_nolesion_thalamus
 
@@ -112,14 +110,13 @@ fslmaths ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion.bedpostX/${theseed}/fdt_paths
 fslmaths ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion.bedpostX/${theseed}/fdt_paths_norm_thr0.01_bin_nolesion_inferior -mas ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/thalamus_${sides[$sidei]}_final_inv ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion.bedpostX/${theseed}/fdt_paths_norm_thr0.01_bin_nolesion_inferior_nothalamus
 
 #ring around lesion, to check if all the effects in the thalamus are due to neighbouring voxels, which might be explained by reg error/PVEs
-fslmaths ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/${TRACT_OUTPUT} -dilM -sub ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/${TRACT_OUTPUT} ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/${TRACT_OUTPUT}_neighbouringvoxels 
+fslmaths ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/${theseed} -dilM -sub ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/${theseed} ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/${theseed}_neighbouringvoxels 
 
-fslmaths ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/${TRACT_OUTPUT}_neighbouringvoxels -binv ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/${TRACT_OUTPUT}_neighbouringvoxels_inv
+fslmaths ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/${theseed}_neighbouringvoxels -binv ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/${theseed}_neighbouringvoxels_inv
 
-fslmaths ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion.bedpostX/${theseed}/fdt_paths_norm_thr0.01_bin_nolesion_thalamus -mas ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/${TRACT_OUTPUT}_neighbouringvoxels_inv ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion.bedpostX/${theseed}/fdt_paths_norm_thr0.01_bin_nolesion_orneighbours_thalamus
+fslmaths ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion.bedpostX/${theseed}/fdt_paths_norm_thr0.01_bin_nolesion_thalamus -mas ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/${theseed}_neighbouringvoxels_inv ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion.bedpostX/${theseed}/fdt_paths_norm_thr0.01_bin_nolesion_orneighbours_thalamus
 
-fsleyes ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/nodif_brain ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion.bedpostX/${theseed}/fdt_paths ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion.bedpostX/${theseed}/fdt_paths_norm_thr0.01_bin ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion.bedpostX/${theseed}/fdt_paths_norm_thr0.01_bin_nolesion ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion.bedpostX/${theseed}/fdt_paths_norm_thr0.01_bin_nolesion_thalamus ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion.bedpostX/${theseed}/fdt_paths_norm_thr0.01_bin_nolesion_nothalamus ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion.bedpostX/${theseed}/fdt_paths_norm_thr0.01_bin_nolesion_superior ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion.bedpostX/${theseed}/fdt_paths_norm_thr0.01_bin_nolesion_inferior ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion.bedpostX/${theseed}/fdt_paths_norm_thr0.01_bin_nolesion_superior_thalamus ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion.bedpostX/${theseed}/fdt_paths_norm_thr0.01_bin_nolesion_inferior_thalamus ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion.bedpostX/${theseed}/fdt_paths_norm_thr0.01_bin_nolesion_superior_nothalamus ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion.bedpostX/${theseed}/fdt_paths_norm_thr0.01_bin_nolesion_inferior_nothalamus ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/${TRACT_OUTPUT}_neighbouringvoxels ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion.bedpostX/${theseed}/fdt_paths_norm_thr0.01_bin_nolesion_orneighbours_thalamus
-
+fsleyes ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/nodif_brain ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion.bedpostX/${theseed}/fdt_paths ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion.bedpostX/${theseed}/fdt_paths_norm_thr0.01_bin ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion.bedpostX/${theseed}/fdt_paths_norm_thr0.01_bin_nolesion ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion.bedpostX/${theseed}/fdt_paths_norm_thr0.01_bin_nolesion_thalamus ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion.bedpostX/${theseed}/fdt_paths_norm_thr0.01_bin_nolesion_nothalamus ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion.bedpostX/${theseed}/fdt_paths_norm_thr0.01_bin_nolesion_superior ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion.bedpostX/${theseed}/fdt_paths_norm_thr0.01_bin_nolesion_inferior ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion.bedpostX/${theseed}/fdt_paths_norm_thr0.01_bin_nolesion_superior_thalamus ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion.bedpostX/${theseed}/fdt_paths_norm_thr0.01_bin_nolesion_inferior_thalamus ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion.bedpostX/${theseed}/fdt_paths_norm_thr0.01_bin_nolesion_superior_nothalamus ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion.bedpostX/${theseed}/fdt_paths_norm_thr0.01_bin_nolesion_inferior_nothalamus ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/${theseed}_neighbouringvoxels ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion.bedpostX/${theseed}/fdt_paths_norm_thr0.01_bin_nolesion_orneighbours_thalamus &
 
 let sidei=${sidei}+1
 done
