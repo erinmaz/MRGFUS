@@ -32,16 +32,27 @@ mkdir ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}
 
 MYSEED=${MAINDIR}/analysis_lesion_masks/${MYSUB_DAY1}/anat/T1_lesion_mask_filled
 MYXFM=${ANALYSISDIR}/${MYSUB}_longitudinal_xfms/mT1_day1_2_diff_pre_bbr.mat 
-
-applywarp -i $MYSEED -r ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/nodif_brain --postmat=${MYXFM} --interp=nn -o ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/${TRACT_OUTPUT}
-
-# get contralateral equivalent of lesion for tracking in untreated hemisphere
  
-applywarp -i $MYSEED -r ${ANALYSISDIR}/${MYSUB_DAY1}/fmri/rs_reg.feat/reg/standard -w ${ANALYSISDIR}/${MYSUB_DAY1}/fmri/rs_reg.feat/reg/highres2standard_warp -o ${MYSEED}2standard --interp=nn
+applywarp -i $MYSEED -r ${ANALYSISDIR}/${MYSUB_DAY1}/fmri/rs_reg.feat/reg/standard -w ${ANALYSISDIR}/${MYSUB_DAY1}/fmri/rs_reg.feat/reg/highres2standard_warp -o ${MYSEED}2standard --interp=spline
 
 fslswapdim ${MYSEED}2standard -x y z ${MYSEED}2standard_contralateral
 
-applywarp -i ${MYSEED}2standard_contralateral -r ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/nodif_brain -w ${ANALYSISDIR}/${MYSUB_DAY1}/fmri/rs_reg.feat/reg/standard2highres_warp -o ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/${TRACT_OUTPUT}_contralateral --postmat=${MYXFM} --interp=nn
+if [ ! -f ${ANALYSISDIR}/${MYSUB_DAY1}/fmri/rs_reg.feat/reg/standard2highres_warp.nii.gz ]; then
+invwarp -w ${ANALYSISDIR}/${MYSUB_DAY1}/fmri/rs_reg.feat/reg/highres2standard_warp -o ${ANALYSISDIR}/${MYSUB_DAY1}/fmri/rs_reg.feat/reg/standard2highres_warp -r ${ANALYSISDIR}/${MYSUB_DAY1}/fmri/rs_reg.feat/reg/highres
+fi
+
+applywarp -i ${MYSEED}2standard -r ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/nodif_brain -w ${ANALYSISDIR}/${MYSUB_TOTRACK}/fmri/rs_reg.feat/reg/standard2highres_warp -o ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/${TRACT_OUTPUT} --postmat=${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/xfms/T1_2_diff_bbr.mat --interp=spline
+
+applywarp -i ${MYSEED}2standard_contralateral -r ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/nodif_brain -w ${ANALYSISDIR}/${MYSUB_TOTRACK}/fmri/rs_reg.feat/reg/standard2highres_warp -o ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/${TRACT_OUTPUT}_contralateral --postmat=${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/xfms/T1_2_diff_bbr.mat --interp=spline
+
+fslmaths ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/${TRACT_OUTPUT}_contralateral -thr 0.25 -bin ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/${TRACT_OUTPUT}_contralateral
+
+fslmaths ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/${TRACT_OUTPUT} -thr 0.25 -bin ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/${TRACT_OUTPUT}
+
+lesionvol=`fslstats ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/${TRACT_OUTPUT} -V`
+contravol=`fslstats ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/${TRACT_OUTPUT}_contralateral -V`
+echo $MYSUB $lesionvol $contravol >> ${ANALYSISDIR}/lesion_vol_day1_and_contra_in_pre_diff_space_${TRACT_OUTPUT}.txt
+
 
 # threshold CSF mask 
 fslmaths ${ANALYSISDIR}/${MYSUB_TOTRACK}/anat/c3T1 -thr .99 ${ANALYSISDIR}/${MYSUB_TOTRACK}/anat/c3T1.99
@@ -66,7 +77,6 @@ applywarp -i ${SCRIPTSDIR}/rois_standardspace/harvardoxford-subcortical/thalamus
 
 fslmaths ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/thalamus_${OTHERSIDE}_final -binv  ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/thalamus_${OTHERSIDE}_final_inv
 
-
 sides=( $TREATMENTSIDE $OTHERSIDE )
 sidei=0
 
@@ -74,6 +84,7 @@ for theseed in ${TRACT_OUTPUT} ${TRACT_OUTPUT}_contralateral
 do
 
 ################# run PROBTRACK
+
 rm -rf ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion.bedpostX/${theseed}
 mkdir -p ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion.bedpostX/${theseed}
 
@@ -85,7 +96,8 @@ waytotal=`more ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion.bedpostX/${theseed}/way
 
 fslmaths ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion.bedpostX/${theseed}/fdt_paths -div $waytotal ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion.bedpostX/${theseed}/fdt_paths_norm
 
-fslmaths ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion.bedpostX/${theseed}/fdt_paths_norm -thr 0.01 -bin ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion.bedpostX/${theseed}/fdt_paths_norm_thr0.01_bin
+#zero out bottom 5 slices in case we tracked very inferiorly - FA maps do not all extend to the bottom most slice 
+fslmaths ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion.bedpostX/${theseed}/fdt_paths_norm -thr 0.01 -bin -roi 0 -1 0 -1 5 -1 0 1 ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion.bedpostX/${theseed}/fdt_paths_norm_thr0.01_bin
 
 fslmaths ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion.bedpostX/${theseed}/fdt_paths_norm_thr0.01_bin -sub ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/${theseed} -thr 0.5 ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion.bedpostX/${theseed}/fdt_paths_norm_thr0.01_bin_nolesion
 
