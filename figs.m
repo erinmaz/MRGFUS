@@ -18,15 +18,16 @@ data2=[2	47
 2	1
 2	63];
 
-colours = {'r','b','g','k','r','b','g','k'};
-markers = {'o','o','o','o','*','*','*','*'};
+colours = {'k','k','k','k','k','k','k','k'};
+markers = {'+','o','*','.','<','>','square','x'};
 figure
 hold
 for i=1:length(data1)
-scatter(data1(i,1),data1(i,2),colours{i},markers{i});
-scatter(data2(i,1),data2(i,2),colours{i},markers{i});
+scatter(data1(i,1),data1(i,2),100,colours{i},markers{i});
+scatter(data2(i,1),data2(i,2),100,colours{i},markers{i});
 end
 set(gca,'fontsize', 18);
+
 axis([0 3 0 500]);
 xticks([1 2]);
 xticklabels({'Day 1','Day 90'});
