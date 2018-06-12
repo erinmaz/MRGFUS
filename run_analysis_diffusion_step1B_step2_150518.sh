@@ -35,3 +35,4 @@ analysis_diffusion_step2_track_pre_from_day1_lesion.sh 9007_RB 12461 12910 track
 analysis_diffusion_step2_track_pre_from_day1_lesion.sh 9008_JO 12613 12667 tracking_day1_lesion_150518 L
 analysis_diffusion_step2_track_pre_from_day1_lesion.sh 9009_CRB 12609 13043 tracking_day1_lesion_150518 L
 
+analysis_diffusion_step3_get_summary_stats_from_TBSS_images.sh
