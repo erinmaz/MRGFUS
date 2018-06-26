@@ -1,0 +1,16 @@
+Thalamus ROIs: 
+
+cd /Users/erin/Desktop/Projects/MRGFUS/atlases/labels_on_colin_Nov2010_rois
+fslmaths 15.nii.gz -add 26.nii.gz -add 27.nii.gz -add 28.nii.gz -add 36.nii.gz -add 37.nii.gz -add 40.nii.gz -add 41.nii.gz -add 49.nii.gz -add 51.nii.gz -add 53.nii.gz -add 64.nii.gz -add 70.nii.gz -add 71.nii.gz -add 81.nii.gz -add 86.nii.gz -add 87.nii.gz -add 88.nii.gz -add 89.nii.gz -add 90.nii.gz -add 91.nii.gz -add 92.nii.gz -add 93.nii.gz -add 94.nii.gz -add 95.nii.gz -add 96.nii.gz -add 97.nii.gz -add 98.nii.gz -add 99.nii.gz -add 100.nii.gz -add 101.nii.gz -add 102.nii.gz -add 103.nii.gz -add 104.nii.gz -add 105.nii.gz -add 106.nii.gz -add 107.nii.gz -add 111.nii.gz -add 112.nii.gz -add 113.nii.gz -add 114.nii.gz -add 115.nii.gz -add 116.nii.gz -add 117.nii.gz -add 118.nii.gz -add 119.nii.gz -add 120.nii.gz -add 121.nii.gz -add 122.nii.gz -add 123.nii.gz thalamus
+
+
+
+
+cd /Users/erin/Desktop/Projects/MRGFUS/atlases/FromAyca 
+mkdir rois
+nlabels=`fslstats mallar_bertrand_thalamus_atlas_to_icbm_nifti.nii.gz -R | awk '{ printf("%d",$2) }'`
+for ((n=0; n<=$nlabels; n++)) ; do
+fslmaths mallar_bertrand_thalamus_atlas_to_icbm_nifti -thr $((n-1)).5 -uthr ${n}.5 -bin -mul ${n} rois/${n}
+done
+cd rois
+fslmaths 15.nii.gz -add 26.nii.gz -add 27.nii.gz -add 28.nii.gz -add 36.nii.gz -add 37.nii.gz -add 40.nii.gz -add 41.nii.gz -add 49.nii.gz -add 51.nii.gz -add 53.nii.gz -add 64.nii.gz -add 70.nii.gz -add 71.nii.gz -add 81.nii.gz -add 86.nii.gz -add 87.nii.gz -add 88.nii.gz -add 89.nii.gz -add 90.nii.gz -add 91.nii.gz -add 92.nii.gz -add 93.nii.gz -add 94.nii.gz -add 95.nii.gz -add 96.nii.gz -add 97.nii.gz -add 98.nii.gz -add 99.nii.gz -add 100.nii.gz -add 101.nii.gz -add 102.nii.gz -add 103.nii.gz -add 104.nii.gz -add 105.nii.gz -add 106.nii.gz -add 107.nii.gz -add 111.nii.gz -add 112.nii.gz -add 113.nii.gz -add 114.nii.gz -add 115.nii.gz -add 116.nii.gz -add 117.nii.gz -add 118.nii.gz -add 119.nii.gz -add 120.nii.gz -add 121.nii.gz -add 122.nii.gz -add 123.nii.gz thalamus
