@@ -11,5 +11,7 @@ DIFFDIR=${ANALYSISDIR}/${MYSUB}/diffusion
 cp $0 ${ANALYSISDIR}/${MYSUB}/.
 
 cp ${DIFFDIR}/data.eddy_rotated_bvecs ${DIFFDIR}/bvecs
-cp ${SCRIPTSDIR}/bvals ${DIFFDIR}/.
+if [ ! -f ${DIFFDIR}/bvals ]; then 
+  cp ${SCRIPTSDIR}/bvals ${DIFFDIR}/.
+fi
 bedpostx ${DIFFDIR} 

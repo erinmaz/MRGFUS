@@ -10,7 +10,7 @@ mkdir /Users/erin/Desktop/Projects/MRGFUS/atlases/labels_on_colin_Nov2010_rois
 nlabels=`fslstats /Users/erin/Desktop/Projects/MRGFUS/atlases/labels_on_colin_Nov2010_nifti.nii -R | awk '{ printf("%d",$2) }'` 
 
 for ((n=0; n<=$nlabels; n++)) ; do
-  fslmaths /Users/erin/Desktop/Projects/MRGFUS/atlases/labels_on_colin_Nov2010_nifti.nii -thr $((n-1)).5 -uthr ${n}.5 -bin -mul ${n} /Users/erin/Desktop/Projects/MRGFUS/atlases/labels_on_colin_Nov2010_rois/${n}
+  fslmaths /Users/erin/Desktop/Projects/MRGFUS/atlases/labels_on_colin_Nov2010_nifti.nii ff /Users/erin/Desktop/Projects/MRGFUS/atlases/labels_on_colin_Nov2010_rois/${n}
 done
 
 mystring=""   
