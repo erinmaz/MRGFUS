@@ -10,9 +10,12 @@ ANALYSISDIR=${MAINDIR}/analysis
 TBSSNAME=$1
 
 #order is very important!
-RUNS=( 9001_SH-11644 9001_SH-11692 9001_SH-12271 9002_RA-11764 9002_RA-11833 9002_RA-12388 9004_EP-12203 9004_EP-12126 9004_EP-12955 9005_BG-13004 9005_BG-13126 9005_BG-13837 9006_EO-12389 9006_EO-12487 9006_EO-13017 9007_RB-12461 9007_RB-12910 9007_RB-13055 9009_CRB-12609 9009_CRB-13043 9009_CRB-13623 )
+RUNS=( 9001_SH-11644 9001_SH-11692 9001_SH-12271 9001_SH-14297 9002_RA-11764 9002_RA-11833 9002_RA-12388 9004_EP-12203 9004_EP-12126 9004_EP-12955 9005_BG-13004 9005_BG-13126 9005_BG-13837 9006_EO-12389 9006_EO-12487 9006_EO-13017 9007_RB-12461 9007_RB-12910 9007_RB-13055 9009_CRB-12609 9009_CRB-13043 9009_CRB-13623 9013_JD-13455 9013_JD-13722 9013_JD-14227 )
 
-SUBS=( 9001_SH 9002_RA 9004_EP 9005_BG 9006_EO 9007_RB 9009_CRB )
+SUBS=( 9001_SH 9002_RA 9004_EP 9005_BG 9006_EO 9007_RB 9009_CRB 9013_JD )
+
+#currently only 4 or 3 will work, but easy enough to add more (see below)
+NUM_SESS=( 4 3 3 3 3 3 3 3 )
 
 mkdir ${MAINDIR}/${TBSSNAME}
 for f in "${RUNS[@]}"
@@ -62,14 +65,20 @@ do
 	index=0
 	for s in "${SUBS[@]}"
 	do
-		fslmaths stats/${measure}_skeleton`printf '%04d\n' $index` ${ANALYSISDIR}/${s}_diffusion_longitudinal/${TBSSNAME}_skeleton/${measure}_pre
-		fslmaths stats/${measure}_image`printf '%04d\n' $index` ${ANALYSISDIR}/${s}_diffusion_longitudinal/${TBSSNAME}_image/${measure}_pre
+	    
+		fslmaths stats/${measure}_skeleton`printf '%04d\n' $index` ${ANALYSISDIR}/${s}_diffusion_longitudinal/${TBSSNAME}_skeleton/${measure}_TP1
+		fslmaths stats/${measure}_image`printf '%04d\n' $index` ${ANALYSISDIR}/${s}_diffusion_longitudinal/${TBSSNAME}_image/${measure}_TP1
 		let index=$index+1
-		fslmaths stats/${measure}_skeleton`printf '%04d\n' $index` ${ANALYSISDIR}/${s}_diffusion_longitudinal/${TBSSNAME}_skeleton/${measure}_day1
-		fslmaths stats/${measure}_image`printf '%04d\n' $index` ${ANALYSISDIR}/${s}_diffusion_longitudinal/${TBSSNAME}_image/${measure}_day1
+		fslmaths stats/${measure}_skeleton`printf '%04d\n' $index` ${ANALYSISDIR}/${s}_diffusion_longitudinal/${TBSSNAME}_skeleton/${measure}_TP2
+		fslmaths stats/${measure}_image`printf '%04d\n' $index` ${ANALYSISDIR}/${s}_diffusion_longitudinal/${TBSSNAME}_image/${measure}_TP2
 		let index=$index+1
-		fslmaths stats/${measure}_skeleton`printf '%04d\n' $index` ${ANALYSISDIR}/${s}_diffusion_longitudinal/${TBSSNAME}_skeleton/${measure}_3M
-		fslmaths stats/${measure}_image`printf '%04d\n' $index` ${ANALYSISDIR}/${s}_diffusion_longitudinal/${TBSSNAME}_image/${measure}_3M
+		fslmaths stats/${measure}_skeleton`printf '%04d\n' $index` ${ANALYSISDIR}/${s}_diffusion_longitudinal/${TBSSNAME}_skeleton/${measure}_TP3
+		fslmaths stats/${measure}_image`printf '%04d\n' $index` ${ANALYSISDIR}/${s}_diffusion_longitudinal/${TBSSNAME}_image/${measure}_TP3
 		let index=$index+1
+		if [ ${NUM_SESS[$index]} -eq 4 ]; then 
+			fslmaths stats/${measure}_skeleton`printf '%04d\n' $index` ${ANALYSISDIR}/${s}_diffusion_longitudinal/${TBSSNAME}_skeleton/${measure}_TP4
+			fslmaths stats/${measure}_image`printf '%04d\n' $index` ${ANALYSISDIR}/${s}_diffusion_longitudinal/${TBSSNAME}_image/${measure}_TP4			
+			let index=$index+1
+		fi
 	done
 done
