@@ -22,7 +22,7 @@ MYSUB_TOTRACK=${MYSUB}-${2}
 MYSUB_DAY1=${MYSUB}-${3}
 TRACT_OUTPUT=$4
 TREATMENTSIDE=$5
-TBSSDIR=${MAINDIR}/tbss_140518 #for reg
+TBSSDIR=${MAINDIR}/${6} #for reg
 
 if [ ! $TREATMENTSIDE = "R" ]; then 
 	OTHERSIDE=R
@@ -31,34 +31,37 @@ fi
 	
 mkdir ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}
 
-MYSEED=/Users/erin/Desktop/Projects/MRGFUS/scripts/rois_standardspace/harvardoxford-cortical_prob_Precentral+Juxtapositional_${TREATMENTSIDE}
+MYSEED=/Users/erin/Desktop/Projects/MRGFUS/scripts/rois_standardspace/dentate_${OTHERSIDE}_1mm
+MYSEED_NAME=`basename $MYSEED` 
+
+RED_WAYPOINT=/Users/erin/Desktop/Projects/MRGFUS/scripts/rois_standardspace/Keuken/RN_standard_1mm_${TREATMENTSIDE}
+RED_WAYPOINT_NAME=`basename ${RED_WAYPOINT}`
 
 THALAMUS_WAYPOINT=/Users/erin/Desktop/Projects/MRGFUS/scripts/rois_standardspace/harvardoxford-subcortical/thalamus_${TREATMENTSIDE}_final
+THALAMUS_WAYPOINT_NAME=`basename ${THALAMUS_WAYPOINT}`  
  
-CEREBELLUM_WAYPOINT=/Users/erin/Desktop/Projects/MRGFUS/scripts/rois_standardspace/mni_prob_Cerebellum_thr10_${OTHERSIDE}
- 
-MYSEED_NAME=`basename $MYSEED` 
+CORTEX_WAYPOINT=/Users/erin/Desktop/Projects/MRGFUS/scripts/rois_standardspace/harvardoxford-cortical_prob_Precentral+Juxtapositional_${TREATMENTSIDE}
+CORTEX_WAYPOINT_NAME=`basename ${CORTEX_WAYPOINT}` 
+
+DENTATE_EXCLUDE=/Users/erin/Desktop/Projects/MRGFUS/scripts/rois_standardspace/dentate_${TREATMENTSIDE}_1mm
+DENTATE_EXCLUDE_NAME=`basename ${DENTATE_EXCLUDE}`
 
 #check that this warp exists and if not generate it
 if [ ! -f ${TBSSDIR}/FA/${MYSUB_TOTRACK}_FA_FA_to_target_warp_inv.nii.gz ]; then
 invwarp -w ${TBSSDIR}/FA/${MYSUB_TOTRACK}_FA_FA_to_target_warp -o ${TBSSDIR}/FA/${MYSUB_TOTRACK}_FA_FA_to_target_warp_inv -r ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/nodif_brain
 fi
 
-applywarp -i ${MYSEED} -r ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/nodif_brain.nii.gz -w ${TBSSDIR}/FA/${MYSUB_TOTRACK}_FA_FA_to_target_warp_inv -o ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/${MYSEED_NAME} --interp=spline
+applywarp -i ${MYSEED} -r ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/nodif_brain.nii.gz -w ${TBSSDIR}/FA/${MYSUB_TOTRACK}_FA_FA_to_target_warp_inv -o ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/${MYSEED_NAME} --interp=nn
  
-fslmaths ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/${MYSEED_NAME} -thr 0.25 -bin ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/${MYSEED_NAME} 
+#fslmaths ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/${MYSEED_NAME} -thr 0.25 -bin ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/${MYSEED_NAME} 
 
-THALAMUS_WAYPOINT_NAME=`basename ${THALAMUS_WAYPOINT}`  
-
-applywarp -i ${THALAMUS_WAYPOINT} -r ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/nodif_brain.nii.gz -w ${TBSSDIR}/FA/${MYSUB_TOTRACK}_FA_FA_to_target_warp_inv -o ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/${THALAMUS_WAYPOINT_NAME} --interp=spline
+applywarp -i ${RED_WAYPOINT} -r ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/nodif_brain.nii.gz -w ${TBSSDIR}/FA/${MYSUB_TOTRACK}_FA_FA_to_target_warp_inv -o ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/${RED_WAYPOINT_NAME} --interp=nn
  
-fslmaths ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/${THALAMUS_WAYPOINT_NAME} -thr 0.25 -bin ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/${THALAMUS_WAYPOINT_NAME} 
-
-CEREBELLUM_WAYPOINT_NAME=`basename ${CEREBELLUM_WAYPOINT}`  
-
-applywarp -i ${CEREBELLUM_WAYPOINT} -r ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/nodif_brain.nii.gz -w ${TBSSDIR}/FA/${MYSUB_TOTRACK}_FA_FA_to_target_warp_inv -o ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/${CEREBELLUM_WAYPOINT_NAME} --interp=spline
+applywarp -i ${THALAMUS_WAYPOINT} -r ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/nodif_brain.nii.gz -w ${TBSSDIR}/FA/${MYSUB_TOTRACK}_FA_FA_to_target_warp_inv -o ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/${THALAMUS_WAYPOINT_NAME} --interp=nn
  
-fslmaths ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/${CEREBELLUM_WAYPOINT_NAME} -thr 0.25 -bin ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/${CEREBELLUM_WAYPOINT_NAME} 
+#fslmaths ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/${THALAMUS_WAYPOINT_NAME} -thr 0.25 -bin ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/${THALAMUS_WAYPOINT_NAME} 
+
+applywarp -i ${CORTEX_WAYPOINT} -r ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/nodif_brain.nii.gz -w ${TBSSDIR}/FA/${MYSUB_TOTRACK}_FA_FA_to_target_warp_inv -o ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/${CORTEX_WAYPOINT_NAME} --interp=nn
 
 # threshold CSF mask 
 fslmaths ${ANALYSISDIR}/${MYSUB_TOTRACK}/anat/c3T1 -thr .99 ${ANALYSISDIR}/${MYSUB_TOTRACK}/anat/c3T1.99
@@ -68,16 +71,20 @@ applywarp -i ${ANALYSISDIR}/${MYSUB_TOTRACK}/anat/c3T1.99 --interp=nn --postmat=
 
 applywarp -i ${SCRIPTSDIR}/rois_standardspace/midsag_plane_CC_MNI152_T1_2mm -w ${TBSSDIR}/FA/${MYSUB_TOTRACK}_FA_FA_to_target_warp_inv -o ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/midsag_plane_CC_MNI152_T1_2mm2diff -r ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/nodif_brain
 
-fslmaths ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/midsag_plane_CC_MNI152_T1_2mm2diff -dilM -add ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/csf -bin ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/exclude
+applywarp -i ${DENTATE_EXCLUCDE} -r ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/nodif_brain.nii.gz -w ${TBSSDIR}/FA/${MYSUB_TOTRACK}_FA_FA_to_target_warp_inv -o ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/${DENTATE_EXCLUDE_NAME} --interp=nn
+ 
+fslmaths ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/midsag_plane_CC_MNI152_T1_2mm2diff -dilM -add ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/csf -add ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/${DENTATE_EXCLUDE_NAME} -bin ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/exclude
 
 ################# run PROBTRACK
 
 rm -rf ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion.bedpostX/${TRACT_OUTPUT}
 mkdir -p ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion.bedpostX/${TRACT_OUTPUT}
 
+echo ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/${RED_WAYPOINT_NAME} > ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion.bedpostX/${TRACT_OUTPUT}/waypoints.txt
+
 echo ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/${THALAMUS_WAYPOINT_NAME} > ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion.bedpostX/${TRACT_OUTPUT}/waypoints.txt
 
-echo ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/${CEREBELLUM_WAYPOINT_NAME} >> ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion.bedpostX/${TRACT_OUTPUT}/waypoints.txt
+echo ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/${CORTEX_WAYPOINT_NAME} >> ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion.bedpostX/${TRACT_OUTPUT}/waypoints.txt
 
 /usr/local/fsl/bin/probtrackx2 -x ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/${MYSEED_NAME} -l --wayorder -c 0.2 -S 2000 --steplength=0.5 -P 5000 --fibthresh=0.01 --distthresh=10.0 --sampvox=0.0 --avoid=${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/exclude --forcedir --opd -s ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion.bedpostX/merged -m ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion.bedpostX/nodif_brain_mask  --dir=${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion.bedpostX/${TRACT_OUTPUT} --waypoints=${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion.bedpostX/${TRACT_OUTPUT}/waypoints.txt  --waycond=AND
 

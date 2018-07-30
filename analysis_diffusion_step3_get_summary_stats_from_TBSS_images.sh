@@ -3,7 +3,7 @@
 # Check especially how inferior tracts look relative to skeleton, on contralateral and ipsilateral side (relative to lesion)
 
 # PROBTRACKX OUTPUT PREFIX FROM analysis_diffusion_step2_track_pre_from_day1_lesion.sh
-TRACT_OUTPUT=tracking_day1_lesion_150518
+TRACT_OUTPUT=$1
 
 #OUTPUT FROM analysis_diffusion_step1B_run_tbss_preproc.sh
 TBSSNAME=tbss_140518
@@ -21,15 +21,19 @@ do
 		do
 			applywarp -i ${ANALYSISDIR}/${MYSUB_TOTRACK}/${roi} -o ${ANALYSISDIR}/${MYSUB_TOTRACK}/${roi}2standard_tbss_warp -r $FSLDIR/data/standard/FMRIB58_FA_1mm -w ${TBSSDIR}/FA/${MYSUB_TOTRACK}_FA_FA_to_target_warp --interp=spline
 			fslmaths ${ANALYSISDIR}/${MYSUB_TOTRACK}/${roi}2standard_tbss_warp -thr 0.5 -bin ${ANALYSISDIR}/${MYSUB_TOTRACK}/${roi}2standard_tbss_warp
-			for scan in pre day1 3M
-			do
+		#	for scan in pre day1 3M
+		#	do
 				for measure in FA MD RD L1
 				do
 					for type in image skeleton
 					do
-						echo ${subs[$i]} $roi $scan $measure $type `fslstats ${ANALYSISDIR}/${subs[$i]}_diffusion_longitudinal/${TBSSNAME}_${type}/${measure}_${scan} -k ${ANALYSISDIR}/${MYSUB_TOTRACK}/${roi}2standard_tbss_warp -M -V` >> ${ANALYSISDIR}/tractography_${TBSSNAME}_${TRACT_OUTPUT}_${type}_output_mean_vol_regen.txt
+						for file in `ls -d ${ANALYSISDIR}/${subs[$i]}_diffusion_longitudinal/${TBSSNAME}_${type}/${measure}*.nii.gz`
+						do
+							f=`basename $file .nii.gz`
+							scan=`echo ${f:3:6}`
+							echo ${subs[$i]} $scan $roi $measure $type `fslstats $file -k ${ANALYSISDIR}/${MYSUB_TOTRACK}/${roi}2standard_tbss_warp -M -V` >> ${ANALYSISDIR}/tractography_${TBSSNAME}_${TRACT_OUTPUT}_${type}_output_mean_vol.txt
 					done
-				done
+		#		done
 			done
 		done
 	done

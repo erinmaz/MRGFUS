@@ -1,0 +1,11 @@
+#First thresholded and binarized dentates from SUIT
+
+ flirt -in RN_standard.nii.gz -ref  /usr/local/fsl/data/standard/MNI152_T1_1mm -applyxfm -usesqform -out  RN_standard_1mm 
+Erins-MacBook-Pro:Keuken erin$ flirt -in RN_standard.nii.gz -ref  /usr/local/fsl/data/standard/MNI152_T1_1mm -applyxfm -usesqform -out  RN_standard_1mm -interp nearestneighbour
+flirt -in /Users/erin/Desktop/Projects/MRGFUS/scripts/rois_standardspace/SUIT/dentate_R.nii.gz -ref /usr/local/fsl/data/standard/MNI152_T1_1mm -applyxfm -usesqform -out /Users/erin/Desktop/Projects/MRGFUS/scripts/rois_standardspace/SUIT/dentate_R_1mm -interp nearestneighbour
+Erins-MacBook-Pro:Keuken erin$ flirt -in /Users/erin/Desktop/Projects/MRGFUS/scripts/rois_standardspace/SUIT/dentate_L.nii.gz -ref /usr/local/fsl/data/standard/MNI152_T1_1mm -applyxfm -usesqform -out /Users/erin/Desktop/Projects/MRGFUS/scripts/rois_standardspace/SUIT/dentate_L_1mm -interp nearestneighbour
+
+ flirt -in RN_standard.nii.gz -ref  /usr/local/fsl/data/standard/MNI152_T1_1mm -applyxfm -usesqform -out  RN_standard_1mm 
+Erins-MacBook-Pro:Keuken erin$ flirt -in RN_standard.nii.gz -ref  /usr/local/fsl/data/standard/MNI152_T1_1mm -applyxfm -usesqform -out  RN_standard_1mm -interp nearestneighbour
+^[[A^[[AErins-MacBook-Pro:Keukeflirt -in /Users/erin/Desktop/Projects/MRGFUS/scripts/rois_standardspace/SUIT/dentate_R.nii.gz -ref /usr/local/fsl/data/standard/MNI152_T1_1mm -applyxfm -usesqform -out /Users/erin/Desktop/Projects/MRGFUS/scripts/rois_standardspace/SUIT/dentate_R_1mm -interp nearestneighbour
+Erins-MacBook-Pro:Keuken erin$ flirt -in /Users/erin/Desktop/Projects/MRGFUS/scripts/rois_standardspace/SUIT/dentate_L.nii.gz -ref /usr/local/fsl/data/standard/MNI152_T1_1mm -applyxfm -usesqform -out /Users/erin/Desktop/Projects/MRGFUS/scripts/rois_standardspace/SUIT/dentate_L_1mm -interp nearestneighbour
