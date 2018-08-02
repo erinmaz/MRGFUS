@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash# o
 MAINDIR=/Users/erin/Desktop/Projects/MRGFUS
 SCRIPTSDIR=${MAINDIR}/scripts
 ANALYSISDIR=${MAINDIR}/analysis
