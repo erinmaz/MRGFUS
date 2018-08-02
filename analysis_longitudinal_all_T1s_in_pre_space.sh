@@ -27,4 +27,6 @@ fslmaths ${ANATDIR_MONTH12}/mT1 -mas ${ANATDIR_MONTH12}/spm_mask ${ANATDIR_MONTH
 flirt -in ${ANATDIR_MONTH3}/mT1_brain -ref ${ANATDIR_PRE}/mT1_brain -out ${RESULTSDIR}/mT1_brain_month3_2_pre_6dof -omat ${RESULTSDIR}/mT1_brain_month3_2_pre_6dof.math -dof 6
 flirt -in ${ANATDIR_MONTH12}/mT1_brain -ref ${ANATDIR_PRE}/mT1_brain -out ${RESULTSDIR}/mT1_brain_month12_2_pre_6dof -omat ${RESULTSDIR}/mT1_brain_month12_2_pre_6dof.mat -dof 6
 
+flirt -in ${ANATDIR_DAY1}/mT1_brain -ref ${ANATDIR_PRE}/mT1_brain -out ${RESULTSDIR}/mT1_brain_day1_2_pre_6dof -applyxfm -init ${RESULTSDIR}/mT1_day1_2_pre_6dof.mat
+
 fsleyes ${ANATDIR_PRE}/mT1_brain ${RESULTSDIR}/mT1_brain_day1_2_pre_6dof ${RESULTSDIR}/mT1_brain_month3_2_pre_6dof ${RESULTSDIR}/mT1_brain_month12_2_pre_6dof
