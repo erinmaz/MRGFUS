@@ -41,6 +41,10 @@ if [ ! -f ${ANALYSISDIR}/${MYSUB_DAY1}/fmri/rs_reg.feat/reg/standard2highres_war
 invwarp -w ${ANALYSISDIR}/${MYSUB_DAY1}/fmri/rs_reg.feat/reg/highres2standard_warp -o ${ANALYSISDIR}/${MYSUB_DAY1}/fmri/rs_reg.feat/reg/standard2highres_warp -r ${ANALYSISDIR}/${MYSUB_DAY1}/fmri/rs_reg.feat/reg/highres
 fi
 
+if [ ! -f ${ANALYSISDIR}/${MYSUB_TOTRACK}/fmri/rs_reg.feat/reg/standard2highres_warp.nii.gz ]; then
+invwarp -w ${ANALYSISDIR}/${MYSUB_TOTRACK}/fmri/rs_reg.feat/reg/highres2standard_warp -o ${ANALYSISDIR}/${MYSUB_TOTRACK}/fmri/rs_reg.feat/reg/standard2highres_warp -r ${ANALYSISDIR}/${MYSUB_TOTRACK}/fmri/rs_reg.feat/reg/highres
+fi
+
 applywarp -i ${MYSEED}2standard -r ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/nodif_brain -w ${ANALYSISDIR}/${MYSUB_TOTRACK}/fmri/rs_reg.feat/reg/standard2highres_warp -o ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/${TRACT_OUTPUT} --postmat=${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/xfms/T1_2_diff_bbr.mat --interp=spline
 
 applywarp -i ${MYSEED}2standard_contralateral -r ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/nodif_brain -w ${ANALYSISDIR}/${MYSUB_TOTRACK}/fmri/rs_reg.feat/reg/standard2highres_warp -o ${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/rois_${TRACT_OUTPUT}/${TRACT_OUTPUT}_contralateral --postmat=${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion/xfms/T1_2_diff_bbr.mat --interp=spline
