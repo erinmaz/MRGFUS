@@ -22,11 +22,11 @@ convert_xfm -omat ${MAINDIR}/9001_SH_longitudinal_xfms/diff_3M_2_T1_pre.mat -con
 OUTDIR=${MAINDIR}/${MYSUB}_diffusion_longitudinal/dti_in_pre_T1_space
 mkdir ${OUTDIR}
 
-if [ -e ${MAINDIR}/${MYSUB_PRE}/diffusion/mrtrix/rtt_from_cortex_include_lesion_clean.tck ]; then
+if [ ! -e ${MAINDIR}/${MYSUB_PRE}/diffusion/mrtrix/rtt_from_cortex_include_lesion_clean.tck ]; then
 cp ${MAINDIR}/${MYSUB_PRE}/diffusion/mrtrix/rtt_from_cortex_include_lesion.tck ${MAINDIR}/${MYSUB_PRE}/diffusion/mrtrix/rtt_from_cortex_include_lesion_clean.tck
 fi
 
-if [ -e ${MAINDIR}/${MYSUB_PRE}/diffusion/mrtrix/rtt_from_cortex_exclude_lesion_clean.tck ]; then
+if [ ! -e ${MAINDIR}/${MYSUB_PRE}/diffusion/mrtrix/rtt_from_cortex_exclude_lesion_clean.tck ]; then
 cp ${MAINDIR}/${MYSUB_PRE}/diffusion/mrtrix/rtt_from_cortex_exclude_lesion.tck ${MAINDIR}/${MYSUB_PRE}/diffusion/mrtrix/rtt_from_cortex_exclude_lesion_clean.tck
 fi
 
