@@ -42,13 +42,16 @@ if [ -e ${WORKDIR}/manual_exclude.nii.gz ]; then
   tckmap -template ${DIFFDIR}/nodif_brain_mask.nii.gz ${WORKDIR}/rtt_from_cortex_exclude_lesion_clean.tck ${WORKDIR}/rtt_from_cortex_exclude_lesion_clean.nii.gz -force
 
   fsleyes ${DIFFDIR}/mean_b0_unwarped ${WORKDIR}/rtt_from_cortex_include_lesion_clean.nii.gz ${WORKDIR}/rtt_from_cortex_exclude_lesion_clean.nii.gz
-  INC_FILE=${WORKDIR}/rtt_from_cortex_include_lesion_clean.nii.gz
-  EXC_FILE=${WORKDIR}/rtt_from_cortex_exclude_lesion_clean.nii.gz
+
 else
-  INC_FILE=${WORKDIR}/rtt_from_cortex_include_lesion.nii.gz
-  EXC_FILE=${WORKDIR}/rtt_from_cortex_exclude_lesion.nii.gz
+  cp ${WORKDIR}/rtt_from_cortex_include_lesion.tck ${WORKDIR}/rtt_from_cortex_include_lesion_clean.tck 
+  cp ${WORKDIR}/rtt_from_cortex_exclude_lesion.tck ${WORKDIR}/rtt_from_cortex_exclude_lesion_clean.tck 
+  cp ${WORKDIR}/rtt_from_cortex_include_lesion.nii.gz ${WORKDIR}/rtt_from_cortex_include_lesion_clean.nii.gz 
+  cp ${WORKDIR}/rtt_from_cortex_exclude_lesion.nii.gz ${WORKDIR}/rtt_from_cortex_exclude_lesion_clean.nii.gz 
 fi
 
+INC_FILE=${WORKDIR}/rtt_from_cortex_include_lesion_clean.nii.gz
+EXC_FILE=${WORKDIR}/rtt_from_cortex_exclude_lesion_clean.nii.gz
 fslmaths ${EXC_FILE} -mas ${INC_FILE} ${WORKDIR}/rtt_from_cortex_overlap.nii.gz
 
 inc_les=`fslstats ${INC_FILE} -V`

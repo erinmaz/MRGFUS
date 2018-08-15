@@ -8,7 +8,7 @@ MAINDIR=/Users/erin/Desktop/Projects/MRGFUS
 SCRIPTSDIR=${MAINDIR}/scripts
 ANALYSISDIR=${MAINDIR}/analysis
 DIFFDIR=${ANALYSISDIR}/${MYSUB}/diffusion
-WORKDIR=${DIFFDIR}/mrtrix_basic_tensor_det_exclude
+WORKDIR=${DIFFDIR}/mrtrix
 THALAMUS_WAYPOINT=/Users/erin/Desktop/Projects/MRGFUS/scripts/rois_standardspace/harvardoxford-subcortical/thalamus_${TREATMENTSIDE}_final
 
 for tract in ${WORKDIR}/rtt_from_cortex_include_lesion_nooverlap ${WORKDIR}/rtt_from_cortex_exclude_lesion_nooverlap
@@ -20,7 +20,7 @@ for tract in ${WORKDIR}/rtt_from_cortex_include_lesion_nooverlap ${WORKDIR}/rtt_
 
  applywarp -i ${tract}_bin -r /usr/local/fsl/data/standard/FMRIB58_FA_1mm -w ${TBSSDIR}/FA/${MYSUB}_FA_FA_to_target_warp -o  ${tract}_bin2standard --interp=nn
 
- fsleyes /usr/local/fsl/data/standard/MNI152_T1_1mm ${tract}_bin2standard ${ANALYSISDIR}_lesion_masks/${MYSUB_DAY1}/anat/T1_lesion_mask_filled2MNI_1mm
+ #fsleyes /usr/local/fsl/data/standard/MNI152_T1_1mm ${tract}_bin2standard ${ANALYSISDIR}_lesion_masks/${MYSUB_DAY1}/anat/T1_lesion_mask_filled2MNI_1mm
 
  fslmaths ${ANALYSISDIR}_lesion_masks/${MYSUB_DAY1}/anat/T1_lesion_mask_filled2MNI_1mm -binv ${ANALYSISDIR}_lesion_masks/${MYSUB_DAY1}/anat/T1_lesion_mask_filled2MNI_1mm_binv
 
@@ -53,7 +53,7 @@ coords=( $LESION_COG )
 
  fslmaths ${tract}_bin2standard_nolesion_orneighbours_superior -mas ${THALAMUS_WAYPOINT}_1mm_binv ${tract}_bin2standard_nolesion_orneighbours_superior_nothalamus
 
- fslmaths ${tract}_bin2standard_nolesion_orneighbours_inferior  -mas ${THALAMUS_WAYPOINT}_1mm_binv ${tract}_bin2standard_nolesion_orneighbours_inferior_nothalamus
+ fslmaths ${tract}_bin2standard_nolesion_orneighbours_inferior -mas ${THALAMUS_WAYPOINT}_1mm_binv ${tract}_bin2standard_nolesion_orneighbours_inferior_nothalamus
 
  fsleyes /usr/local/fsl/data/standard/MNI152_T1_1mm ${tract}_bin2standard ${tract}_bin2standard_nolesion ${tract}_bin2standard_nolesion_orneighbours  ${tract}_bin2standard_nolesion_orneighbours_superior ${tract}_bin2standard_nolesion_orneighbours_inferior ${tract}_bin2standard_nolesion_orneighbours_superior_nothalamus ${tract}_bin2standard_nolesion_orneighbours_inferior_nothalamus ${tract}_bin2standard_nolesion_orneighbours_superior_thalamus_only ${tract}_bin2standard_nolesion_orneighbours_inferior_thalamus_only
 done
