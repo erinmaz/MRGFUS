@@ -54,7 +54,9 @@ coords=( $LESION_COG )
  fslmaths ${tract}_bin2standard_nolesion_orneighbours_superior -mas ${THALAMUS_WAYPOINT}_1mm_binv ${tract}_bin2standard_nolesion_orneighbours_superior_nothalamus
 
  fslmaths ${tract}_bin2standard_nolesion_orneighbours_inferior -mas ${THALAMUS_WAYPOINT}_1mm_binv ${tract}_bin2standard_nolesion_orneighbours_inferior_nothalamus
+ 
+ fslmaths ${tract}_bin2standard_nolesion_orneighbours_inferior -mas ${SCRIPTSDIR}/rois_standardspace/mni_prob_Cerebellum_thr10_binv ${tract}_bin2standard_nolesion_orneighbours_inferior_nocerebellum
 
- fsleyes /usr/local/fsl/data/standard/MNI152_T1_1mm ${tract}_bin2standard ${tract}_bin2standard_nolesion ${tract}_bin2standard_nolesion_orneighbours  ${tract}_bin2standard_nolesion_orneighbours_superior ${tract}_bin2standard_nolesion_orneighbours_inferior ${tract}_bin2standard_nolesion_orneighbours_superior_nothalamus ${tract}_bin2standard_nolesion_orneighbours_inferior_nothalamus ${tract}_bin2standard_nolesion_orneighbours_superior_thalamus_only ${tract}_bin2standard_nolesion_orneighbours_inferior_thalamus_only
+ fsleyes /usr/local/fsl/data/standard/MNI152_T1_1mm ${tract}_bin2standard ${tract}_bin2standard_nolesion ${tract}_bin2standard_nolesion_orneighbours  ${tract}_bin2standard_nolesion_orneighbours_superior ${tract}_bin2standard_nolesion_orneighbours_inferior ${tract}_bin2standard_nolesion_orneighbours_superior_nothalamus ${tract}_bin2standard_nolesion_orneighbours_inferior_nothalamus ${tract}_bin2standard_nolesion_orneighbours_superior_thalamus_only ${tract}_bin2standard_nolesion_orneighbours_inferior_thalamus_only ${tract}_bin2standard_nolesion_orneighbours_inferior_nocerebellum
 done
 

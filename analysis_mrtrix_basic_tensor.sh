@@ -26,9 +26,9 @@ tckedit -include ${DIFFDIR}/rois_tracking_day1_lesion_150518/tracking_day1_lesio
 tckmap -template ${DIFFDIR}/nodif_brain_mask.nii.gz ${WORKDIR}/rtt_from_cortex_include_lesion.tck ${WORKDIR}/rtt_from_cortex_include_lesion.nii.gz
 tckmap -template ${DIFFDIR}/nodif_brain_mask.nii.gz ${WORKDIR}/rtt_from_cortex_exclude_lesion.tck ${WORKDIR}/rtt_from_cortex_exclude_lesion.nii.gz 
 
-if [ -e ${DIFFDIR}/mrtrix_old_version/mrtrix_basic_tensor_det_exclude/manual_exclude.nii.gz ]; then
-  fsleyes ${DIFFDIR}/mean_b0_unwarped.nii.gz ${WORKDIR}/rtt_from_cortex_include_lesion.nii.gz ${WORKDIR}/rtt_from_cortex_exclude_lesion.nii.gz  ${DIFFDIR}/mrtrix_old_version/mrtrix_basic_tensor_det_exclude/manual_exclude
-  
+if [ -e ${WORKDIR}_160818/manual_exclude.nii.gz ]; then
+  cp ${WORKDIR}_160818/manual_exclude.nii.gz ${WORKDIR}/manual_exclude.nii.gz
+  fsleyes ${DIFFDIR}/mean_b0_unwarped.nii.gz ${WORKDIR}/rtt_from_cortex_include_lesion.nii.gz ${WORKDIR}/rtt_from_cortex_exclude_lesion.nii.gz ${WORKDIR}/manual_exclude.nii.gz
 else
   fsleyes ${DIFFDIR}/mean_b0_unwarped.nii.gz ${WORKDIR}/rtt_from_cortex_include_lesion.nii.gz ${WORKDIR}/rtt_from_cortex_exclude_lesion.nii.gz 
 fi
