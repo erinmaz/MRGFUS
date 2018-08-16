@@ -9,14 +9,14 @@ ANALYSISDIR=${MAINDIR}/analysis
 DIFFDIR=${ANALYSISDIR}/${MYSUB}/diffusion
 WORKDIR=${DIFFDIR}/mrtrix
 
-mkdir ${WORKDIR}_old_version
-mv ${WORKDIR}_basic* ${WORKDIR}_old_version/.
+mv ${WORKDIR} ${WORKDIR}_160818
 mkdir ${WORKDIR}
 
-#applywarp -w ${ANALYSISDIR}/${MYSUB}/fmri/rs_reg.feat/reg/standard2highres_warp --postmat=${DIFFDIR}/xfms/T1_2_diff_bbr.mat -i ${SCRIPTSDIR}/rois_standardspace/cerebrum_${OTHERSIDE}_MNI2mm -o ${WORKDIR}/cerebrum_${OTHERSIDE}_MNI2mm --interp=nn  -r ${DIFFDIR}/nodif_brain_mask
-cp ${DIFFDIR}/mrtrix_old_version/mrtrix_basic_tensor_det_exclude/cerebrum_${OTHERSIDE}_MNI2mm.nii.gz ${WORKDIR}/.
+applywarp -w ${ANALYSISDIR}/${MYSUB}/fmri/rs_reg.feat/reg/standard2highres_warp --postmat=${DIFFDIR}/xfms/T1_2_diff_bbr.mat -i ${SCRIPTSDIR}/rois_standardspace/cerebrum_${OTHERSIDE}_MNI2mm -o ${WORKDIR}/cerebrum_${OTHERSIDE}_MNI2mm --interp=nn -r ${DIFFDIR}/nodif_brain_mask
 
-fslmaths ${DIFFDIR}/rois_tracking_atlasROIs_300718/csf -add ${WORKDIR}/cerebrum_${OTHERSIDE}_MNI2mm -bin ${WORKDIR}/exclude
+applywarp -w ${ANALYSISDIR}/${MYSUB}/fmri/rs_reg.feat/reg/standard2highres_warp --postmat=${DIFFDIR}/xfms/T1_2_diff_bbr.mat -i ${SCRIPTSDIR}/rois_standardspace/harvardoxford-subcortical_prob_Brain-Stem_clean_binv -o ${WORKDIR}/harvardoxford-subcortical_prob_Brain-Stem_clean_binv --interp=nn -r ${DIFFDIR}/nodif_brain_mask
+
+fslmaths ${DIFFDIR}/rois_tracking_atlasROIs_300718/csf -add ${WORKDIR}/cerebrum_${OTHERSIDE}_MNI2mm -bin -mas ${WORKDIR}/harvardoxford-subcortical_prob_Brain-Stem_clean_binv ${WORKDIR}/exclude
 
 tckgen -algorithm TENSOR_DET -seed_image ${DIFFDIR}/rois_tracking_atlasROIs_300718/harvardoxford-cortical_prob_Precentral+Juxtapositional_${TREATMENTSIDE}.nii.gz -include ${DIFFDIR}/rois_tracking_atlasROIs_300718/RN_standard_1mm_${TREATMENTSIDE}_dilM.nii.gz -exclude ${WORKDIR}/exclude.nii.gz -fslgrad ${DIFFDIR}/data.eddy_rotated_bvecs ${DIFFDIR}/bvals ${DIFFDIR}/data.nii.gz ${WORKDIR}/rtt_from_cortex.tck
 
