@@ -9,7 +9,7 @@ ANALYSISDIR=${MAINDIR}/analysis
 DIFFDIR=${ANALYSISDIR}/${MYSUB}/diffusion
 WORKDIR=${DIFFDIR}/mrtrix
 
-mv ${WORKDIR} ${WORKDIR}_160818
+#mv ${WORKDIR} ${WORKDIR}_160818
 mkdir ${WORKDIR}
 
 applywarp -w ${ANALYSISDIR}/${MYSUB}/fmri/rs_reg.feat/reg/standard2highres_warp --postmat=${DIFFDIR}/xfms/T1_2_diff_bbr.mat -i ${SCRIPTSDIR}/rois_standardspace/cerebrum_${OTHERSIDE}_MNI2mm -o ${WORKDIR}/cerebrum_${OTHERSIDE}_MNI2mm --interp=nn -r ${DIFFDIR}/nodif_brain_mask

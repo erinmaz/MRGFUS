@@ -7,7 +7,7 @@ ANALYSISDIR=/Users/erin/Desktop/Projects/MRGFUS/analysis
 #OUTPUT FROM analysis_diffusion_step1B_run_tbss_preproc.sh
 TBSSNAME=$1
 TBSSDIR=/Users/erin/Desktop/Projects/MRGFUS/${TBSSNAME}
-OUTNAME=mrtrix_130818
+OUTNAME=mrtrix_170818
 i=0
 
 #EDIT TO INCLUDE ANY NEW SUBJECTS
@@ -17,7 +17,7 @@ do
 #echo $MYSUB_TOTRACK
 	DIFFDIR=${ANALYSISDIR}/${MYSUB_TOTRACK}/diffusion
 	WORKDIR=${DIFFDIR}/mrtrix
-	for tract in ${WORKDIR}/rtt_from_cortex_include_lesion_nooverlap ${WORKDIR}/rtt_from_cortex_exclude_lesion_nooverlap
+	for tract in ${WORKDIR}/rtt_from_cortex_include_lesion_nooverlap ${WORKDIR}/rtt_from_cortex_exclude_lesion_nooverlap ${WORKDIR}/rtt_from_cortex_clean
 	do
 #	echo $tract
 		tract_name=`basename $tract`
