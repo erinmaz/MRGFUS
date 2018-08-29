@@ -8,6 +8,7 @@ CURRENT_ANALYSIS=${MAINDIR}/analysis_diffusion_manuscript_230818
 TBSSDIR=${CURRENT_ANALYSIS}/tbss
 TCKINFO_OUTPUT=${CURRENT_ANALYSIS}/tckinfo_output.txt
 T1_2_DIFF=T1_2_diff_bbr.mat 
+OUTFOLDER=mrtrix_210818
 
 SUBS=( 9001_SH 9002_RA 9004_EP 9005_BG 9006_EO 9007_RB 9009_CRB 9013_JD )
 
@@ -22,56 +23,55 @@ mkdir ${CURRENT_ANALYSIS}
 
 for s in "${SUBS[@]}"
 do
-	mkdir ${CURRENT_ANALYSIS}/${s}_diffusion_longitudinal
 	mkdir ${CURRENT_ANALYSIS}/${s}_longitudinal_xfms
-done
-
-for r in "${RUNS[@]}"
-do
-	mkdir ${CURRENT_ANALYSIS}/${r}
-	cp ${QADIR}/${r}/diffusion/dtifit_FA.nii.gz ${CURRENT_ANALYSIS}/tbss/${r}.nii.gz
 done
 
 index=0
 for r in "${PRETREATMENT_RUNS[@]}"
 do
-	cp ${QAdir}/${r}/anat/mT1_brain.nii.gz ${CURRENT_ANALYSIS}/${SUBS[${index}]}_longituindal_xfms/.
-	cp ${QAdir}/${DAY1_RUNS[${index}]}/anat/mT1_brain.nii.gz ${CURRENT_ANALYSIS}/${SUBS[${index}]}_longituindal_xfms/.
-	flirt -i ${CURRENT_ANALYSIS}/${SUBS[${index}]}_longituindal_xfms/mT1_brain.nii.gz -r ${CURRENT_ANALYSIS}/${SUBS[${index}]}_longituindal_xfms/mT1_brain -o ${CURRENT_ANALYSIS}/${SUBS[${index}]}_longituindal_xfms/day1_2_pre_mT1_brain -omat ${CURRENT_ANALYSIS}/${SUBS[${index}]}_longituindal_xfms/day1_mT1_brain_2_pre_mT1_brain.mat -dof 6
-	convert_xfm -omat ${CURRENT_ANALYSIS}/${SUBS[${index}]}_longituindal_xfms/day1_mT1_brain_2_pre_diff.mat -concat ${QADIR}/${r}/diffusion/xfms/${T1_2_DIFF} ${CURRENT_ANALYSIS}/${SUBS[${index}]}_longituindal_xfms/day1_mT1_brain_2_pre_mT1_brain.mat  
-	applywarp --postmat=${CURRENT_ANALYSIS}/${SUBS[${index}]}_longituindal_xfms/day1_mT1_brain_2_pre_diff.mat -i ${LESION_ANALYSIS}/${DAY1_RUNS[${index}]}/anat/T1_lesion_mask_filled -o ${CURRENT_ANALYSIS}/${r}/day1_lesion_2_pre_diff --interp=nn -r ${QADIR}/${r}/diffusion/mean_B0_unwarped
+	mkdir ${CURRENT_ANALYSIS}/${r}
+	flirt -in ${QADIR}/${DAY1_RUNS[${index}]}/anat/mT1_brain -ref ${QADIR}/${r}/anat/mT1_brain -o ${CURRENT_ANALYSIS}/${SUBS[${index}]}_longitudinal_xfms/day1_2_pre_mT1_brain -omat ${CURRENT_ANALYSIS}/${SUBS[${index}]}_longitudinal_xfms/day1_mT1_brain_2_pre_mT1_brain.mat -dof 6
+	convert_xfm -omat ${CURRENT_ANALYSIS}/${SUBS[${index}]}_longitudinal_xfms/day1_mT1_brain_2_pre_diff.mat -concat ${QADIR}/${r}/diffusion/xfms/${T1_2_DIFF} ${CURRENT_ANALYSIS}/${SUBS[${index}]}_longitudinal_xfms/day1_mT1_brain_2_pre_mT1_brain.mat  
+	applywarp --postmat=${CURRENT_ANALYSIS}/${SUBS[${index}]}_longitudinal_xfms/day1_mT1_brain_2_pre_diff.mat -i ${LESION_ANALYSIS}/${DAY1_RUNS[${index}]}/anat/T1_lesion_mask_filled -o ${CURRENT_ANALYSIS}/${r}/day1_lesion_2_pre_diff --interp=nn -r ${QADIR}/${r}/diffusion/mean_b0_unwarped
+	applywarp --postmat=${CURRENT_ANALYSIS}/${SUBS[${index}]}_longitudinal_xfms/day1_mT1_brain_2_pre_diff.mat -i ${LESION_ANALYSIS}/${DAY1_RUNS[${index}]}/anat/T1 -o ${CURRENT_ANALYSIS}/${r}/day1_T1_2_pre_diff --interp=nn -r ${QADIR}/${r}/diffusion/mean_b0_unwarped
+		
+	let index=${index}+1
+done
 
 ###### RUN TBSS ##########################################################################
 
-CWD=`pwd`
 mkdir ${TBSSDIR}
+for r in "${RUNS[@]}"
+do
+	cp ${QADIR}/${r}/diffusion/dtifit_FA.nii.gz ${TBSSDIR}/${r}.nii.gz
+done
+
+CWD=`pwd`
 cd ${TBSSDIR}
 tbss_1_preproc *.nii.gz
 tbss_2_reg -T
 tbss_3_postreg -S
 tbss_4_prestats 0.2
 
-for measure in MD L1
+for r in "${RUNS[@]}"
+do
+	fslmaths ${QADIR}/${r}/diffusion/dtifit_L2 -add ${QADIR}/${r}/diffusion/dtifit_L3 -div 2 ${QADIR}/${r}/diffusion/dtifit_RD
+done
+for measure in MD L1 RD
 do
 	mkdir ${TBSSDIR}/${measure}
-	for f in "${RUNS[@]}"
+	for r in "${RUNS[@]}"
 	do
 		cp ${QADIR}/${r}/diffusion/dtifit_${measure}.nii.gz ${TBSSDIR}/${measure}/${r}.nii.gz
 	done
 	tbss_non_FA ${measure}
 done
 
-mkdir ${TBSSDIR}/RD
-for f in "${RUNS[@]}"
-do
-	fslmaths ${QADIR}/${r}/diffusion/dtifit_L2 -add ${QADIR}/${r}/diffusion/dtifit_L3 -div 2 ${QADIR}/${r}/diffusion/RD
-	cp ${QADIR}/${r}/diffusion/RD.nii.gz ${TBSSDIR}/${measure}/${r}.nii.gz
-done
-tbss_non_FA RD
 
 # Set up directories for longitudinal analysis of skeleton and images created by TBSS
 for s in "${SUBS[@]}"
 do
+	mkdir ${CURRENT_ANALYSIS}/${s}_diffusion_longitudinal
 	mkdir ${CURRENT_ANALYSIS}/${s}_diffusion_longitudinal/tbss_skeleton
 	mkdir ${CURRENT_ANALYSIS}/${s}_diffusion_longitudinal/tbss_image
 done
@@ -87,11 +87,11 @@ do
 		fslmaths stats/${measure}_skeleton`printf '%04d\n' $index` ${CURRENT_ANALYSIS}/${s}_diffusion_longitudinal/tbss_skeleton/${measure}_TP1
 		fslmaths stats/${measure}_image`printf '%04d\n' $index` ${CURRENT_ANALYSIS}/${s}_diffusion_longitudinal/tbss_image/${measure}_TP1
 		let index=$index+1
-		fslmaths stats/${measure}_skeleton`printf '%04d\n' $index` ${ANALYSISDIR}/${s}_diffusion_longitudinal/tbss_skeleton/${measure}_TP2
-		fslmaths stats/${measure}_image`printf '%04d\n' $index` ${ANALYSISDIR}/${s}_diffusion_longitudinal/tbss_image/${measure}_TP2
+		fslmaths stats/${measure}_skeleton`printf '%04d\n' $index` ${CURRENT_ANALYSIS}/${s}_diffusion_longitudinal/tbss_skeleton/${measure}_TP2
+		fslmaths stats/${measure}_image`printf '%04d\n' $index` ${CURRENT_ANALYSIS}/${s}_diffusion_longitudinal/tbss_image/${measure}_TP2
 		let index=$index+1
-		fslmaths stats/${measure}_skeleton`printf '%04d\n' $index` ${ANALYSISDIR}/${s}_diffusion_longitudinal/tbss_skeleton/${measure}_TP3
-		fslmaths stats/${measure}_image`printf '%04d\n' $index` ${ANALYSISDIR}/${s}_diffusion_longitudinal/tbss_image/${measure}_TP3
+		fslmaths stats/${measure}_skeleton`printf '%04d\n' $index` ${CURRENT_ANALYSIS}/${s}_diffusion_longitudinal/tbss_skeleton/${measure}_TP3
+		fslmaths stats/${measure}_image`printf '%04d\n' $index` ${CURRENT_ANALYSIS}/${s}_diffusion_longitudinal/tbss_image/${measure}_TP3
 		let index=$index+1
 	done
 done
@@ -104,7 +104,7 @@ echo subject inc_les_vol_nooverlap exc_les_vol_nooverlap overlap_vol inc_les_cou
 index=0
 for r in "${PRETREATMENT_RUNS[@]}"
 do
-	analysis_mrtrix.sh ${r} ${TREATMENT_SIDE[${index}]} ${CURRENT_ANALYSIS} ${TBSSDIR} ${ROIDIR} ${QADIR} ${CURRENT_ANALYSIS}/${r}/day1_lesion_2_pre_diff.nii.gz ${TCKINFO_OUTPUT}
+	analysis_mrtrix.sh ${r} ${TREATMENT_SIDE[${index}]} ${CURRENT_ANALYSIS} ${TBSSDIR} ${ROIDIR} ${QADIR} ${CURRENT_ANALYSIS}/${r}/day1_lesion_2_pre_diff ${CURRENT_ANALYSIS}/${r}/day1_T1_2_pre_diff ${OUTFOLDER} ${TCKINFO_OUTPUT}
 	let index=$index+1
 done
 
@@ -115,11 +115,11 @@ OUTPREFIX=${CURRENT_ANALYSIS}/summary
 index=0
 for r in "${PRETREATMENT_RUNS[@]}"
 do 
-	WORKDIR=${CURRENT_ANALYSIS}/${r}/mrtrix
+	WORKDIR=${CURRENT_ANALYSIS}/${r}/${OUTFOLDER}
 	for tract in ${WORKDIR}/rtt_from_cortex ${WORKDIR}/rtt_from_cortex_include_lesion_nooverlap ${WORKDIR}/rtt_from_cortex_exclude_lesion_nooverlap 
 	do
 		tract_name=`basename $tract`
-		for roi in `ls -d ${tract}*2standard*`
+		for roi in ${tract}_bin2standard_nolesion_noneighbours_inferior_nocerebellum ${tract}_bin2standard_nolesion_noneighbours_superior_thalamusonly ${tract}_bin2standard_nolesion_noneighbours_superior_nothalamus
 		do
 			for scan in TP1 TP2 TP3
 			do
@@ -133,7 +133,7 @@ do
 			done
 		done
 	done
-	let i=$i+1
+	let index=$index+1
 done
 
 
