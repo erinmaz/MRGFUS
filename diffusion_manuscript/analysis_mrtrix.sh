@@ -9,7 +9,7 @@ QADIR=$6
 LESION_IN_DIFF_SPACE=$7
 PRET1_IN_DIFF_SPACE=$8
 OUTFOLDER=$9
-TCKINFO_OUTPUT=$10
+TCKINFO_OUTPUT=${10}
 
 WORKDIR=${CURRENT_ANALYSIS}/${MYSUB}/${OUTFOLDER}
 
@@ -84,13 +84,15 @@ fslmaths ${WORKDIR}/rtt_from_cortex_overlap -binv ${WORKDIR}/rtt_from_cortex_ove
 fslmaths ${WORKDIR}/rtt_from_cortex_include_lesion -mas ${WORKDIR}/rtt_from_cortex_overlap_binv ${WORKDIR}/rtt_from_cortex_include_lesion_nooverlap
 fslmaths ${WORKDIR}/rtt_from_cortex_exclude_lesion -mas ${WORKDIR}/rtt_from_cortex_overlap_binv ${WORKDIR}/rtt_from_cortex_exclude_lesion_nooverlap
 
-inc_les_vol=`fslstats ${WORKDIR}/rtt_from_cortex_include_lesion_nooverlap -V`
-exc_les_vol=`fslstats ${WORKDIR}/rtt_from_cortex_exclude_lesion_nooverlap -V`
-overlap_vol=`fslstats ${WORKDIR}/rtt_from_cortex_overlap -V`
+inc_les_vol_all=`fslstats ${WORKDIR}/rtt_from_cortex_include_lesion_nooverlap -V`
+exc_les_vol_all=`fslstats ${WORKDIR}/rtt_from_cortex_exclude_lesion_nooverlap -V`
+overlap_vol_all=`fslstats ${WORKDIR}/rtt_from_cortex_overlap -V`
+inc_les_vol=`echo ${inc_les_vol_all} | awk '{print $2}'`
+exc_les_vol=`echo ${exc_les_vol_all} | awk '{print $2}'`
+overlap_vol=`echo ${overlap_vol_all} | awk '{print $2}'`
 inc_les_count=`tckinfo ${WORKDIR}/rtt_from_cortex_include_lesion.tck | grep -w count: | awk '{print $2}'`
 exc_les_count=`tckinfo ${WORKDIR}/rtt_from_cortex_exclude_lesion.tck | grep -w count: | awk '{print $2}'`
-echo $MYSUB ${inc_les_vol} ${exc_les_vol} ${overlap_vol} ${inc_les_count} ${exc_lesion_count} >> ${TCKINFO_OUTPUT}
-
+echo $MYSUB ${inc_les_vol} ${exc_les_vol} ${overlap_vol} ${inc_les_count} ${exc_les_count} >> ${TCKINFO_OUTPUT}
 
 # CREATE ROIS BASED ON TRACTS
 

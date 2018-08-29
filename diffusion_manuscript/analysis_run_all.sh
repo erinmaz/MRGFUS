@@ -105,7 +105,7 @@ echo subject inc_les_vol_nooverlap exc_les_vol_nooverlap overlap_vol inc_les_cou
 index=0
 for r in "${PRETREATMENT_RUNS[@]}"
 do
-	analysis_mrtrix.sh ${r} ${TREATMENT_SIDE[${index}]} ${CURRENT_ANALYSIS} ${TBSSDIR} ${ROIDIR} ${QADIR} ${CURRENT_ANALYSIS}/${r}/day1_lesion_2_pre_diff ${CURRENT_ANALYSIS}/${r}/day1_T1_2_pre_diff ${OUTFOLDER} ${TCKINFO_OUTPUT}
+	analysis_mrtrix_tckinfo_table.sh ${r} ${TREATMENT_SIDE[${index}]} ${CURRENT_ANALYSIS} ${TBSSDIR} ${ROIDIR} ${QADIR} ${CURRENT_ANALYSIS}/${r}/day1_lesion_2_pre_diff ${CURRENT_ANALYSIS}/${r}/day1_T1_2_pre_diff ${OUTFOLDER} ${TCKINFO_OUTPUT}
 	let index=$index+1
 done
 
