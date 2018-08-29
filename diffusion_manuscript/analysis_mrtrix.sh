@@ -35,16 +35,20 @@ if [ ! -e ${WARP2DIFF}.nii.gz ]; then
 fi
 
 # MAKE EXCLUSION MASK
-applywarp --postmat=${QADIR}/${MYSUB}/diffusion/xfms/T1_2_diff_bbr.mat -i ${QADIR}/${MYSUB}/anat/c3T1.99 -o ${WORKDIR}/csf --interp=nn -r ${TBSSDIR}/origdata/${MYSUB}
-applywarp -w ${WARP2DIFF} -i ${ROIDIR}/cerebrum+thalamus+spinalcord_${OTHERSIDE} -o ${WORKDIR}/cerebrum+thalamus+spinalcord_${OTHERSIDE} --interp=nn -r ${TBSSDIR}/origdata/${MYSUB}
+applywarp --postmat=${QADIR}/${MYSUB}/diffusion/xfms/T1_2_diff_bbr.mat -i ${QADIR}/${MYSUB}/anat/c3T1.99 -o ${WORKDIR}/csf --interp=trilinear -r ${TBSSDIR}/origdata/${MYSUB}
+fslmaths ${WORKDIR}/csf -thr 0.5 -bin ${WORKDIR}/csf
+applywarp -w ${WARP2DIFF} -i ${ROIDIR}/cerebrum+thalamus+spinalcord_${OTHERSIDE} -o ${WORKDIR}/cerebrum+thalamus+spinalcord_${OTHERSIDE} --interp=trilinear -r ${TBSSDIR}/origdata/${MYSUB}
+fslmaths ${WORKDIR}/cerebrum+thalamus+spinalcord_${OTHERSIDE} -thr 0.5 -bin ${WORKDIR}/cerebrum+thalamus+spinalcord_${OTHERSIDE}
 fslmaths ${WORKDIR}/csf -add ${WORKDIR}/cerebrum+thalamus+spinalcord_${OTHERSIDE} -bin ${WORKDIR}/exclude
 
 # MAKE SEED MASK (primary and supplementary motor)
-applywarp -w ${WARP2DIFF} -i ${ROIDIR}/precentral+juxtapositional_${TREATMENTSIDE} -o ${WORKDIR}/precentral+juxtapositional_${TREATMENTSIDE} --interp=nn -r ${TBSSDIR}/origdata/${MYSUB}
+applywarp -w ${WARP2DIFF} -i ${ROIDIR}/precentral+juxtapositional_${TREATMENTSIDE} -o ${WORKDIR}/precentral+juxtapositional_${TREATMENTSIDE} --interp=trilinear -r ${TBSSDIR}/origdata/${MYSUB}
+fslmaths ${WORKDIR}/precentral+juxtapositional_${TREATMENTSIDE} -thr 0.5 -bin ${WORKDIR}/precentral+juxtapositional_${TREATMENTSIDE}
 
 # MAKE WAYPOINT MASK (red nucleus)
-applywarp -w ${WARP2DIFF} -i ${ROIDIR}/RN_${TREATMENTSIDE} -o ${WORKDIR}/RN_${TREATMENTSIDE} --interp=nn -r ${TBSSDIR}/origdata/${MYSUB}
+applywarp -w ${WARP2DIFF} -i ${ROIDIR}/RN_${TREATMENTSIDE} -o ${WORKDIR}/RN_${TREATMENTSIDE} --interp=trilinear -r ${TBSSDIR}/origdata/${MYSUB}
 fslmaths ${WORKDIR}/RN_${TREATMENTSIDE} -dilM ${WORKDIR}/RN_${TREATMENTSIDE}
+fslmaths ${WORKDIR}/RN_${TREATMENTSIDE} -thr 0.5 -bin ${WORKDIR}/RN_${TREATMENTSIDE}
 
 # GENERATE STREAMLINES
 tckgen -algorithm TENSOR_DET -seed_image ${WORKDIR}/precentral+juxtapositional_${TREATMENTSIDE}.nii.gz -include ${WORKDIR}/RN_${TREATMENTSIDE}.nii.gz -exclude ${WORKDIR}/exclude.nii.gz -fslgrad ${QADIR}/${MYSUB}/diffusion/data.eddy_rotated_bvecs ${QADIR}/${MYSUB}/diffusion/bvals ${QADIR}/${MYSUB}/diffusion/data.nii.gz ${WORKDIR}/rtt_from_cortex.tck -force
@@ -91,10 +95,11 @@ echo $MYSUB ${inc_les_vol} ${exc_les_vol} ${overlap_vol} ${inc_les_count} ${exc_
 # CREATE ROIS BASED ON TRACTS
 
 # lesion to standard space
-applywarp -w ${WARP2STD} -i ${LESION_IN_DIFF_SPACE} -o ${LESION_IN_DIFF_SPACE}2standard --interp=nn -r ${TBSSDIR}/stats/mean_FA
+applywarp -w ${WARP2STD} -i ${LESION_IN_DIFF_SPACE} -o ${LESION_IN_DIFF_SPACE}2standard --interp=trilinear -r ${TBSSDIR}/stats/mean_FA
+fslmaths ${LESION_IN_DIFF_SPACE}2standard -thr 0.5 -bin ${LESION_IN_DIFF_SPACE}2standard
 
 # Day 1 T1 from pre diff to standard space (for checking ROIs)
-applywarp -w ${WARP2STD} -i ${PRET1_IN_DIFF_SPACE} -o ${PRET1_IN_DIFF_SPACE}2standard --interp=nn -r ${TBSSDIR}/stats/mean_FA
+applywarp -w ${WARP2STD} -i ${PRET1_IN_DIFF_SPACE} -o ${PRET1_IN_DIFF_SPACE}2standard --interp=trilinear -r ${TBSSDIR}/stats/mean_FA
 	
 for tract in ${WORKDIR}/rtt_from_cortex_include_lesion_nooverlap ${WORKDIR}/rtt_from_cortex_exclude_lesion_nooverlap ${WORKDIR}/rtt_from_cortex
 do
@@ -102,7 +107,8 @@ do
 	fslmaths ${tract} -bin -roi 0 -1 0 -1 5 -1 0 1 ${tract}_bin
 
 	# transform to standard space for use with TBSS images
-	applywarp -w ${WARP2STD} -i ${tract}_bin -o ${tract}_bin2standard --interp=nn -r ${TBSSDIR}/stats/mean_FA
+	applywarp -w ${WARP2STD} -i ${tract}_bin -o ${tract}_bin2standard --interp=trilinear -r ${TBSSDIR}/stats/mean_FA
+	fslmaths ${tract}_bin2standard -thr 0.5 -bin ${tract}_bin2standard
 
 	# dilate lesion to get neighbours mask
 	fslmaths ${LESION_IN_DIFF_SPACE}2standard -dilM ${LESION_IN_DIFF_SPACE}2standard+neighbours

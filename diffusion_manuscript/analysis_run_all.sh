@@ -4,11 +4,11 @@ QADIR=${MAINDIR}/analysis
 SCRIPTSDIR=${MAINDIR}/scripts/diffusion_manuscript
 ROIDIR=${SCRIPTSDIR}/rois_standardspace
 LESION_ANALYSIS=${MAINDIR}/analysis_lesion_masks
-CURRENT_ANALYSIS=${MAINDIR}/analysis_diffusion_manuscript_230818
+CURRENT_ANALYSIS=${MAINDIR}/analysis_diffusion_manuscript_280818
 TBSSDIR=${CURRENT_ANALYSIS}/tbss
 TCKINFO_OUTPUT=${CURRENT_ANALYSIS}/tckinfo_output.txt
 T1_2_DIFF=T1_2_diff_bbr.mat 
-OUTFOLDER=mrtrix_210818
+OUTFOLDER=mrtrix_280818
 
 SUBS=( 9001_SH 9002_RA 9004_EP 9005_BG 9006_EO 9007_RB 9009_CRB 9013_JD )
 
@@ -32,9 +32,10 @@ do
 	mkdir ${CURRENT_ANALYSIS}/${r}
 	flirt -in ${QADIR}/${DAY1_RUNS[${index}]}/anat/mT1_brain -ref ${QADIR}/${r}/anat/mT1_brain -o ${CURRENT_ANALYSIS}/${SUBS[${index}]}_longitudinal_xfms/day1_2_pre_mT1_brain -omat ${CURRENT_ANALYSIS}/${SUBS[${index}]}_longitudinal_xfms/day1_mT1_brain_2_pre_mT1_brain.mat -dof 6
 	convert_xfm -omat ${CURRENT_ANALYSIS}/${SUBS[${index}]}_longitudinal_xfms/day1_mT1_brain_2_pre_diff.mat -concat ${QADIR}/${r}/diffusion/xfms/${T1_2_DIFF} ${CURRENT_ANALYSIS}/${SUBS[${index}]}_longitudinal_xfms/day1_mT1_brain_2_pre_mT1_brain.mat  
-	applywarp --postmat=${CURRENT_ANALYSIS}/${SUBS[${index}]}_longitudinal_xfms/day1_mT1_brain_2_pre_diff.mat -i ${LESION_ANALYSIS}/${DAY1_RUNS[${index}]}/anat/T1_lesion_mask_filled -o ${CURRENT_ANALYSIS}/${r}/day1_lesion_2_pre_diff --interp=nn -r ${QADIR}/${r}/diffusion/mean_b0_unwarped
-	applywarp --postmat=${CURRENT_ANALYSIS}/${SUBS[${index}]}_longitudinal_xfms/day1_mT1_brain_2_pre_diff.mat -i ${LESION_ANALYSIS}/${DAY1_RUNS[${index}]}/anat/T1 -o ${CURRENT_ANALYSIS}/${r}/day1_T1_2_pre_diff --interp=nn -r ${QADIR}/${r}/diffusion/mean_b0_unwarped
-		
+	applywarp --postmat=${CURRENT_ANALYSIS}/${SUBS[${index}]}_longitudinal_xfms/day1_mT1_brain_2_pre_diff.mat -i ${LESION_ANALYSIS}/${DAY1_RUNS[${index}]}/anat/T1_lesion_mask_filled -o ${CURRENT_ANALYSIS}/${r}/day1_lesion_2_pre_diff --interp=trilinear -r ${QADIR}/${r}/diffusion/mean_b0_unwarped
+	fslmaths ${CURRENT_ANALYSIS}/${r}/day1_lesion_2_pre_diff -thr 0.5 -bin ${CURRENT_ANALYSIS}/${r}/day1_lesion_2_pre_diff
+	applywarp --postmat=${CURRENT_ANALYSIS}/${SUBS[${index}]}_longitudinal_xfms/day1_mT1_brain_2_pre_diff.mat -i ${LESION_ANALYSIS}/${DAY1_RUNS[${index}]}/anat/T1 -o ${CURRENT_ANALYSIS}/${r}/day1_T1_2_pre_diff --interp=trilinear -r ${QADIR}/${r}/diffusion/mean_b0_unwarped
+
 	let index=${index}+1
 done
 
