@@ -162,3 +162,66 @@ applywarp --postmat=/Users/erin/Desktop/Projects/MRGFUS/analysis/9004_EP_longitu
 applywarp --postmat=/Users/erin/Desktop/Projects/MRGFUS/analysis/9004_EP_longitudinal_xfms_T1/mT1_brain_month3_2_pre_6dof.mat -i /Users/erin/Desktop/Projects/MRGFUS/analysis_lesion_masks/9004_EP-12955/anat/T1_lesion_mask_filled -r  /Users/erin/Desktop/Projects/MRGFUS/analysis/9004_EP-12126/anat/mT1 -o ${CURRENT_ANALYSIS}/figure_lesion/9004/lesion_month3_2_pre --interp=nn
 
 fsleyes ${CURRENT_ANALYSIS}/figure_lesion/9004/*.nii.gz
+
+
+###### RE-RUN MRTRIX ANALYSIS AND CREATE ROIS WITHOUT SCP ################################
+
+TCKINFO_OUTPUT=${CURRENT_ANALYSIS}/tckinfo_output_noscp.txt
+echo subject inc_les_vol_nooverlap exc_les_vol_nooverlap overlap_vol inc_les_count exc_lesion_count > ${TCKINFO_OUTPUT}
+index=0
+for r in "${PRETREATMENT_RUNS[@]}"
+do
+	analysis_mrtrix_excludeSCP.sh ${r} ${TREATMENT_SIDE[${index}]} ${CURRENT_ANALYSIS} ${TBSSDIR} ${ROIDIR} ${QADIR} ${CURRENT_ANALYSIS}/${r}/day1_lesion_2_pre_diff ${CURRENT_ANALYSIS}/${r}/day1_T1_2_pre_diff ${OUTFOLDER} ${TCKINFO_OUTPUT}
+	let index=$index+1
+done
+
+
+###### GET SUMMARY STATS IN ROIS #########################################################
+
+OUTPREFIX=${CURRENT_ANALYSIS}/summary_noSCP
+index=0
+for r in "${PRETREATMENT_RUNS[@]}"
+do 
+	WORKDIR=${CURRENT_ANALYSIS}/${r}/${OUTFOLDER}
+	for tract in ${WORKDIR}/rtt_from_cortex_noscp_nocerebellum ${WORKDIR}/rtt_from_cortex_noscp_nocerebellum_include_lesion_nooverlap ${WORKDIR}/rtt_from_cortex_noscp_nocerebellum_exclude_lesion_nooverlap 
+	do
+		tract_name=`basename $tract`
+		for roi in ${tract}_bin2standard_nolesion_noneighbours_inferior_nocerebellum ${tract}_bin2standard_nolesion_noneighbours_inferior ${tract}_bin2standard_nolesion_noneighbours_superior_thalamusonly ${tract}_bin2standard_nolesion_noneighbours_superior_nothalamus 
+		do
+			for scan in TP1 TP2 TP3
+			do
+				for measure in FA MD RD L1
+				do
+					for type in image skeleton
+					do
+						echo ${SUBS[${index}]} $roi $scan $measure $type `fslstats ${CURRENT_ANALYSIS}/${SUBS[${index}]}_diffusion_longitudinal/tbss_${type}/${measure}_${scan} -k ${roi} -M -V` >> ${OUTPREFIX}_${tract_name}_${type}_output_mean_vol.txt
+					done
+				done
+			done
+		done
+	done
+	
+	if [ "${TREATMENT_SIDE[${index}]}" == "L" ]; then
+		OTHER_SIDE=R
+	else
+		OTHER_SIDE=L
+	fi
+	
+	#NEED TO INDICATE TREATMENT AND OTHER SIDE HERE
+	side=0
+	for roi in ${ROIDIR}/superior_cerebellar_peduncle_${TREATMENT_SIDE[${index}]} ${ROIDIR}/superior_cerebellar_peduncle_${OTHER_SIDE}
+	do
+		for scan in TP1 TP2 TP3
+		do
+			for measure in FA MD RD L1
+			do
+				for type in image skeleton
+				do
+					echo ${SUBS[${index}]} $roi $side $scan $measure $type `fslstats ${CURRENT_ANALYSIS}/${SUBS[${index}]}_diffusion_longitudinal/tbss_${type}/${measure}_${scan} -k ${roi} -M -V` >> ${OUTPREFIX}_SCP_${type}_output_mean_vol.txt
+				done
+			done
+		done
+		let side=$side+1
+	done
+	let index=$index+1
+done
