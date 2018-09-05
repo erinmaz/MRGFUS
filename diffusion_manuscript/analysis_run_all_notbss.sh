@@ -51,7 +51,7 @@ do
 	convert_xfm -omat ${CURRENT_ANALYSIS}/${SUBS[${index}]}_longitudinal_xfms/month3_diff_2_pre_T1.mat -concat ${CURRENT_ANALYSIS}/${SUBS[${index}]}_longitudinal_xfms/month3_T1_brain_2_pre_T1_brain.mat ${QADIR}/${MONTH3_RUNS[${index}]}/diffusion/xfms/diff_2_T1_bbr.mat
 	
 	mkdir ${CURRENT_ANALYSIS}/${SUBS[${index}]}_diffusion_longitudinal
-	for image in dtifit_FA dtifit_RD dtifit_LD dtifit_MD
+	for image in dtifit_FA dtifit_RD dtifit_L1 dtifit_MD dtifit_MO
 	do
 		applywarp --postmat=${QADIR}/${r}/diffusion/xfms/diff_2_T1_bbr.mat -i ${QADIR}/${r}/diffusion/${image} -r ${QADIR}/${r}/anat/T1 -o ${CURRENT_ANALYSIS}/${SUBS[${index}]}_diffusion_longitudinal/TP1_${image}
 		applywarp --postmat=${CURRENT_ANALYSIS}/${SUBS[${index}]}_longitudinal_xfms/day1_diff_2_pre_T1.mat -i ${QADIR}/${DAY1_RUNS[${index}]}/diffusion/${image} -r ${QADIR}/${r}/anat/T1 -o ${CURRENT_ANALYSIS}/${SUBS[${index}]}_diffusion_longitudinal/TP2_${image}
@@ -61,8 +61,8 @@ do
 	# Pre-treatment T1 to standard space + inv
 	mkdir ${CURRENT_ANALYSIS}/${r}/xfms
 	/usr/local/fsl/bin/flirt -in ${QADIR}/${r}/anat/T1_brain -ref /usr/local/fsl/data/standard/MNI152_T1_1mm_brain -out ${CURRENT_ANALYSIS}/${r}/xfms/T12MNI_1mm_flirt -omat ${CURRENT_ANALYSIS}/${r}/xfms/T12MNI_1mm_flirt.mat -cost corratio -dof 12 -searchrx -90 90 -searchry -90 90 -searchrz -90 90 -interp trilinear 
-	/usr/local/fsl/bin/fnirt --in=${QADIR}/${r}/anat/T1 --aff=${CURRENT_ANALYSIS}/${r}/xfms/T12MNI_1mm_flirt.mat --cout=${CURRENT_ANALYSIS}/${r}/xfms/T12MNI_1mm_warp --iout=${CURRENT_ANALYSIS}/${r}/xfms/T12MNI_1mm_fnirt --jout=${CURRENT_ANALYSIS}/${r}/xfms/T12MNI_1mm_jac --config=T1_2_MNI152_2mm --ref=/usr/local/fsl/data/standard/MNI152_T1_1mm --refmask=/usr/local/fsl/data/standard/MNI152_T1_1mm_brain_mask_dil --warpres=10,10,10
-	invwarp -w ${CURRENT_ANALYSIS}/${r}/xfms/T12MNI_1mm_fnirt -r {QADIR}/${r}/anat/T1 -o ${CURRENT_ANALYSIS}/${r}/xfms/T12MNI_1mm_fnirt_inv
+	/usr/local/fsl/bin/fnirt --in=${QADIR}/${r}/anat/T1 --aff=${CURRENT_ANALYSIS}/${r}/xfms/T12MNI_1mm_flirt.mat --cout=${CURRENT_ANALYSIS}/${r}/xfms/T12MNI_1mm_warp --iout=${CURRENT_ANALYSIS}/${r}/xfms/T12MNI_1mm_fnirt --jout=${CURRENT_ANALYSIS}/${r}/xfms/T12MNI_1mm_jac --ref=/usr/local/fsl/data/standard/MNI152_T1_1mm  --refmask=/usr/local/fsl/data/standard/MNI152_T1_1mm_brain_mask_dil --warpres=10,10,10 --config=T1_2_MNI152_2mm 
+	invwarp -w ${CURRENT_ANALYSIS}/${r}/xfms/T12MNI_1mm_warp -r ${QADIR}/${r}/anat/T1 -o ${CURRENT_ANALYSIS}/${r}/xfms/T12MNI_1mm_warp_inv
 	let index=${index}+1
 done
 
@@ -74,7 +74,7 @@ index=0
 for r in "${PRETREATMENT_RUNS[@]}"
 do
 
-WORKDIR=${CURRENT_ANALYSIS}/${r}/${OUTFOLDER}
+WORKDIR=${CURRENT_ANALYSIS}/${r}
 
 THALAMUS_MASK=${ROIDIR}/thalamus_${TREATMENT_SIDE[${index}]}
 THALAMUS_MASK_NAME=`basename ${THALAMUS_MASK}`
@@ -89,7 +89,7 @@ else
 	OTHERSIDE=L
 fi
 
-WARP_STDtoT1=${CURRENT_ANALYSIS}/${r}/xfms/T12MNI_1mm_fnirt_inv
+WARP_STDtoT1=${CURRENT_ANALYSIS}/${r}/xfms/T12MNI_1mm_warp_inv
 MAT_T1todiff=${QADIR}/${r}/diffusion/xfms/T1_2_diff_bbr.mat
 
 applywarp -w ${WARP_STDtoT1} --postmat=${MAT_T1todiff} -i ${CEREBELLUM_MASK_BINV} -o ${WORKDIR}/${CEREBELLUM_MASK_BINV_NAME} --interp=trilinear -r ${QADIR}/${r}/diffusion/mean_b0_unwarped
@@ -103,39 +103,46 @@ applywarp -w ${WARP_STDtoT1} --postmat=${MAT_T1todiff} -i ${ROIDIR}/cerebrum+tha
 fslmaths ${WORKDIR}/cerebrum+thalamus+spinalcord_${OTHERSIDE} -thr 0.5 -bin ${WORKDIR}/cerebrum+thalamus+spinalcord_${OTHERSIDE}
 fslmaths ${WORKDIR}/csf -add ${WORKDIR}/cerebrum+thalamus+spinalcord_${OTHERSIDE} -bin ${WORKDIR}/exclude
 
+fslmaths ${WORKDIR}/exclude -binv ${WORKDIR}/exclude_binv
+
 # MAKE SEED MASK (primary and supplementary motor)
-applywarp -w ${WARP_STDtoT1} --postmat=${MAT_T1todiff} -i ${ROIDIR}/precentral+juxtapositional_${TREATMENTSIDE} -o ${WORKDIR}/precentral+juxtapositional_${TREATMENTSIDE} --interp=trilinear -r ${QADIR}/${r}/diffusion/mean_b0_unwarped
-fslmaths ${WORKDIR}/precentral+juxtapositional_${TREATMENTSIDE} -thr 0.5 -bin ${WORKDIR}/precentral+juxtapositional_${TREATMENTSIDE}
+applywarp -w ${WARP_STDtoT1} --postmat=${MAT_T1todiff} -i ${ROIDIR}/precentral+juxtapositional_${TREATMENT_SIDE[${index}]} -o ${WORKDIR}/precentral+juxtapositional_${TREATMENT_SIDE[${index}]} --interp=trilinear -r ${QADIR}/${r}/diffusion/mean_b0_unwarped
+fslmaths ${WORKDIR}/precentral+juxtapositional_${TREATMENT_SIDE[${index}]} -thr 0.5 -bin ${WORKDIR}/precentral+juxtapositional_${TREATMENT_SIDE[${index}]}
+
+fslmaths ${WORKDIR}/precentral+juxtapositional_${TREATMENT_SIDE[${index}]} -mas ${WORKDIR}/exclude_binv ${WORKDIR}/precentral+juxtapositional_${TREATMENT_SIDE[${index}]}
 
 # MAKE WAYPOINT MASK (red nucleus)
-applywarp -w ${WARP_STDtoT1} --postmat=${MAT_T1todiff} -i ${ROIDIR}/RN_${TREATMENTSIDE} -o ${WORKDIR}/RN_${TREATMENTSIDE} --interp=trilinear -r ${QADIR}/${r}/diffusion/mean_b0_unwarped
-fslmaths ${WORKDIR}/RN_${TREATMENTSIDE} -thr 0.5 -bin ${WORKDIR}/RN_${TREATMENTSIDE}
-fslmaths ${WORKDIR}/RN_${TREATMENTSIDE} -dilM ${WORKDIR}/RN_${TREATMENTSIDE}
+applywarp -w ${WARP_STDtoT1} --postmat=${MAT_T1todiff} -i ${ROIDIR}/RN_${TREATMENT_SIDE[${index}]} -o ${WORKDIR}/RN_${TREATMENT_SIDE[${index}]} --interp=trilinear -r ${QADIR}/${r}/diffusion/mean_b0_unwarped
+fslmaths ${WORKDIR}/RN_${TREATMENT_SIDE[${index}]} -thr 0.5 -bin ${WORKDIR}/RN_${TREATMENT_SIDE[${index}]}
+fslmaths ${WORKDIR}/RN_${TREATMENT_SIDE[${index}]} -dilM ${WORKDIR}/RN_${TREATMENT_SIDE[${index}]}
+
+fslmaths  ${WORKDIR}/RN_${TREATMENT_SIDE[${index}]} -mas ${WORKDIR}/exclude_binv ${WORKDIR}/RN_${TREATMENT_SIDE[${index}]}
 
 # GENERATE STREAMLINES
-tckgen -algorithm TENSOR_DET -seed_image ${WORKDIR}/precentral+juxtapositional_${TREATMENTSIDE}.nii.gz -include ${WORKDIR}/RN_${TREATMENTSIDE}.nii.gz -exclude ${WORKDIR}/exclude.nii.gz -fslgrad ${QADIR}/${r}/diffusion/data.eddy_rotated_bvecs ${QADIR}/${r}/diffusion/bvals ${QADIR}/${r}/diffusion/data.nii.gz ${WORKDIR}/rtt_from_cortex_orig.tck -force
+tckgen -algorithm TENSOR_DET -seed_image ${WORKDIR}/precentral+juxtapositional_${TREATMENT_SIDE[${index}]}.nii.gz -include ${WORKDIR}/RN_${TREATMENT_SIDE[${index}]}.nii.gz -exclude ${WORKDIR}/exclude.nii.gz -fslgrad ${QADIR}/${r}/diffusion/data.eddy_rotated_bvecs ${QADIR}/${r}/diffusion/bvals ${QADIR}/${r}/diffusion/data.nii.gz ${WORKDIR}/rtt_from_cortex_orig.tck -force
 
-tckedit -mask ${WORKDIR}/${CEREBELLUM_MASK_BINV_NAME} ${WORKDIR}/rtt_from_cortex_orig.tck ${WORKDIR}/rtt_from_cortex.tck
+tckedit -mask ${WORKDIR}/${CEREBELLUM_MASK_BINV_NAME}.nii.gz ${WORKDIR}/rtt_from_cortex_orig.tck ${WORKDIR}/rtt_from_cortex_orig_short.tck -force
 
 # CONVERT STREAMLINES TO NII
-tckmap -template ${QADIR}/${r}/diffusion/mean_b0_unwarped ${WORKDIR}/rtt_from_cortex.tck ${WORKDIR}/rtt_from_cortex.nii.gz -force
+tckmap -template ${QADIR}/${r}/diffusion/mean_b0_unwarped.nii.gz ${WORKDIR}/rtt_from_cortex_orig_short.tck ${WORKDIR}/rtt_from_cortex_orig_short.nii.gz -force
 
 # Check for previously generated manual exclusion mask
 if [ -e ${QADIR}/${r}/diffusion/mrtrix/manual_exclude.nii.gz ]; then
 	cp ${QADIR}/${r}/diffusion/mrtrix/manual_exclude.nii.gz ${WORKDIR}/manual_exclude.nii.gz
-	fsleyes ${QADIR}/${r}/diffusion/mean_b0_unwarped ${WORKDIR}/rtt_from_cortex ${WORKDIR}/manual_exclude
+	fsleyes ${QADIR}/${r}/diffusion/mean_b0_unwarped ${WORKDIR}/rtt_from_cortex_orig_short ${WORKDIR}/manual_exclude
 else
-	fsleyes ${QADIR}/${r}/diffusion/mean_b0_unwarped ${WORKDIR}/rtt_from_cortex
+	fsleyes ${QADIR}/${r}/diffusion/mean_b0_unwarped ${WORKDIR}/rtt_from_cortex_orig_short
 fi
 
 # Check again if manual exclude exists, I may have just made it if the tracking is different
 if [ -e ${WORKDIR}/manual_exclude.nii.gz ]; then
-	mv ${WORKDIR}/rtt_from_cortex.tck ${WORKDIR}/rtt_from_cortex_orig.tck
-	mv ${WORKDIR}/rtt_from_cortex.nii.gz ${WORKDIR}/rtt_from_cortex_orig.nii.gz
-	tckedit -exclude ${WORKDIR}/manual_exclude.nii.gz ${WORKDIR}/rtt_from_cortex_orig.tck ${WORKDIR}/rtt_from_cortex.tck -force
-	tckmap -template ${QADIR}/${r}/diffusion/mean_b0_unwarped.nii.gz ${WORKDIR}/rtt_from_cortex.tck ${WORKDIR}/rtt_from_cortex.nii.gz -force
+	tckedit -exclude ${WORKDIR}/manual_exclude.nii.gz ${WORKDIR}/rtt_from_cortex_orig_short.tck ${WORKDIR}/rtt_from_cortex.tck -force
+else
+	cp ${WORKDIR}/rtt_from_cortex_orig_short.tck ${WORKDIR}/rtt_from_cortex.tck 
 fi
  
+tckmap -template ${QADIR}/${r}/diffusion/mean_b0_unwarped.nii.gz ${WORKDIR}/rtt_from_cortex.tck ${WORKDIR}/rtt_from_cortex.nii.gz -force
+ 	
 tckedit -exclude ${CURRENT_ANALYSIS}/${r}/day1_lesion_2_pre_diff.nii.gz ${WORKDIR}/rtt_from_cortex.tck ${WORKDIR}/rtt_from_cortex_exclude_lesion.tck -force
 tckedit -include ${CURRENT_ANALYSIS}/${r}/day1_lesion_2_pre_diff.nii.gz ${WORKDIR}/rtt_from_cortex.tck ${WORKDIR}/rtt_from_cortex_include_lesion.tck -force
 
@@ -156,7 +163,7 @@ exc_les_vol=`echo ${exc_les_vol_all} | awk '{print $2}'`
 overlap_vol=`echo ${overlap_vol_all} | awk '{print $2}'`
 inc_les_count=`tckinfo ${WORKDIR}/rtt_from_cortex_include_lesion.tck | grep -w count: | awk '{print $2}'`
 exc_les_count=`tckinfo ${WORKDIR}/rtt_from_cortex_exclude_lesion.tck | grep -w count: | awk '{print $2}'`
-echo $MYSUB ${inc_les_vol} ${exc_les_vol} ${overlap_vol} ${inc_les_count} ${exc_les_count} >> ${TCKINFO_OUTPUT}
+echo ${SUBS[${index}]} ${inc_les_vol} ${exc_les_vol} ${overlap_vol} ${inc_les_count} ${exc_les_count} >> ${TCKINFO_OUTPUT}
 
 # CREATE ROIS BASED ON TRACTS
 
@@ -171,7 +178,7 @@ fslmaths ${WORKDIR}/day1_lesion_2_pre_diff_2_pre_T1 -dilM ${WORKDIR}/day1_lesion
 
 fslmaths ${WORKDIR}/day1_lesion_2_pre_diff_2_pre_T1+neighbours -sub ${WORKDIR}/day1_lesion_2_pre_diff_2_pre_T1 ${WORKDIR}/day1_lesion_2_pre_diff_2_pre_T1_neighbours
 
-fslmaths ${WORKDIR}/day1_lesion_2_pre_diff_2_pre_T1+neighbours -binv ${WORKDIR}/${r}/day1_lesion_2_pre_diff_2_pre_T1+neighbours_binv
+fslmaths ${WORKDIR}/day1_lesion_2_pre_diff_2_pre_T1+neighbours -binv ${WORKDIR}/day1_lesion_2_pre_diff_2_pre_T1+neighbours_binv
 	
 #thalamus masks in pre T1 space
 applywarp -w ${WARP_STDtoT1} -i ${THALAMUS_MASK} -o ${WORKDIR}/${THALAMUS_MASK_NAME} -r ${QADIR}/${r}/anat/T1 --interp=trilinear
@@ -210,11 +217,11 @@ do
 
 done
 
-fsleyes ${QADIR}/${r}/anat/T1 ${WORKDIR}/rtt_from_cortex_bin2T1_nolesion_noneighbours_inferior_nothalamus -cm "Green" {WORKDIR}/rtt_from_cortex_bin2T1_nolesion_noneighbours_superior_nothalamus -cm "Red-Yellow" {WORKDIR}/rtt_from_cortex_bin2T1_nolesion_noneighbours_thalamusonly -cm "Blue-Lightblue" 
+fsleyes ${QADIR}/${r}/anat/T1 ${WORKDIR}/rtt_from_cortex_bin2T1_nolesion_noneighbours_inferior_nothalamus -cm "Green" ${WORKDIR}/rtt_from_cortex_bin2T1_nolesion_noneighbours_superior_nothalamus -cm "Red-Yellow" ${WORKDIR}/rtt_from_cortex_bin2T1_nolesion_noneighbours_thalamusonly -cm "Blue-Lightblue" 
 
 let index=$index+1
 done
-
+#BROKE HERE
 
 ###### GET SUMMARY STATS IN ROIS #########################################################
 
@@ -231,7 +238,7 @@ do
 		do
 			for scan in TP1 TP2 TP3
 			do
-				for measure in FA MD RD L1
+				for measure in FA MD RD L1 MO
 				do
 					for type in image skeleton
 					do
@@ -275,31 +282,5 @@ done
 
 	
 ###### IMPORT TO EXCEL TO MAKE PIVOT TABLES ##############################################
-
-
-###### MAKE FIGURES ######################################################################
-
-#THIS FIGURE HASN'T CHANGED, DON'T HAVE TO RERUN
-mkdir ${CURRENT_ANALYSIS}/figure_lesion
-mkdir ${CURRENT_ANALYSIS}/figure_lesion/9001
-cp /Users/erin/Desktop/Projects/MRGFUS/analysis/9001_SH-11644/anat/T1.nii.gz ${CURRENT_ANALYSIS}/figure_lesion/9001/.
-cp /Users/erin/Desktop/Projects/MRGFUS/analysis/9001_SH_longitudinal_xfms_T1/T1_brain_day1_2_pre_6dof.nii.gz ${CURRENT_ANALYSIS}/figure_lesion/9001/.
-cp /Users/erin/Desktop/Projects/MRGFUS/analysis/9001_SH_longitudinal_xfms_T1/T1_brain_month3_2_pre_6dof.nii.gz ${CURRENT_ANALYSIS}/figure_lesion/9001/.
-applywarp --postmat=/Users/erin/Desktop/Projects/MRGFUS/analysis/9001_SH_longitudinal_xfms_T1/T1_brain_day1_2_pre_6dof.mat -i /Users/erin/Desktop/Projects/MRGFUS/analysis_lesion_masks/9001_SH-11692/anat/T1_lesion_mask_filled -r /Users/erin/Desktop/Projects/MRGFUS/analysis/9001_SH-11644/anat/T1 -o ${CURRENT_ANALYSIS}/figure_lesion/9001/lesion_day1_2_pre --interp=nn
-
-applywarp --postmat=/Users/erin/Desktop/Projects/MRGFUS/analysis/9001_SH_longitudinal_xfms_T1/T1_brain_month3_2_pre_6dof.mat -i /Users/erin/Desktop/Projects/MRGFUS/analysis_lesion_masks/9001_SH-12271/anat/T1_lesion_mask_filled -r  /Users/erin/Desktop/Projects/MRGFUS/analysis/9001_SH-11644/anat/T1 -o ${CURRENT_ANALYSIS}/9001/figure_lesion/lesion_month3_2_pre --interp=nn
-
-fsleyes ${CURRENT_ANALYSIS}/figure_lesion/9001/*.nii.gz
-
-mkdir ${CURRENT_ANALYSIS}/figure_lesion/9004
-cp /Users/erin/Desktop/Projects/MRGFUS/analysis/9004_EP-12126/anat/T1.nii.gz ${CURRENT_ANALYSIS}/figure_lesion/9004/.
-cp /Users/erin/Desktop/Projects/MRGFUS/analysis/9004_EP_longitudinal_xfms_T1/T1_brain_day1_2_pre_6dof.nii.gz ${CURRENT_ANALYSIS}/figure_lesion/9004/.
-cp /Users/erin/Desktop/Projects/MRGFUS/analysis/9004_EP_longitudinal_xfms_T1/T1_brain_month3_2_pre_6dof.nii.gz ${CURRENT_ANALYSIS}/figure_lesion/9004/.
-applywarp --postmat=/Users/erin/Desktop/Projects/MRGFUS/analysis/9004_EP_longitudinal_xfms_T1/T1_brain_day1_2_pre_6dof.mat -i /Users/erin/Desktop/Projects/MRGFUS/analysis_lesion_masks/9004_EP-12203/anat/T1_lesion_mask_filled -r /Users/erin/Desktop/Projects/MRGFUS/analysis/9004_EP-12126/anat/T1 -o ${CURRENT_ANALYSIS}/figure_lesion/9004/lesion_day1_2_pre --interp=nn
-
-applywarp --postmat=/Users/erin/Desktop/Projects/MRGFUS/analysis/9004_EP_longitudinal_xfms_T1/T1_brain_month3_2_pre_6dof.mat -i /Users/erin/Desktop/Projects/MRGFUS/analysis_lesion_masks/9004_EP-12955/anat/T1_lesion_mask_filled -r  /Users/erin/Desktop/Projects/MRGFUS/analysis/9004_EP-12126/anat/T1 -o ${CURRENT_ANALYSIS}/figure_lesion/9004/lesion_month3_2_pre --interp=nn
-
-fsleyes ${CURRENT_ANALYSIS}/figure_lesion/9004/*.nii.gz
-
 
 
