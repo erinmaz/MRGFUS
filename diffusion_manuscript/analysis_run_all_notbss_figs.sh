@@ -116,11 +116,11 @@ fslstats /Users/erin/Desktop/Projects/MRGFUS/analysis_diffusion_manuscript_31081
 #mrtrix figure
 #xfm streamlines into day1 T1 space
 
-warpinit /Users/erin/Desktop/Projects/MRGFUS/analysis/9004_EP-12203/anat/T1.nii.gz flirt-[].nii
+warpinit /Users/erin/Desktop/Projects/MRGFUS/analysis/9004_EP-12203/anat/T1.nii.gz /Users/erin/Desktop/Projects/MRGFUS/analysis/9004_EP-12203/anat/flirt-[].nii
 
 transformconvert /Users/erin/Desktop/Projects/MRGFUS/analysis_diffusion_manuscript_310818/9004_EP_longitudinal_xfms/day1_T1_brain_2_pre_diff.mat /Users/erin/Desktop/Projects/MRGFUS/analysis/9004_EP-12203/anat/T1.nii.gz  /Users/erin/Desktop/Projects/MRGFUS/analysis/9004_EP-12126/diffusion/mean_b0_unwarped.nii.gz flirt_import /Users/erin/Desktop/Projects/MRGFUS/analysis_diffusion_manuscript_310818/9004_EP_longitudinal_xfms/pre_diff_2_day1_T1_brain.mrtrix -force
 
-mrtransform flirt-[].nii -linear /Users/erin/Desktop/Projects/MRGFUS/analysis_diffusion_manuscript_310818/9004_EP_longitudinal_xfms/pre_diff_2_day1_T1_brain.mrtrix /Users/erin/Desktop/Projects/MRGFUS/analysis_diffusion_manuscript_310818/9004_EP_longitudinal_xfms/pre_diff_2_day1_T1_brain.mif -force
+mrtransform /Users/erin/Desktop/Projects/MRGFUS/analysis/9004_EP-12203/anat/flirt-[].nii -linear /Users/erin/Desktop/Projects/MRGFUS/analysis_diffusion_manuscript_310818/9004_EP_longitudinal_xfms/pre_diff_2_day1_T1_brain.mrtrix /Users/erin/Desktop/Projects/MRGFUS/analysis_diffusion_manuscript_310818/9004_EP_longitudinal_xfms/pre_diff_2_day1_T1_brain.mif -force
 
 tcktransform /Users/erin/Desktop/Projects/MRGFUS/analysis_diffusion_manuscript_310818/9004_EP-12126/rtt_from_cortex_include_lesion.tck /Users/erin/Desktop/Projects/MRGFUS/analysis_diffusion_manuscript_310818/9004_EP_longitudinal_xfms/pre_diff_2_day1_T1_brain.mif /Users/erin/Desktop/Projects/MRGFUS/analysis_diffusion_manuscript_310818/9004_EP-12126/rtt_from_cortex_include_lesion2day1_T1.tck -force
 
