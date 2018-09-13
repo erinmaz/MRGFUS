@@ -110,4 +110,18 @@ fslstats /Users/erin/Desktop/Projects/MRGFUS/analysis_diffusion_manuscript_31081
 fslswapdim /Users/erin/Desktop/Projects/MRGFUS/analysis_diffusion_manuscript_310818/9005_BG-13837/T1_lesion_mask_filled2standard -x y z /Users/erin/Desktop/Projects/MRGFUS/analysis_diffusion_manuscript_310818/9005_BG-13837/T1_lesion_mask_filled2standard_swap
 fslswapdim /Users/erin/Desktop/Projects/MRGFUS/analysis_diffusion_manuscript_310818/9007_RB-13055/T1_lesion_mask_filled2standard -x y z /Users/erin/Desktop/Projects/MRGFUS/analysis_diffusion_manuscript_310818/9007_RB-13055/T1_lesion_mask_filled2standard_swap
 fslmaths /Users/erin/Desktop/Projects/MRGFUS/analysis_diffusion_manuscript_310818/9001_SH-12271/T1_lesion_mask_filled2standard -add /Users/erin/Desktop/Projects/MRGFUS/analysis_diffusion_manuscript_310818/9002_RA-12388/T1_lesion_mask_filled2standard -add /Users/erin/Desktop/Projects/MRGFUS/analysis_diffusion_manuscript_310818/9004_EP-12955/T1_lesion_mask_filled2standard -add /Users/erin/Desktop/Projects/MRGFUS/analysis_diffusion_manuscript_310818/9005_BG-13837/T1_lesion_mask_filled2standard_swap -add /Users/erin/Desktop/Projects/MRGFUS/analysis_diffusion_manuscript_310818/9006_EO-13017/T1_lesion_mask_filled2standard -add /Users/erin/Desktop/Projects/MRGFUS/analysis_diffusion_manuscript_310818/9007_RB-13055/T1_lesion_mask_filled2standard_swap -add /Users/erin/Desktop/Projects/MRGFUS/analysis_diffusion_manuscript_310818/9009_CRB-13623/T1_lesion_mask_filled2standard -add /Users/erin/Desktop/Projects/MRGFUS/analysis_diffusion_manuscript_310818/9013_JD-14227/T1_lesion_mask_filled2standard /Users/erin/Desktop/Projects/MRGFUS/analysis_diffusion_manuscript_310818/lesion_heatmap_month3_all_in_L
-fslstats /Users/erin/Desktop/Projects/MRGFUS/analysis_diffusion_manuscript_310818/lesion_heatmap_month3_all_in_L -c
+fslstats /Users/erin/Desktop/Projects/MRGFUS/analysis_diffusion_manuscript_310818/lesion_heatmap_month3_all_in_L -c 
+
+#added after Bruce's comments Sep 13, 2018
+#mrtrix figure
+#xfm streamlines into day1 T1 space
+
+warpinit /Users/erin/Desktop/Projects/MRGFUS/analysis/9004_EP-12203/anat/T1.nii.gz flirt-[].nii
+
+transformconvert /Users/erin/Desktop/Projects/MRGFUS/analysis_diffusion_manuscript_310818/9004_EP_longitudinal_xfms/day1_T1_brain_2_pre_diff.mat /Users/erin/Desktop/Projects/MRGFUS/analysis/9004_EP-12203/anat/T1.nii.gz  /Users/erin/Desktop/Projects/MRGFUS/analysis/9004_EP-12126/diffusion/mean_b0_unwarped.nii.gz flirt_import /Users/erin/Desktop/Projects/MRGFUS/analysis_diffusion_manuscript_310818/9004_EP_longitudinal_xfms/pre_diff_2_day1_T1_brain.mrtrix -force
+
+mrtransform flirt-[].nii -linear /Users/erin/Desktop/Projects/MRGFUS/analysis_diffusion_manuscript_310818/9004_EP_longitudinal_xfms/pre_diff_2_day1_T1_brain.mrtrix /Users/erin/Desktop/Projects/MRGFUS/analysis_diffusion_manuscript_310818/9004_EP_longitudinal_xfms/pre_diff_2_day1_T1_brain.mif -force
+
+tcktransform /Users/erin/Desktop/Projects/MRGFUS/analysis_diffusion_manuscript_310818/9004_EP-12126/rtt_from_cortex_include_lesion.tck /Users/erin/Desktop/Projects/MRGFUS/analysis_diffusion_manuscript_310818/9004_EP_longitudinal_xfms/pre_diff_2_day1_T1_brain.mif /Users/erin/Desktop/Projects/MRGFUS/analysis_diffusion_manuscript_310818/9004_EP-12126/rtt_from_cortex_include_lesion2day1_T1.tck -force
+
+tcktransform /Users/erin/Desktop/Projects/MRGFUS/analysis_diffusion_manuscript_310818/9004_EP-12126/rtt_from_cortex_exclude_lesion.tck /Users/erin/Desktop/Projects/MRGFUS/analysis_diffusion_manuscript_310818/9004_EP_longitudinal_xfms/pre_diff_2_day1_T1_brain.mif /Users/erin/Desktop/Projects/MRGFUS/analysis_diffusion_manuscript_310818/9004_EP-12126/rtt_from_cortex_exclude_lesion2day1_T1.tck -force
