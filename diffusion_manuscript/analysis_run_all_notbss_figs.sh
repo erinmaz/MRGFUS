@@ -26,23 +26,33 @@ mkdir ${CURRENT_ANALYSIS}/figure_lesion/9001
 cp /Users/erin/Desktop/Projects/MRGFUS/analysis/9001_SH-11644/anat/T1.nii.gz ${CURRENT_ANALYSIS}/figure_lesion/9001/.
 cp /Users/erin/Desktop/Projects/MRGFUS/analysis/9001_SH_longitudinal_xfms_T1/T1_brain_day1_2_pre_6dof.nii.gz ${CURRENT_ANALYSIS}/figure_lesion/9001/.
 cp /Users/erin/Desktop/Projects/MRGFUS/analysis/9001_SH_longitudinal_xfms_T1/T1_brain_month3_2_pre_6dof.nii.gz ${CURRENT_ANALYSIS}/figure_lesion/9001/.
+
 applywarp --postmat=/Users/erin/Desktop/Projects/MRGFUS/analysis/9001_SH_longitudinal_xfms_T1/T1_brain_day1_2_pre_6dof.mat -i /Users/erin/Desktop/Projects/MRGFUS/analysis_lesion_masks/9001_SH-11692/anat/T1_lesion_mask_filled -r /Users/erin/Desktop/Projects/MRGFUS/analysis/9001_SH-11644/anat/T1 -o ${CURRENT_ANALYSIS}/figure_lesion/9001/lesion_day1_2_pre --interp=nn
 
 applywarp --postmat=/Users/erin/Desktop/Projects/MRGFUS/analysis/9001_SH_longitudinal_xfms_T1/T1_brain_month3_2_pre_6dof.mat -i /Users/erin/Desktop/Projects/MRGFUS/analysis_lesion_masks/9001_SH-12271/anat/T1_lesion_mask_filled -r  /Users/erin/Desktop/Projects/MRGFUS/analysis/9001_SH-11644/anat/T1 -o ${CURRENT_ANALYSIS}/9001/figure_lesion/lesion_month3_2_pre --interp=nn
 
+applywarp --postmat=/Users/erin/Desktop/Projects/MRGFUS/analysis/9001_SH_longitudinal_xfms_T1/mT1_brain_month3_2_pre_6dof.mat -i /Users/erin/Desktop/Projects/MRGFUS/analysis/9001_SH-12271/anat/mT1 -r /Users/erin/Desktop/Projects/MRGFUS/analysis/9001_SH-11644/anat/T1  -o /Users/erin/Desktop/Projects/MRGFUS/analysis_diffusion_manuscript_310818/figure_lesion/9001/mT1_month3_2_pre
+
+applywarp --postmat=/Users/erin/Desktop/Projects/MRGFUS/analysis/9001_SH_longitudinal_xfms_T1/mT1_brain_day1_2_pre_6dof.mat -i /Users/erin/Desktop/Projects/MRGFUS/analysis/9001_SH-11692/anat/mT1 -r /Users/erin/Desktop/Projects/MRGFUS/analysis/9001_SH-11644/anat/T1  -o /Users/erin/Desktop/Projects/MRGFUS/analysis_diffusion_manuscript_310818/figure_lesion/9001/mT1_day1_2_pre
+
 fsleyes ${CURRENT_ANALYSIS}/figure_lesion/9001/*.nii.gz
 
 mkdir ${CURRENT_ANALYSIS}/figure_lesion/9004
-cp /Users/erin/Desktop/Projects/MRGFUS/analysis/9004_EP-12126/anat/T1.nii.gz ${CURRENT_ANALYSIS}/figure_lesion/9004/.
+cp /Users/erin/Desktop/Projects/MRGFUS/analysis/9004_EP-12126/anat/mT1.nii.gz ${CURRENT_ANALYSIS}/figure_lesion/9004/.
 cp /Users/erin/Desktop/Projects/MRGFUS/analysis/9004_EP_longitudinal_xfms_T1/T1_brain_day1_2_pre_6dof.nii.gz ${CURRENT_ANALYSIS}/figure_lesion/9004/.
 cp /Users/erin/Desktop/Projects/MRGFUS/analysis/9004_EP_longitudinal_xfms_T1/T1_brain_month3_2_pre_6dof.nii.gz ${CURRENT_ANALYSIS}/figure_lesion/9004/.
 applywarp --postmat=/Users/erin/Desktop/Projects/MRGFUS/analysis/9004_EP_longitudinal_xfms_T1/T1_brain_day1_2_pre_6dof.mat -i /Users/erin/Desktop/Projects/MRGFUS/analysis_lesion_masks/9004_EP-12203/anat/T1_lesion_mask_filled -r /Users/erin/Desktop/Projects/MRGFUS/analysis/9004_EP-12126/anat/T1 -o ${CURRENT_ANALYSIS}/figure_lesion/9004/lesion_day1_2_pre --interp=nn
 
 applywarp --postmat=/Users/erin/Desktop/Projects/MRGFUS/analysis/9004_EP_longitudinal_xfms_T1/T1_brain_month3_2_pre_6dof.mat -i /Users/erin/Desktop/Projects/MRGFUS/analysis_lesion_masks/9004_EP-12955/anat/T1_lesion_mask_filled -r  /Users/erin/Desktop/Projects/MRGFUS/analysis/9004_EP-12126/anat/T1 -o ${CURRENT_ANALYSIS}/figure_lesion/9004/lesion_month3_2_pre --interp=nn
 
+
+applywarp --postmat=/Users/erin/Desktop/Projects/MRGFUS/analysis/9004_EP_longitudinal_xfms_T1/mT1_brain_day1_2_pre_6dof.mat -i /Users/erin/Desktop/Projects/MRGFUS/analysis/9004_EP-12203/anat/mT1 -r /Users/erin/Desktop/Projects/MRGFUS/analysis/9004_EP-12126/anat/T1 -o ${CURRENT_ANALYSIS}/figure_lesion/9004/mT1_day1_2_pre 
+
+applywarp --postmat=/Users/erin/Desktop/Projects/MRGFUS/analysis/9004_EP_longitudinal_xfms_T1/mT1_brain_month3_2_pre_6dof.mat -i /Users/erin/Desktop/Projects/MRGFUS/analysis/9004_EP-12955/anat/mT1 -r /Users/erin/Desktop/Projects/MRGFUS/analysis/9004_EP-12126/anat/T1 -o ${CURRENT_ANALYSIS}/figure_lesion/9004/mT1_month3_2_pre 
+
 fsleyes ${CURRENT_ANALYSIS}/figure_lesion/9004/*.nii.gz
 
-
+mrview (to rotate easier)
 
 # Figure 2 - example ROIs. Display on day1 T1 space to show relationship with lesion
 
@@ -51,6 +61,8 @@ q=9004_EP-12203
 sub=9004_EP
 applywarp --postmat=${CURRENT_ANALYSIS}/${sub}_longitudinal_xfms/day1_T1_brain_2_pre_T1_brain.mat -i ${QADIR}/${q}/anat/mT1 -o ${CURRENT_ANALYSIS}/${sub}_longitudinal_xfms/day1_T1_2_pre_T1 -r ${QADIR}/${r}/anat/mT1
 fsleyes ${CURRENT_ANALYSIS}/${sub}_longitudinal_xfms/day1_T1_2_pre_T1 ${CURRENT_ANALYSIS}/${r}/rtt_from_cortex_include_lesion_nooverlap_bin2T1_nolesion_noneighbours_inferior_nothalamus ${CURRENT_ANALYSIS}/${r}/rtt_from_cortex_include_lesion_nooverlap_bin2T1_nolesion_noneighbours_thalamusonly  ${CURRENT_ANALYSIS}/${r}/rtt_from_cortex_include_lesion_nooverlap_bin2T1_nolesion_noneighbours_superior_nothalamus ${CURRENT_ANALYSIS}/${r}/superior_cerebellar_peduncle_L ${CURRENT_ANALYSIS}/${r}/superior_cerebellar_peduncle_R ${CURRENT_ANALYSIS}/${r}/middle_cerebellar_peduncle_L ${CURRENT_ANALYSIS}/${r}/middle_cerebellar_peduncle_R  
+
+#fix 26 Sep 2018 to make slices thicker, to see more of each ROI
 
 
 #Centre of mass of the lesions
