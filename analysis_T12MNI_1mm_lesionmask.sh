@@ -4,14 +4,20 @@ MAINDIR=/Users/erin/Desktop/Projects/MRGFUS
 mkdir ${MAINDIR}/analysis/${MYSUB}/anat/xfms
 /usr/local/fsl/bin/flirt -in ${MAINDIR}/analysis/${MYSUB}/anat/mT1_brain -ref ${FSLDIR}/data/standard/MNI152_T1_1mm_brain -out ${MAINDIR}/analysis/${MYSUB}/anat/xfms/mT1_brain_2MNI_1mm_lin -omat ${MAINDIR}/analysis/${MYSUB}/anat/xfms/mT1_brain_2MNI_1mm_lin.mat -cost corratio -dof 12 -searchrx -90 90 -searchry -90 90 -searchrz -90 90 -interp trilinear 
 
+fslorient -setsformcode 1 ${MAINDIR}/analysis/${MYSUB}/anat/spm_mask
+fslorient -setqformcode 1 ${MAINDIR}/analysis/${MYSUB}/anat/spm_mask
+
 if [ -f ${MAINDIR}/analysis_lesion_masks/${MYSUB}/anat/T1_lesion_mask_filled.nii.gz ]; then
-  INMASKSTR=--inmask==${MAINDIR}/analysis_lesion_masks/${MYSUB}/anat/T1_lesion_mask_filled.nii.gz
+  fslmaths ${MAINDIR}/analysis/${MYSUB}/anat/spm_mask -sub ${MAINDIR}/analysis_lesion_masks/${MYSUB}/anat/T1_lesion_mask_filled ${MAINDIR}/analysis/${MYSUB}/anat/xfms/fnirt_inmask
+  
+  INMASKSTR=--inmask=${MAINDIR}/analysis/${MYSUB}/anat/xfms/fnirt_inmask
   DOFIRST=0
 else
   INMASKSTR=''
   DOFIRST=1
 fi
-
+fslorient -setsformcode 1 ${MAINDIR}/analysis/${MYSUB}/anat/mT1
+fslorient -setqformcode 1 ${MAINDIR}/analysis/${MYSUB}/anat/mT1
 /usr/local/fsl/bin/fnirt --in=${MAINDIR}/analysis/${MYSUB}/anat/mT1 ${INMASKSTR} --aff=${MAINDIR}/analysis/${MYSUB}/anat/xfms/mT1_brain_2MNI_1mm_lin.mat --cout=${MAINDIR}/analysis/${MYSUB}/anat/xfms/mT1_2_MNI_1mm_warp --iout=${MAINDIR}/analysis/${MYSUB}/anat/xfms/mT1_2_MNI_1mm_warped --jout=${MAINDIR}/analysis/${MYSUB}/anat/xfms/mT1_2_MNI_1mm_jac --config=T1_2_MNI152_2mm --ref=${FSLDIR}/data/standard/MNI152_T1_1mm --refmask=${FSLDIR}/data/standard/MNI152_T1_1mm_brain_mask_dil --warpres=10,10,10
 
 #HERE
