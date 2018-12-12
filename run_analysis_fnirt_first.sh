@@ -48,3 +48,14 @@ analysis_fnirt_first_control_rois.sh 9013_JD-13455 9013_JD-13722 9013_JD-14227 9
 for f in `find . -name 'longitudinal_putamen_vol.txt'`; do sed "s:^:$f :" $f >> putamen_vol_all.txt; done
  
 for f in `find . -name 'longitudinal_hipp_vol.txt'`; do sed "s:^:$f :" $f >> hipp_vol_all.txt; done
+
+#added to get warps for Graham Dec 6 2018
+
+for sub in 9010_RR 9011_BB
+do
+mkdir ~/Desktop/Projects/MRGFUS/analysis/${sub}_longitudinal_xfms_T1
+cp /Users/erin/Desktop/Projects/MRGFUS/analysis/${sub}_longitudinal_xfms/mT1_day1_2_pre_6dof.mat /Users/erin/Desktop/Projects/MRGFUS/analysis/${sub}_longitudinal_xfms_T1/mT1_brain_day1_2_pre_6dof.mat 
+cp /Users/erin/Desktop/Projects/MRGFUS/analysis/${sub}_longitudinal_xfms/mT1_month3_2_pre_6dof.mat /Users/erin/Desktop/Projects/MRGFUS/analysis/${sub}_longitudinal_xfms_T1/mT1_brain_month3_2_pre_6dof.mat 
+done
+analysis_fnirt_first.sh 9010_RR-13130 9010_RR-13536 9010_RR-14700 9010_RR
+analysis_fnirt_first.sh 9011_BB-13042 9011_BB-14148 9010_BB-14878 9011_BB
