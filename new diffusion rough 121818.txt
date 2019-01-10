@@ -1,0 +1,11 @@
+applywarp -i /Users/erin/Desktop/Projects/MRGFUS/scripts/diffusion_manuscript/rois_standardspace/CC.nii.gz -r ../mean_b0_unwarped.nii.gz -w /Users/erin/Desktop/Projects/MRGFUS/analysis/9010_RR-13130/anat/xfms/MNI_1mm_warp_2_mT1 --postmat=/Users/erin/Desktop/Projects/MRGFUS/analysis/9010_RR-13130/diffusion/xfms/T1_2_diff_bbr.mat -o CC --interp=nn 
+fslmaths CC -dilM CC
+fslmaths exclude -add CC -bin exclude 
+
+
+fslmaths /Users/erin/Desktop/Projects/MRGFUS/analysis/9010_RR-13130/anat/c3T1.nii.gz -thr 0.9 -bin /Users/erin/Desktop/Projects/MRGFUS/analysis/9010_RR-13130/anat/c3T1.9_bin.nii.gz 
+applywarp -i /Users/erin/Desktop/Projects/MRGFUS/analysis/9010_RR-13130/anat/c3T1.9_bin.nii.gz -r ../mean_b0_unwarped.nii.gz --postmat=/Users/erin/Desktop/Projects/MRGFUS/analysis/9010_RR-13130/diffusion/xfms/T1_2_diff_bbr.mat -o csf --interp=nn 
+
+applywarp -i /Users/erin/Desktop/Projects/MRGFUS/scripts/rois_standardspace/harvox_sub_thalamus_L_final -r ../mean_b0_unwarped.nii.gz -w /Users/erin/Desktop/Projects/MRGFUS/analysis/9010_RR-13130/anat/xfms/MNI_1mm_warp_2_mT1 --postmat=/Users/erin/Desktop/Projects/MRGFUS/analysis/9010_RR-13130/diffusion/xfms/T1_2_diff_bbr.mat -o thalamus --interp=nn 
+
+applywarp -i 

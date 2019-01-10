@@ -11,8 +11,12 @@ else
   DOFIRST=1
 fi
 
-/usr/local/fsl/bin/fnirt --in=${MAINDIR}/analysis/${MYSUB}/anat/mT1 --inmask=${MAINDIR}/analysis/${MYSUB}/anat/xfms/fnirt_inmask --aff=${MAINDIR}/analysis/${MYSUB}/anat/xfms/mT1_brain_2_MNI_1mm_lin.mat --cout=${MAINDIR}/analysis/${MYSUB}/anat/xfms/mT1_2_MNI_1mm_warp --iout=${MAINDIR}/analysis/${MYSUB}/anat/xfms/mT1_2_MNI_1mm_warped --jout=${MAINDIR}/analysis/${MYSUB}/anat/xfms/mT1_2_MNI_1mm_jac --config=T1_2_MNI152_2mm --ref=${FSLDIR}/data/standard/MNI152_T1_1mm --refmask=${FSLDIR}/data/standard/MNI152_T1_1mm_brain_mask_dil --warpres=10,10,10
+#to fix weird problem with image dimensions being wrong
+flirt -applyxfm -init /Users/erin/Desktop/Projects/MRGFUS/scripts/ident.mat -in ${MAINDIR}/analysis/${MYSUB}/anat/xfms/fnirt_inmask -ref ${MAINDIR}/analysis/${MYSUB}/anat/mT1 -out ${MAINDIR}/analysis/${MYSUB}/anat/xfms/fnirt_inmask2mT1 -interp nearestneighbour
 
+/usr/local/fsl/bin/fnirt --in=${MAINDIR}/analysis/${MYSUB}/anat/mT1 --inmask=${MAINDIR}/analysis/${MYSUB}/anat/xfms/fnirt_inmask2mT1 --aff=${MAINDIR}/analysis/${MYSUB}/anat/xfms/mT1_brain_2_MNI_1mm_lin.mat --cout=${MAINDIR}/analysis/${MYSUB}/anat/xfms/mT1_2_MNI_1mm_warp --iout=${MAINDIR}/analysis/${MYSUB}/anat/xfms/mT1_2_MNI_1mm_warped --jout=${MAINDIR}/analysis/${MYSUB}/anat/xfms/mT1_2_MNI_1mm_jac --config=T1_2_MNI152_2mm --ref=${FSLDIR}/data/standard/MNI152_T1_1mm --refmask=${FSLDIR}/data/standard/MNI152_T1_1mm_brain_mask_dil --warpres=10,10,10
+
+invwarp -w ${MAINDIR}/analysis/${MYSUB}/anat/xfms/mT1_2_MNI_1mm_warp -o ${MAINDIR}/analysis/${MYSUB}/anat/xfms/MNI_1mm_2_mT1_warp -r ${MAINDIR}/analysis/${MYSUB}/anat/mT1 
 if [ ${DOFIRST} -eq 1 ]; then
   run_first_all -i ${MAINDIR}/analysis/${MYSUB}/anat/xfms/mT1_2_MNI_1mm_warped -o ${MAINDIR}/analysis/${MYSUB}/anat/xfms/mT1_2_MNI_1mm_warped_first # -s L_Hipp,R_Hipp,L_Thal,R_Thal
   fslmaths `ls ${MAINDIR}/analysis/${MYSUB}/anat/xfms/mT1_2_MNI_1mm_warped_first_all_*_firstseg.nii.gz` -thr 9.5 -uthr 10.5 -bin ${MAINDIR}/analysis/${MYSUB}/anat/xfms/mT1_2_MNI_1mm_warped_first_L_thal 
@@ -22,3 +26,4 @@ if [ ${DOFIRST} -eq 1 ]; then
   
 fi
   
+fsleyes ${MAINDIR}/analysis/${MYSUB}/anat/xfms/mT1_2_MNI_1mm_warped /Users/erin/Desktop/Projects/MRGFUS/analysis/${MYSUB}/anat/xfms/mT1_2_MNI_1mm_warped_first_L_thal.nii.gz /Users/erin/Desktop/Projects/MRGFUS/analysis/${MYSUB}/anat/xfms/mT1_2_MNI_1mm_warped_first_L_hipp.nii.gz /Users/erin/Desktop/Projects/MRGFUS/analysis/${MYSUB}/anat/xfms/mT1_2_MNI_1mm_warped_first_R_hipp.nii.gz /Users/erin/Desktop/Projects/MRGFUS/analysis/${MYSUB}/anat/xfms/mT1_2_MNI_1mm_warped_first_R_thal.nii.gz 

@@ -15,3 +15,6 @@ for f in 9009_CRB-12609 9009_CRB-13043 9009_CRB-13623 9010_RR-13130 9010_RR-1353
 do
 analysis_T12MNI_1mm_lesionmask.sh $f
 done
+
+
+
