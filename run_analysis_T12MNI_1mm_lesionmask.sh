@@ -16,5 +16,10 @@ do
 analysis_T12MNI_1mm_lesionmask.sh $f
 done
 
-
+#a couple got missed
+f=9004_EP-12126
+analysis_T12MNI_1mm_lesionmask.sh $f
+f=9021_WM-14127
+fslmaths ~/Desktop/Projects/MRGFUS/analysis/${f}/anat/mT1 -mas ~/Desktop/Projects/MRGFUS/analysis/${f}/anat/spm_mask  ~/Desktop/Projects/MRGFUS/analysis/${f}/anat/mT1_brain
+analysis_T12MNI_1mm_lesionmask.sh $f
 

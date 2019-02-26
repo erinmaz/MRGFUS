@@ -21,4 +21,3 @@ wait
 
 fsleyes /Users/erin/Desktop/Projects/MRGFUS/analysis/${pre}/anat/mT1 /Users/erin/Desktop/Projects/MRGFUS/analysis/${sub}_longitudinal_xfms_T1/day1_to_pre_warped /Users/erin/Desktop/Projects/MRGFUS/analysis/${sub}_longitudinal_xfms_T1/month3_to_pre_warped &
 
-done
