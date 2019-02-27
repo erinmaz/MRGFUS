@@ -28,6 +28,15 @@ done
 
 
 #do 9016
+mkdir ${MAINDIR}/analysis/9016_EB_longitudinal_xfms_T1/ants
+cd ${MAINDIR}/analysis/9016_EB_longitudinal_xfms_T1/ants
+fslmaths ${MAINDIR}/analysis_lesion_masks/9016_EB-14450/anat/T1_lesion_mask_filled2mT1 ${MAINDIR}/analysis/9016_EB_longitudinal_xfms_T1/ants/day1_inmask
+
+antsRegistration --dimensionality 3 --float 0 --output [day12pre,day12pre_Warped.nii.gz] --interpolation Linear  --winsorize-image-intensities [0.005,0.995]  --use-histogram-matching 0 --initial-moving-transform [${MAINDIR}/analysis/9016_EB-13634/anat/mT1.nii.gz,${MAINDIR}/analysis/9016_EB-14450/anat/mT1.nii.gz,1] --transform Rigid[0.1] --metric MI[${MAINDIR}/analysis/9016_EB-13634/anat/mT1.nii.gz,${MAINDIR}/analysis/9016_EB-14450/anat/mT1.nii.gz,1,32,Regular,0.25] --convergence [1000x500x250x100,1e-6,10] --shrink-factors 8x4x2x1 --smoothing-sigmas 3x2x1x0vox --transform Affine[0.1] --metric MI[${MAINDIR}/analysis/9016_EB-13634/anat/mT1.nii.gz,${MAINDIR}/analysis/9016_EB-14450/anat/mT1.nii.gz,1,32,Regular,0.25] --convergence [1000x500x250x100,1e-6,10]  --shrink-factors 8x4x2x1 --smoothing-sigmas 3x2x1x0vox --transform SyN[0.1,3,0] --metric CC[${MAINDIR}/analysis/9016_EB-13634/anat/mT1.nii.gz,${MAINDIR}/analysis/9016_EB-14450/anat/mT1.nii.gz,1,4] --convergence [100x70x50x20,1e-6,10] --shrink-factors 8x4x2x1  --smoothing-sigmas 3x2x1x0vox -x day1_inmask.nii.gz 
+
+antsApplyTransforms -d 3 -i ${MAINDIR}/analysis/9016_EB-14450/anat/mT1.nii.gz -r ${MAINDIR}/analysis/9016_EB-13634/anat/mT1.nii.gz -o mT1_2_MNI152_T1_1mm.nii.gz -t [day12pre0GenericAffine.mat,1] -t day12pre1InverseWarp.nii.gz
+
+
 fslmaths ${MAINDIR}/analysis/9016_EB-14450/anat/skullprob_man -fillh ${MAINDIR}/analysis/9016_EB-14450/anat/skullprob_man_fillh
 
 fslmaths ${MAINDIR}/analysis/9016_EB-14450/anat/skullprob_man_fillh -add ${MAINDIR}/analysis_lesion_masks/9016_EB-14450/anat/T1_lesion_mask_filled -binv ${MAINDIR}/analysis/9016_EB-14450/anat/xfms/ants/inmask_tmp
@@ -37,7 +46,19 @@ flirt -applyxfm -init ${FSLDIR}/etc/flirtsch/ident.mat -in ${MAINDIR}/analysis/9
 fsleyes ${MAINDIR}/analysis/9016_EB-14450/anat/mT1 ${MAINDIR}/analysis/9016_EB-14450/anat/xfms/ants/inmask  
 
 ################ IS THIS RIGHT? I HAVEN"T USE D A WARP!!!!!!
-applywarp -i ${MAINDIR}/analysis/9016_EB-14450/anat/skullprob_man_fillh -r ${MAINDIR}/analysis/9016_EB-15241/anat/mT1 -o ${MAINDIR}/analysis/9016_EB-15241/anat/skullprob_man_fillh_day1_to_month3 --interp=trilinear 
+#probably makes sense to use ANTS to create intra-subject warp anyway
+
+#applywarp -i ${MAINDIR}/analysis/9016_EB-14450/anat/skullprob_man_fillh -r ${MAINDIR}/analysis/9016_EB-15241/anat/mT1 -o ${MAINDIR}/analysis/9016_EB-15241/anat/skullprob_man_fillh_day1_to_month3 --interp=trilinear 
+
+
+
+
+
+antsApplyTransforms -d 3 -i ${MAINDIR}/analysis/${MYSUB}/anat/mT1.nii.gz -r ${FSLDIR}/data/standard/MNI152_T1_1mm.nii.gz -o mT1_2_MNI152_T1_1mm.nii.gz -t [MNI_1mm_2_mT10GenericAffine.mat,1] -t MNI_1mm_2_mT11InverseWarp.nii.gz
+
+
+
+
 fslmaths ${MAINDIR}/analysis/9016_EB-15241/anat/skullprob_man_fillh_day1_to_month3 -add ${MAINDIR}/analysis_lesion_masks/9016_EB-15241/anat/T1_lesion_mask_filled -thr 0.5 -binv ${MAINDIR}/analysis/9016_EB-15241/anat/xfms/ants/inmask 
 
 fsleyes ${MAINDIR}/analysis/9016_EB-15241/anat/mT1 ${MAINDIR}/analysis/9016_EB-15241/anat/xfms/ants/inmask  

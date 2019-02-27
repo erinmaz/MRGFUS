@@ -1,16 +1,12 @@
 #!/bin/bash
 
-#I think this is essentially working for 9001_SH. Need to carefully check for pts with lesion on other side. Need to make sure lesion & neighbours don't overlap with ROIs (may be fine already given next problem). need to think about making the ROIs less scanty (I think I am losing some voxels to rounding, although perhaps that's good because it prevents overlap?)
+#I think this is essentially working for 9001_SH. Need to carefully check for pts with lesion on other side.  need to think about making the ROIs less scanty (I think I am losing some voxels to rounding, although perhaps that's good because it prevents overlap?)
 
 MAINDIR=/Users/erin/Desktop/Projects/MRGFUS/analysis
 LESIONDIR=/Users/erin/Desktop/Projects/MRGFUS/analysis_lesion_masks
 MYDIR=${MAINDIR}/${1}-${2} #pre
 DAY1=${MAINDIR}/${1}-${3}
 DAY1_LESION=${LESIONDIR}/${1}-${3}
-#mark SCP decus on all patients
-#save as ${MYDIR}/diffusion/Kwon_ROIs/SCP_decus
-
-fsleyes ${MYDIR}/diffusion/dtifit_FA ${MYDIR}/diffusion/dtifit_V1
 
 xcoord_lesion_standard=`fslstats ${DAY1_LESION}/anat/T1_lesion_mask_filled2MNI_1mm -c | awk '{print $1}'`
 
@@ -21,6 +17,11 @@ else
 TREATED_DENTATE=L
 UNTREATED_DENTATE=R
 fi
+
+
+fslmaths ${MYDIR}/diffusion/T1_lesion_mask_filled2diff_bin -dilM -binv ${MYDIR}/diffusion/T1_lesion_mask_filled2diff_bin_and_neighbours_binv
+
+fslmaths ${MYDIR}/diffusion/T1_lesion_mask_filled2MNI_1mm_xswap_2diff_bin -dilM -binv ${MYDIR}/diffusion/T1_lesion_mask_filled2MNI_1mm_xswap_2diff_bin_and_neighbours_binv
 
 #Treated tract 
 treated_dentate_coords=`fslstats ${MYDIR}/diffusion/Kwon_ROIs/dentate_${TREATED_DENTATE}_dil -C`
@@ -59,7 +60,7 @@ fslmaths ${MYDIR}/diffusion/Kwon_ROIs/dentate_${TREATED_DENTATE}_dil_thalterm/fd
 fslmaths ${MYDIR}/diffusion/Kwon_ROIs/dentate_${TREATED_DENTATE}_dil_thalterm/fdt_paths -roi ${lesion_x} ${diff2x} ${decus_y} ${diff2y} ${decus_z} ${diff2z} 0 1 ${MYDIR}/diffusion/Kwon_ROIs/dentate_${TREATED_DENTATE}_dil_thalterm/fdt_paths_SCP_decus2lesion
 fi
 
-fslmaths ${MYDIR}/diffusion/Kwon_ROIs/dentate_${TREATED_DENTATE}_dil_thalterm/fdt_paths_SCP_decus2lesion -bin ${MYDIR}/diffusion/Kwon_ROIs/dentate_${TREATED_DENTATE}_dil_thalterm/fdt_paths_SCP_decus2lesion_bin
+fslmaths ${MYDIR}/diffusion/Kwon_ROIs/dentate_${TREATED_DENTATE}_dil_thalterm/fdt_paths_SCP_decus2lesion -bin -mas ${MYDIR}/diffusion/T1_lesion_mask_filled2diff_bin_and_neighbours_binv ${MYDIR}/diffusion/Kwon_ROIs/dentate_${TREATED_DENTATE}_dil_thalterm/fdt_paths_SCP_decus2lesion_bin_nolesion
 
 fslmaths ${MYDIR}/diffusion/Kwon_ROIs/dentate_${TREATED_DENTATE}_dil_thalterm/fdt_paths_dentate2SCP_decus -bin ${MYDIR}/diffusion/Kwon_ROIs/dentate_${TREATED_DENTATE}_dil_thalterm/fdt_paths_dentate2SCP_decus_bin
 
@@ -104,7 +105,7 @@ fslmaths ${MYDIR}/diffusion/Kwon_ROIs/dentate_${UNTREATED_DENTATE}_dil_thalterm/
 fslmaths ${MYDIR}/diffusion/Kwon_ROIs/dentate_${UNTREATED_DENTATE}_dil_thalterm/fdt_paths -roi ${lesion_x} ${diff2x} ${decus_y} ${diff2y} ${decus_z} ${diff2z} 0 1 ${MYDIR}/diffusion/Kwon_ROIs/dentate_${UNTREATED_DENTATE}_dil_thalterm/fdt_paths_SCP_decus2lesion
 fi
 
-fslmaths ${MYDIR}/diffusion/Kwon_ROIs/dentate_${UNTREATED_DENTATE}_dil_thalterm/fdt_paths_SCP_decus2lesion -bin ${MYDIR}/diffusion/Kwon_ROIs/dentate_${UNTREATED_DENTATE}_dil_thalterm/fdt_paths_SCP_decus2lesion_bin
+fslmaths ${MYDIR}/diffusion/Kwon_ROIs/dentate_${UNTREATED_DENTATE}_dil_thalterm/fdt_paths_SCP_decus2lesion -bin -mas ${MYDIR}/diffusion/T1_lesion_mask_filled2diff_bin_and_neighbours_binv ${MYDIR}/diffusion/Kwon_ROIs/dentate_${UNTREATED_DENTATE}_dil_thalterm/fdt_paths_SCP_decus2lesion_bin_nolesion
 
 fslmaths ${MYDIR}/diffusion/Kwon_ROIs/dentate_${UNTREATED_DENTATE}_dil_thalterm/fdt_paths_dentate2SCP_decus -bin ${MYDIR}/diffusion/Kwon_ROIs/dentate_${UNTREATED_DENTATE}_dil_thalterm/fdt_paths_dentate2SCP_decus_bin
 
@@ -116,10 +117,10 @@ for side in $TREATED_DENTATE $UNTREATED_DENTATE
 do
 flirt -applyxfm -init ${MYDIR}/diffusion/xfms/diff_2_T1_bbr.mat -in ${MYDIR}/diffusion/Kwon_ROIs/dentate_${side}_dil_thalterm/fdt_paths_dentate2SCP_decus_bin -out ${MYDIR}/diffusion/Kwon_ROIs/dentate_${side}_dil_thalterm/fdt_paths_dentate2SCP_decus2T1 -ref ${MYDIR}/anat/mT1 
 
-flirt -applyxfm -init ${MYDIR}/diffusion/xfms/diff_2_T1_bbr.mat -in ${MYDIR}/diffusion/Kwon_ROIs/dentate_${side}_dil_thalterm/fdt_paths_SCP_decus2lesion_bin -out ${MYDIR}/diffusion/Kwon_ROIs/dentate_${side}_dil_thalterm/fdt_paths_SCP_decus2lesion2T1 -ref ${MYDIR}/anat/mT1 
+flirt -applyxfm -init ${MYDIR}/diffusion/xfms/diff_2_T1_bbr.mat -in ${MYDIR}/diffusion/Kwon_ROIs/dentate_${side}_dil_thalterm/fdt_paths_SCP_decus2lesion_bin_nolesion -out ${MYDIR}/diffusion/Kwon_ROIs/dentate_${side}_dil_thalterm/fdt_paths_SCP_decus2lesion2T1 -ref ${MYDIR}/anat/mT1 
 
 fslmaths ${MYDIR}/diffusion/Kwon_ROIs/dentate_${side}_dil_thalterm/fdt_paths_dentate2SCP_decus2T1 -thr 0.5 -bin ${MYDIR}/diffusion/Kwon_ROIs/dentate_${side}_dil_thalterm/fdt_paths_dentate2SCP_decusT1_bin
 fslmaths ${MYDIR}/diffusion/Kwon_ROIs/dentate_${side}_dil_thalterm/fdt_paths_SCP_decus2lesion2T1 -thr 0.5 -bin ${MYDIR}/diffusion/Kwon_ROIs/dentate_${side}_dil_thalterm/fdt_paths_SCP_decus2lesion2T1_bin
 
-fsleyes ${MYDIR}/anat/mT1  ${MYDIR}/diffusion/Kwon_ROIs/dentate_${side}_dil_thalterm/fdt_paths_dentate2SCP_decusT1_bin -cm "Red" ${MYDIR}/diffusion/Kwon_ROIs/dentate_${side}_dil_thalterm/fdt_paths_SCP_decus2lesion2T1_bin -cm "Blue" &
+fsleyes ${MYDIR}/anat/mT1 ${MYDIR}/diffusion/Kwon_ROIs/dentate_${side}_dil_thalterm/fdt_paths_dentate2SCP_decusT1_bin -cm "Red" ${MYDIR}/diffusion/Kwon_ROIs/dentate_${side}_dil_thalterm/fdt_paths_SCP_decus2lesion2T1_bin -cm "Blue" &
 done
