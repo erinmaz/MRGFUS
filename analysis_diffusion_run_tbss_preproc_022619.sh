@@ -37,3 +37,7 @@ tbss_1_preproc *.nii.gz
 tbss_2_reg -T
 tbss_3_postreg -S
 tbss_4_prestats 0.2
+
+flirt -applyxfm -init ${ANALYSISDIR}/9010_RR-13536/diffusion/xfms/diff_2_T1_bbr.mat -in ${ANALYSISDIR}/9010_RR-13536/diffusion/dtifit_FA -ref ${ANALYSISDIR}/9010_RR-13536/anat/mT1 -out ${ANALYSISDIR}/9010_RR-13536/anat/xfms/ants/dtifit_FA2T1_lin
+
+antsApplyTransforms -d 3 -i ${ANALYSISDIR}/9010_RR-13536/anat/xfms/ants/dtifit_FA2T1_lin.nii.gz -r ${FSLDIR}/data/standard/MNI152_T1_1mm.nii.gz -o dtifit_FA_2_MNI152_T1_1mm.nii.gz -t [MNI_1mm_2_mT10GenericAffine.mat,1] -t MNI_1mm_2_mT11InverseWarp.nii.gz
