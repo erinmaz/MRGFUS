@@ -82,8 +82,12 @@ antsApplyTransforms -d 3 -i ${ANALYSISDIR}/9010_RR-13536/anat/xfms/ants/dtifit_F
 #hifu_et_C03-14983/anat/xfms/fnirt_inmask2mT1.nii.gz
 #HIFU_ET_C04-15436/anat/xfms/fnirt_inmask2mT1.nii.gz
 
+#FINISHED THIS ONE
 MYSUB=9001_SH-12271
 analysis_T12MNI_1mm_lesionmask.sh $MYSUB
+
+
+#TO RUN
 MYSUB=9004_EP-12203
 analysis_T12MNI_1mm_lesionmask.sh $MYSUB
 MYSUB=9004_EP-12955
@@ -107,19 +111,6 @@ analysis_T12MNI_1mm_lesionmask.sh $MYSUB-${day1_exam}
 analysis_T12MNI_1mm_lesionmask.sh $MYSUB-${month3_exam}
 done
 
-#trying to fix ants reg
+analysis_ants_reg.sh
 
-mkdir /Users/erin/Desktop/Projects/MRGFUS/analysis/9001_SH-11644/anat/xfms/ants/gm_wm
-cd /Users/erin/Desktop/Projects/MRGFUS/analysis/9001_SH-11644/anat
-
-fslmaths c1T1 -add c2T1 -bin -dilM gm_wm_dilM
-fslmaths mT1 -mas gm_wm_dilM /Users/erin/Desktop/Projects/MRGFUS/analysis/9001_SH-11644/anat/xfms/ants/gm_wm/mT1_gm_wm_dilM
-cd /Users/erin/Desktop/Projects/MRGFUS/analysis/9001_SH-11644/anat/xfms/ants/gm_wm
-ANALYSISDIR=/Users/erin/Desktop/Projects/MRGFUS/analysis
-MYSUB=9001_SH
-EXAM=11644
-
-antsRegistration --dimensionality 3 --float 0 --output [MNI_1mm_2_mT1,MNI_1mm_2_mT1_Warped.nii.gz] --interpolation Linear  --winsorize-image-intensities [0.005,0.995]  --use-histogram-matching 0 --initial-moving-transform [mT1_gm_wm_dilM.nii.gz,${FSLDIR}/data/standard/MNI152_T1_1mm_brain.nii.gz,1] --transform Rigid[0.1] --metric MI[mT1_gm_wm_dilM.nii.gz,${FSLDIR}/data/standard/MNI152_T1_1mm_brain.nii.gz,1,32,Regular,0.25] --convergence [1000x500x250x100,1e-6,10] --shrink-factors 8x4x2x1 --smoothing-sigmas 3x2x1x0vox --transform Affine[0.1] --metric MI[mT1_gm_wm_dilM.nii.gz,${FSLDIR}/data/standard/MNI152_T1_1mm_brain.nii.gz,1,32,Regular,0.25] --convergence [1000x500x250x100,1e-6,10]  --shrink-factors 8x4x2x1 --smoothing-sigmas 3x2x1x0vox --transform SyN[0.1,3,0] --metric CC[mT1_gm_wm_dilM.nii.gz,${FSLDIR}/data/standard/MNI152_T1_1mm_brain.nii.gz,1,4] --convergence [100x70x50x20,1e-6,10] --shrink-factors 8x4x2x1  --smoothing-sigmas 3x2x1x0vox ${INMASK}
-
-antsApplyTransforms -d 3 -i ${ANALYSISDIR}/${MYSUB}-${EXAM}/anat/mT1.nii.gz -r ${FSLDIR}/data/standard/MNI152_T1_1mm.nii.gz -o mT1_2_MNI152_T1_1mm.nii.gz -t [MNI_1mm_2_mT10GenericAffine.mat,1] -t MNI_1mm_2_mT11InverseWarp.nii.gz
-
+analysis_Kwon_ROIs_probtrackx_makeROIs_ants.sh

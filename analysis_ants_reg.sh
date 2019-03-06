@@ -26,7 +26,7 @@ mkdir ${ANALYSISDIR}/${MYSUB}-${EXAM}/anat/xfms
 mkdir ${ANALYSISDIR}/${MYSUB}-${EXAM}/anat/xfms/ants
 mkdir ${ANALYSISDIR}/${MYSUB}-${EXAM}/anat/xfms/ants/bet
 
-#brain extract. c1T1 and c2T1 are GM and WM masks created with SPM12's Segment 
+#brain extract. c1T1 and c2T1 are GM and WM masks created with SPM12's Segment (see QA.sh script)
 for EXAM in $pre_exam $day1_exam $month3_exam
 do
 fslmaths ${ANALYSISDIR}/${MYSUB}-${EXAM}/anat/c1T1 -add ${ANALYSISDIR}/${MYSUB}-${EXAM}/anat/c2T1 -dilM ${ANALYSISDIR}/${MYSUB}-${EXAM}/anat/gm_wm_dilM 
@@ -71,7 +71,7 @@ fslmaths ${ANALYSISDIR}/9016_EB-14450/anat/skullprob_man_clean_binv -mas ${ANALY
 
 fslmaths ${ANALYSISDIR}/9016_EB-15241/anat/skullprob_man_clean_day1_to_month3_binv -mas ${ANALYSISDIR}_lesion_masks/9016_EB-15241/anat/T1_lesion_mask_filled2mT1_binv ${ANALYSISDIR}/9016_EB-15241/anat/xfms/ants/inmask
 
-fslmaths ${ANALYSISDIR}/9016_EB-13634/anat/skullprob_man_clean_day1_to_pre ${ANALYSISDIR}/9016_EB-13634/anat/xfms/ants/inmask
+fslmaths ${ANALYSISDIR}/9016_EB-13634/anat/skullprob_man_clean_day1_to_pre -binv ${ANALYSISDIR}/9016_EB-13634/anat/xfms/ants/inmask
 
 #Run 9010 and 9016 without brain extraction (worked better than with GM_WM BET)
 
@@ -101,7 +101,7 @@ done
 
  
 # RUN ANTS for everyone else
-for MYSUB in 9001_SH 9002_RA  9004_EP 9005_BG 9006_EO 9007_RB 9009_CRB 9011_BB 9013_JD 9021_WM 
+for MYSUB in 9001_SH 9002_RA 9004_EP 9005_BG 9006_EO 9007_RB 9009_CRB 9011_BB 9013_JD 9021_WM 
 do
 pre_exam=`sed -n '/'${MYSUB}'/p' ${INDEX_FILE} | awk '{print $2}'` 
 day1_exam=`sed -n '/'${MYSUB}'/p' ${INDEX_FILE} | awk '{print $3}'` 
