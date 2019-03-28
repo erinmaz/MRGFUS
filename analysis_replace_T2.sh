@@ -18,3 +18,4 @@ fslmaths ${ANALYSISDIR}/${MYSUB}/anat/T2_2_to_T2 -add ${ANALYSISDIR}/${MYSUB}/an
 fsleyes ${ANALYSISDIR}/${MYSUB}/anat/T2_avg ${ANALYSISDIR}/${MYSUB}/anat/T2 ${ANALYSISDIR}/${MYSUB}/anat/T2_2_to_T2 &
 fi
 
+

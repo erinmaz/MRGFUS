@@ -1,0 +1,51 @@
+analysis_Kwon_ROIs_probtrackx_dentate2cortex_ants.sh
+
+9004 - no tracts from L dentate
+9010 - nothing from L dentate, R dentate crosses in a few places where it shouldnt. Manually fix exclude_R and re-run
+9011 nothing from R dentate
+
+
+analysis_Kwon_ROIs_probtrackx_dentate2cortex_check_lesion_overlap_ants.sh
+
+9001_SH-11644 9001_SH-11692 184.000000 240.000000
+9002_RA-11764 9002_RA-11833 128.000000 144.000000
+9004_EP-12126 9004_EP-12203 64.000000 168.000000
+9005_BG-13004 9005_BG-13126 232.000000 448.000000
+9006_EO-12389 9006_EO-12487 160.000000 176.000000
+9007_RB-12461 9007_RB-12910 64.000000 208.000000
+9009_CRB-12609 9009_CRB-13043 80.000000 408.000000
+9010_RR-13130 9010_RR-13536 184.000000 248.000000
+9011_BB-13042 9011_BB-14148 0.000000 240.000000
+9013_JD-13455 9013_JD-13722 40.000000 360.000000
+9016_EB-13634 9016_EB-14450 40.000000 296.000000
+9021_WM-14127 9021_WM-14455 72.000000 136.000000
+
+
+for MYSUB in 9001_SH 9002_RA 9004_EP 9005_BG 9006_EO 9007_RB 9009_CRB 9010_RR 9011_BB 9013_JD 9016_EB 9021_WM
+do
+analysis_Kwon_ROIs_probtrackx_dentate2cortex_split_tracts_ants.sh ${MYSUB} `sed -n '/'${MYSUB}'/p' ~/Desktop/Projects/MRGFUS/scripts/IDs_and_ExamNums.sh | awk '{print $2}'` `sed -n '/'${MYSUB}'/p' ~/Desktop/Projects/MRGFUS/scripts/IDs_and_ExamNums.sh | awk '{print $3}'`
+done
+
+for MYSUB in 9001_SH 9002_RA 9004_EP 9005_BG 9006_EO 9007_RB 9009_CRB 9010_RR 9011_BB 9013_JD 9016_EB 9021_WM
+do
+analysis_Kwon_ROIs_probtrackx_dentate2cortex_get_results_ants.sh $MYSUB `sed -n '/'${MYSUB}'/p' ~/Desktop/Projects/MRGFUS/scripts/IDs_and_ExamNums.sh | awk '{print $2}'` `sed -n '/'${MYSUB}'/p' ~/Desktop/Projects/MRGFUS/scripts/IDs_and_ExamNums.sh | awk '{print $3}'` /Users/erin/Desktop/Projects/MRGFUS/analysis/results_dentate2cortex_ants
+done
+
+
+for MYSUB in 9001_SH 9002_RA 9004_EP 9005_BG 9006_EO 9007_RB 9009_CRB 9010_RR 9011_BB 9013_JD 9016_EB 9021_WM
+do
+analysis_Kwon_ROIs_probtrackx_dentate2lesion2cortex_split_tracts_ants.sh ${MYSUB} `sed -n '/'${MYSUB}'/p' ~/Desktop/Projects/MRGFUS/scripts/IDs_and_ExamNums.sh | awk '{print $2}'` `sed -n '/'${MYSUB}'/p' ~/Desktop/Projects/MRGFUS/scripts/IDs_and_ExamNums.sh | awk '{print $3}'`
+done
+
+for MYSUB in 9001_SH 9002_RA 9004_EP 9005_BG 9006_EO 9007_RB 9009_CRB 9010_RR 9011_BB 9013_JD 9016_EB 9021_WM
+do
+analysis_Kwon_ROIs_probtrackx_dentate2lesion2cortex_get_results_ants.sh $MYSUB `sed -n '/'${MYSUB}'/p' ~/Desktop/Projects/MRGFUS/scripts/IDs_and_ExamNums.sh | awk '{print $2}'` `sed -n '/'${MYSUB}'/p' ~/Desktop/Projects/MRGFUS/scripts/IDs_and_ExamNums.sh | awk '{print $3}'` /Users/erin/Desktop/Projects/MRGFUS/analysis/results_${MYSUB}_dentate2lesion2cortex_ants
+done
+
+cd /Users/erin/Desktop/Projects/MRGFUS/analysis 
+paste `ls results_*_dentate2lesion2cortex_ants_d2s` > results_dentate2lesion2cortex_ants_d2s  
+paste `ls results_*_dentate2lesion2cortex_ants_s2l` > results_dentate2lesion2cortex_ants_s2l 
+paste `ls results_*_dentate2lesion2cortex_ants_thal` > results_dentate2lesion2cortex_ants_thal 
+paste `ls results_*_dentate2lesion2cortex_ants_sup2thal` > results_dentate2lesion2cortex_ants_sup2thal 
+
+rm results_9*
