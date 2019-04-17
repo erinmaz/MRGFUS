@@ -1,6 +1,5 @@
 function ModDCM
 
-%cd /Users/erin/Desktop/Projects/MRGFUS/dicoms/9013_JD-13455/400-PUSag_CUBE_T2-
 cd /Users/erin/Desktop/Projects/MRGFUS/dicoms/9012_AT-13418/500-PUSag_CUBE_T2-
 %   Get file listing in current directory
 files = dir;
@@ -37,7 +36,7 @@ ref_file = ref_file(inst);
 
 
 %   Modify as needed
-%img = smile_erin(img);
+
 cd /Users/erin/Desktop/Projects/MRGFUS/analysis/9012_AT-13418/anat
 new = niftiread('T2_avg_Vim_burned_high_swap.nii');
 newflip=flipud(new);
@@ -55,23 +54,3 @@ end
 
 
 end
-
-
-% function img = smile_erin(img)
-% val = max(abs(img(:)));
-% img(10,10,:) = val;
-% img(10,20,:) = val;
-% img(19,4,:) = val;
-% img(20,5,:) = val;
-% img(21,6,:) = val;
-% img(22,7,:) = val;
-% img(23,8:9,:) = val;
-% img(24,10:12,:) = val;
-% img(25,13:18,:) = val;
-% img(24,19:21,:) = val;
-% img(23,22:23,:) = val;
-% img(22,24,:) = val;
-% img(21,25,:) = val;
-% img(20,26,:) = val;
-% img(19,27,:) = val;
-% end
