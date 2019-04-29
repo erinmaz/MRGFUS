@@ -37,3 +37,13 @@ flirt -in /Users/erin/Desktop/Projects/MRGFUS/analysis/9020_JL-14836/anat/flair.
 fsleyes /Users/erin/Desktop/Projects/MRGFUS/analysis/9020_JL_longitudinal_xfms_anat/flair_day1_2_T1_pre.nii.gz /Users/erin/Desktop/Projects/MRGFUS/analysis/9020_JL_longitudinal_xfms_anat/flair_month3_2_T1_pre.nii.gz /Users/erin/Desktop/Projects/MRGFUS/analysis/9020_JL-14121/anat/xfms/flair2T1.nii.gz
 
 fsleyes /Users/erin/Desktop/Projects/MRGFUS/analysis/9020_JL_longitudinal_xfms_T1/preSRS_to_pre_6dof.nii.gz /Users/erin/Desktop/Projects/MRGFUS/analysis/9020_JL_longitudinal_xfms_T1/mT1_brain_day1_2_pre_6dof.nii.gz /Users/erin/Desktop/Projects/MRGFUS/analysis/9020_JL_longitudinal_xfms_T1/mT1_brain_month3_2_pre_6dof.nii.gz /Users/erin/Desktop/Projects/MRGFUS/analysis/9020_JL-14121/anat/mT1_brain.nii.gz
+
+flirt -in /Users/erin/Desktop/Projects/MRGFUS/analysis/9020_JL-2013-11-19/anat/AX_FLAIR_s6_e1 -ref /Users/erin/Desktop/Projects/MRGFUS/analysis/9020_JL-14121/anat/flair -o /Users/erin/Desktop/Projects/MRGFUS/analysis/9020_JL_longitudinal_xfms_anat/flair2013_to_pre -omat /Users/erin/Desktop/Projects/MRGFUS/analysis/9020_JL_longitudinal_xfms_anat/flair2013_to_pre.mat -dof 6 
+
+convert_xfm -omat /Users/erin/Desktop/Projects/MRGFUS/analysis/9020_JL_longitudinal_xfms_anat/flair2013_to_pre_T1.mat -concat /Users/erin/Desktop/Projects/MRGFUS/analysis/9020_JL-14121/anat/xfms/flair2T1.mat /Users/erin/Desktop/Projects/MRGFUS/analysis/9020_JL_longitudinal_xfms_anat/flair2013_to_pre.mat
+
+flirt -applyxfm -init /Users/erin/Desktop/Projects/MRGFUS/analysis/9020_JL_longitudinal_xfms_anat/flair2013_to_pre_T1.mat -in /Users/erin/Desktop/Projects/MRGFUS/analysis/9020_JL-2013-11-19/anat/AX_FLAIR_s6_e1 -out /Users/erin/Desktop/Projects/MRGFUS/analysis/9020_JL_longitudinal_xfms_anat/flair2013_to_pre_T1 -interp sinc -ref /Users/erin/Desktop/Projects/MRGFUS/analysis/9020_JL-14121/anat/T1
+
+ fslstats /Users/erin/Desktop/Projects/MRGFUS/analysis/9020_JL_longitudinal_xfms_anat/flair2013_to_pre_T1.nii.gz -k /Users/erin/Desktop/Projects/MRGFUS/analysis/9020_JL_longitudinal_xfms_anat/flair2T1_sinc_reference.nii.gz -M
+ 
+ fslmaths /Users/erin/Desktop/Projects/MRGFUS/analysis/9020_JL_longitudinal_xfms_anat/flair2013_to_pre_T1 -mul 1.063535202 /Users/erin/Desktop/Projects/MRGFUS/analysis/9020_JL_longitudinal_xfms_anat/flair2013_to_pre_T1_norm  
