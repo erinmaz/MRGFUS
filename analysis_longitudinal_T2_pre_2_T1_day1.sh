@@ -6,9 +6,8 @@ PRE=$2
 DAY1=$3
 
 MAINDIR=/Users/erin/Desktop/Projects/MRGFUS/analysis
-DESTDIR=/Users/erin/Dropbox/BigBrainAnalysis/lesions/native_space
 
-/usr/local/fsl/bin/flirt -in ${MAINDIR}/${MYSUB}-${PRE}/anat/T1 -ref ${MAINDIR}/${MYSUB}-${PRE}/anat/T2 -out ${MAINDIR}/${MYSUB}-${PRE}/anat/T1_to_T2 -omat ${MAINDIR}/${MYSUB}-${PRE}/anat/T1_to_T2.mat -bins 256 -cost corratio -searchrx 0 0 -searchry 0 0 -searchrz 0 0 -dof 6  -interp trilinear
+${FSLDIR}/flirt -in ${MAINDIR}/${MYSUB}-${PRE}/anat/T1 -ref ${MAINDIR}/${MYSUB}-${PRE}/anat/T2 -out ${MAINDIR}/${MYSUB}-${PRE}/anat/T1_to_T2 -omat ${MAINDIR}/${MYSUB}-${PRE}/anat/T1_to_T2.mat -bins 256 -cost corratio -searchrx 0 0 -searchry 0 0 -searchrz 0 0 -dof 6  -interp trilinear
 
 fsleyes ${MAINDIR}/${MYSUB}-${PRE}/anat/T1_to_T2 ${MAINDIR}/${MYSUB}-${PRE}/anat/T2
 
