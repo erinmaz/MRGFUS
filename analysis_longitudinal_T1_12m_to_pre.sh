@@ -10,7 +10,7 @@ ANALYSISDIR=/Users/erin/Desktop/Projects/MRGFUS/analysis
 RESULTSDIR=${ANALYSISDIR}/${MYSUB_PREFIX}_longitudinal_xfms_T1
 mkdir $RESULTSDIR
 
-#ANATDIR_PRE=${ANALYSISDIR}/${PRE}/anat
+ANATDIR_PRE=${ANALYSISDIR}/${PRE}/anat
 #ANATDIR_DAY1=${ANALYSISDIR}/${DAY1}/anat
 #ANATDIR_MONTH3=${ANALYSISDIR}/${MONTH3}/anat
 
@@ -29,5 +29,4 @@ flirt -in ${ANATDIR_MONTH12}/mT1_brain -ref ${ANATDIR_PRE}/mT1_brain -out ${RESU
 
 #fsleyes ${ANATDIR_PRE}/mT1_brain ${RESULTSDIR}/mT1_brain_day1_2_pre_6dof ${RESULTSDIR}/mT1_brain_month3_2_pre_6dof 
 
-fsleyes ${ANATDIR_PRE}/mT1_brain ${RESULTSDIR}/mT1_brain_day1_2_pre_6dof ${RESULTSDIR}/mT1_brain_month3_2_pre_6dof 
-${RESULTSDIR}/mT1_brain_month12_2_pre_6dof
+fsleyes ${ANATDIR_PRE}/mT1_brain ${RESULTSDIR}/mT1_brain_day1_2_pre_6dof ${RESULTSDIR}/mT1_brain_month3_2_pre_6dof ${RESULTSDIR}/mT1_brain_month12_2_pre_6dof
