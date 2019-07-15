@@ -1,14 +1,24 @@
 #!/bin/bash
 
 MAINDIR=/Users/erin/Desktop/Projects/MRGFUS/analysis
-LESIONDIR=/Users/erin/Desktop/Projects/MRGFUS/analysis_lesion_masks
+LESIONDIR=/Users/erin/Desktop/Projects/MRGFUS/analysis
 MYDIR=${MAINDIR}/${1}-${2} #pre
 DAY1=${MAINDIR}/${1}-${3}
 DAY1_LESION=${LESIONDIR}/${1}-${3}
 OUTFILE=${4}
 
-xcoord_lesion_standard=`fslstats ${DAY1_LESION}/anat/T1_lesion_mask_filled2MNI_1mm -c | awk '{print $1}'`
+if [ -f ${DAY1_LESION}/anat/xfms/ants/bet/T1_lesion_filled_mask2mT1_2_MNI152_T1_1mm.nii.gz ]; then
+MYLESION=${DAY1_LESION}/anat/xfms/ants/bet/T1_lesion_filled_mask2mT1_2_MNI152_T1_1mm
+elif [ -f ${DAY1_LESION}/anat/xfms/ants/bet/T1_lesion_filled_mask_2_MNI152_T1_1mm.nii.gz ]; then
+MYLESION=${DAY1_LESION}/anat/xfms/ants/bet/T1_lesion_filled_mask_2_MNI152_T1_1mm
+elif [ -f ${DAY1_LESION}/anat/xfms/ants/T1_lesion_filled_mask2mT1_2_MNI152_T1_1mm.nii.gz ]; then
+MYLESION=${DAY1_LESION}/anat/xfms/ants/T1_lesion_filled_mask2mT1_2_MNI152_T1_1mm
+else
+MYLESION=${DAY1_LESION}/anat/xfms/ants/T1_lesion_filled_mask_2_MNI152_T1_1mm
+fi
 
+xcoord_lesion_standard=`fslstats $MYLESION -c | awk '{print $1}'`
+echo $xcoord_lesion_standard
 if [ $(bc -l <<< "$xcoord_lesion_standard < 0") -eq 1 ]; then 
 TREATED_DENTATE=R
 UNTREATED_DENTATE=L

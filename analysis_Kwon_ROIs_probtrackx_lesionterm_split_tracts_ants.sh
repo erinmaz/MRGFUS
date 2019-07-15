@@ -3,12 +3,23 @@
 #I think this is essentially working for 9001_SH. Need to carefully check for pts with lesion on other TREATED_DENTATE.  need to think about making the ROIs less scanty (I think I am losing some voxels to rounding, although perhaps that's good because it prevents overlap?)
 
 MAINDIR=/Users/erin/Desktop/Projects/MRGFUS/analysis
-LESIONDIR=/Users/erin/Desktop/Projects/MRGFUS/analysis_lesion_masks
+#LESIONDIR=/Users/erin/Desktop/Projects/MRGFUS/analysis_lesion_masks
+LESIONDIR=/Users/erin/Desktop/Projects/MRGFUS/analysis
 MYDIR=${MAINDIR}/${1}-${2} #pre
 DAY1=${MAINDIR}/${1}-${3}
 DAY1_LESION=${LESIONDIR}/${1}-${3}
 
-xcoord_lesion_standard=`fslstats ${DAY1_LESION}/anat/T1_lesion_mask_filled2MNI_1mm -c | awk '{print $1}'`
+if [ -f ${DAY1_LESION}/anat/xfms/ants/bet/T1_lesion_filled_mask2mT1_2_MNI152_T1_1mm.nii.gz ]; then
+MYLESION=${DAY1_LESION}/anat/xfms/ants/bet/T1_lesion_filled_mask2mT1_2_MNI152_T1_1mm
+elif [ -f ${DAY1_LESION}/anat/xfms/ants/bet/T1_lesion_filled_mask_2_MNI152_T1_1mm.nii.gz ]; then
+MYLESION=${DAY1_LESION}/anat/xfms/ants/bet/T1_lesion_filled_mask_2_MNI152_T1_1mm
+elif [ -f ${DAY1_LESION}/anat/xfms/ants/T1_lesion_filled_mask2mT1_2_MNI152_T1_1mm.nii.gz ]; then
+MYLESION=${DAY1_LESION}/anat/xfms/ants/T1_lesion_filled_mask2mT1_2_MNI152_T1_1mm
+else
+MYLESION=${DAY1_LESION}/anat/xfms/ants/T1_lesion_filled_mask_2_MNI152_T1_1mm
+fi
+
+xcoord_lesion_standard=`fslstats $MYLESION -c | awk '{print $1}'`
 
 if [ $(bc -l <<< "$xcoord_lesion_standard < 0") -eq 1 ]; then 
 TREATED_DENTATE=R
@@ -20,7 +31,8 @@ fi
 
 
 #fslmaths ${MYDIR}/diffusion/T1_lesion_mask_filled2diff_bin -dilM -binv ${MYDIR}/diffusion/T1_lesion_mask_filled2diff_bin_and_neighbours_binv
-fslmaths ${MYDIR}/diffusion/T1_lesion_mask_filled2diff_bin_and_neighbours_binv ${MYDIR}/diffusion/Kwon_ROIs_ants/T1_lesion_mask_filled2diff_bin_and_neighbours_binv
+fslmaths ${MYDIR}/diffusion/Kwon_ROIs_ants/T1_lesion_mask_filled2diff_bin -dilM -binv ${MYDIR}/diffusion/Kwon_ROIs_ants/T1_lesion_mask_filled2diff_bin_and_neighbours_binv
+#fslmaths ${MYDIR}/diffusion/T1_lesion_mask_filled2diff_bin_and_neighbours_binv ${MYDIR}/diffusion/Kwon_ROIs_ants/T1_lesion_mask_filled2diff_bin_and_neighbours_binv
 #fslmaths ${MYDIR}/diffusion/T1_lesion_mask_filled2MNI_1mm_xswap_2diff_bin -dilM -binv ${MYDIR}/diffusion/T1_lesion_mask_filled2MNI_1mm_xswap_2diff_bin_and_neighbours_binv
 
 #Treated tract 
@@ -39,7 +51,7 @@ diffx=`echo ${diffx#-}` #abs value
 diffy=`echo $decus_y - $treated_dentate_y | bc`
 diffz=`echo $decus_z - $treated_dentate_z | bc`
 
-lesion_coords=`fslstats ${MYDIR}/diffusion/T1_lesion_mask_filled2diff_bin -C`
+lesion_coords=`fslstats ${MYDIR}/diffusion/Kwon_ROIs_ants/T1_lesion_mask_filled2diff_bin -C`
 
 lesion_x=`echo $lesion_coords | awk '{print $1}'`
 lesion_y=`echo $lesion_coords | awk '{print $2}'`
@@ -60,7 +72,7 @@ fslmaths ${MYDIR}/diffusion/Kwon_ROIs_ants/dentate_${TREATED_DENTATE}_dil_lesion
 fslmaths ${MYDIR}/diffusion/Kwon_ROIs_ants/dentate_${TREATED_DENTATE}_dil_lesionterm/fdt_paths -roi ${lesion_x} ${diff2x} ${decus_y} ${diff2y} ${decus_z} ${diff2z} 0 1 ${MYDIR}/diffusion/Kwon_ROIs_ants/dentate_${TREATED_DENTATE}_dil_lesionterm/fdt_paths_SCP_decus2lesion
 fi
 
-fslmaths ${MYDIR}/diffusion/Kwon_ROIs_ants/dentate_${TREATED_DENTATE}_dil_lesionterm/fdt_paths_SCP_decus2lesion -bin -mas ${MYDIR}/diffusion/T1_lesion_mask_filled2diff_bin_and_neighbours_binv ${MYDIR}/diffusion/Kwon_ROIs_ants/dentate_${TREATED_DENTATE}_dil_lesionterm/fdt_paths_SCP_decus2lesion_bin_nolesion
+fslmaths ${MYDIR}/diffusion/Kwon_ROIs_ants/dentate_${TREATED_DENTATE}_dil_lesionterm/fdt_paths_SCP_decus2lesion -bin -mas ${MYDIR}/diffusion/Kwon_ROIs_ants/T1_lesion_mask_filled2diff_bin_and_neighbours_binv ${MYDIR}/diffusion/Kwon_ROIs_ants/dentate_${TREATED_DENTATE}_dil_lesionterm/fdt_paths_SCP_decus2lesion_bin_nolesion
 
 fslmaths ${MYDIR}/diffusion/Kwon_ROIs_ants/dentate_${TREATED_DENTATE}_dil_lesionterm/fdt_paths_dentate2SCP_decus -bin ${MYDIR}/diffusion/Kwon_ROIs_ants/dentate_${TREATED_DENTATE}_dil_lesionterm/fdt_paths_dentate2SCP_decus_bin
 

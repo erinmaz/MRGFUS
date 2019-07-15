@@ -22,6 +22,7 @@ convert_xfm -omat ${MAINDIR}/${MYSUB}_longitudinal_xfms_T1/diff_day1_2_T1_pre.ma
 
 convert_xfm -omat ${MAINDIR}/${MYSUB}_longitudinal_xfms_T1/diff_3M_2_T1_pre.mat -concat ${MAINDIR}/${MYSUB}_longitudinal_xfms_T1/${month3_to_pre_mat} ${MAINDIR}/${MYSUB_3M}/diffusion/xfms/${diff_to_T1_mat} 
 
+mkdir ${MAINDIR}/${MYSUB}_diffusion_longitudinal
 OUTDIR=${MAINDIR}/${MYSUB}_diffusion_longitudinal/dti_in_pre_T1_space_220219
 mkdir ${OUTDIR}
 
@@ -44,6 +45,6 @@ flirt -in ${MAINDIR}/${MYSUB_DAY1}/diffusion/dtifit_${image} -applyxfm -init ${M
 flirt -in ${MAINDIR}/${MYSUB_3M}/diffusion/dtifit_${image} -applyxfm -init ${MAINDIR}/${MYSUB}_longitudinal_xfms_T1/diff_3M_2_T1_pre.mat -ref ${MAINDIR}/${MYSUB_PRE}/anat/T1 -out ${OUTDIR}/${image}_TP3
 done
 
-flirt -in ${MAINDIR}/${MYSUB_PRE}/diffusion/Kwon_ROIs/dentate_R_dil_thalterm/fdt_paths -applyxfm -init ${MAINDIR}/${MYSUB_PRE}/diffusion/xfms/${diff_to_T1_mat} -ref ${MAINDIR}/${MYSUB_PRE}/anat/T1 -out ${MAINDIR}/${MYSUB_PRE}/diffusion/Kwon_ROIs/dentate_R_dil_thalterm/fdt_paths2T1
+#flirt -in ${MAINDIR}/${MYSUB_PRE}/diffusion/Kwon_ROIs/dentate_R_dil_thalterm/fdt_paths -applyxfm -init ${MAINDIR}/${MYSUB_PRE}/diffusion/xfms/${diff_to_T1_mat} -ref ${MAINDIR}/${MYSUB_PRE}/anat/T1 -out ${MAINDIR}/${MYSUB_PRE}/diffusion/Kwon_ROIs/dentate_R_dil_thalterm/fdt_paths2T1
 
-flirt -in ${MAINDIR}/${MYSUB_PRE}/diffusion/Kwon_ROIs/dentate_L_dil_thalterm/fdt_paths -applyxfm -init ${MAINDIR}/${MYSUB_PRE}/diffusion/xfms/${diff_to_T1_mat} -ref ${MAINDIR}/${MYSUB_PRE}/anat/T1 -out ${MAINDIR}/${MYSUB_PRE}/diffusion/Kwon_ROIs/dentate_L_dil_thalterm/fdt_paths2T1
+#flirt -in ${MAINDIR}/${MYSUB_PRE}/diffusion/Kwon_ROIs/dentate_L_dil_thalterm/fdt_paths -applyxfm -init ${MAINDIR}/${MYSUB_PRE}/diffusion/xfms/${diff_to_T1_mat} -ref ${MAINDIR}/${MYSUB_PRE}/anat/T1 -out ${MAINDIR}/${MYSUB_PRE}/diffusion/Kwon_ROIs/dentate_L_dil_thalterm/fdt_paths2T1
