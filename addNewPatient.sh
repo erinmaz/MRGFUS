@@ -30,19 +30,5 @@ analysis_Kwon_ROIs_probtrackx_lesion2motorcortex_dil_ants_newSub.sh $MYSUB $PRE
 analysis_Kwon_ROIs_probtrackx_lesionterm_get_results_ants.sh $MYSUB $PRE $DAY1 /Users/erin/Desktop/Projects/MRGFUS/analysis/results_lesionterm_ants_${MYSUB}
 analysis_Kwon_ROIs_probtrackx_lesion2motorcortex_dil_get_results_ants.sh $MYSUB $PRE $DAY1 /Users/erin/Desktop/Projects/MRGFUS/analysis/results_lesionterm_ants_${MYSUB}
 
-#HERE
 
-#run this at the end depending on what subjects we actually keep. NOTE analysis_generate_lesion_heatmap_and_CoM_ants.sh needs to be edited to include the new patient
-analysis_generate_lesion_heatmap_and_CoM_ants.sh /Users/erin/Desktop/Projects/MRGFUS/analysis/DTImanuscript_150719/results_group_lesions_ants_150719
 
-for MYSUB in 9001_SH 9002_RA 9004_EP 9005_BG 9006_EO 9007_RB 9009_CRB 9010_RR 9011_BB 9013_JD 9016_EB 9021_WM 9022_JG 9023_WS 
-do
-
-PRE=`sed -n '/'${MYSUB}'/p' ~/Desktop/Projects/MRGFUS/scripts/IDs_and_ExamNums.sh | awk '{print $2}'` 
-DAY1=`sed -n '/'${MYSUB}'/p' ~/Desktop/Projects/MRGFUS/scripts/IDs_and_ExamNums.sh | awk '{print $3}'` 
-MONTH3=`sed -n '/'${MYSUB}'/p' ~/Desktop/Projects/MRGFUS/scripts/IDs_and_ExamNums.sh | awk '{print $4}'`
-#analysis_Kwon_ROIs_probtrackx_lesion2motorcortex_dil_get_results_ants.sh $MYSUB $PRE $DAY1 /Users/erin/Desktop/Projects/MRGFUS/analysis/DTImanuscript_150719/results_lesion2motorcortex_ants_${MYSUB}
-analysis_Kwon_ROIs_probtrackx_lesionterm_get_results_ants.sh $MYSUB $PRE $DAY1 /Users/erin/Desktop/Projects/MRGFUS/analysis/DTImanuscript_150719/results_lesionterm_ants_${MYSUB}
-done
-paste `ls /Users/erin/Desktop/Projects/MRGFUS/analysis/DTImanuscript_150719/results_lesion2motorcortex_ants*withinthal` > /Users/erin/Desktop/Projects/MRGFUS/analysis/DTImanuscript_150719/results_lesion2motorcortex_ants_all_withinthal
-paste `ls /Users/erin/Desktop/Projects/MRGFUS/analysis/DTImanuscript_150719/results_lesion2motorcortex_ants*outsidethal` > /Users/erin/Desktop/Projects/MRGFUS/analysis/DTImanuscript_150719/results_lesion2motorcortex_ants_all_outsidethal

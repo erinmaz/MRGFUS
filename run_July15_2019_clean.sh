@@ -136,6 +136,8 @@ addNewPatient.sh 9022_JG
 
 analysis_generate_lesion_heatmap_and_CoM_ants.sh /Users/erin/Desktop/Projects/MRGFUS/analysis/DTImanuscript_150719/results_group_lesions_ants_150719
 
+analysis_Kwon_ROIs_probtrackx_thalterm_checK_lesion_overlap_ants.sh
+
 for MYSUB in 9001_SH 9002_RA 9004_EP 9005_BG 9006_EO 9007_RB 9009_CRB 9010_RR 9011_BB 9013_JD 9016_EB 9021_WM 9022_JG 9023_WS 
 do
 
