@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#subject IDs as input
+#subject ID as input
 MYSUB=$1
 MAINDIR=~/Desktop/Projects/MRGFUS
 ANALYSISDIR=${MAINDIR}/analysis
