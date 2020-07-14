@@ -1,5 +1,6 @@
 #Add a new subject
 #FIRST: Put new line in IDs_and_ExamNums.sh
+#Assumes you have run the QA script and analysis_diffusion_step1A_bedpostx.sh
 #ASSUMES You have traced the lesions for day1 and month3, and moved it to T1_lesion_zonesIandII in analysis
 #ASSUMES you have traced dentates, RNs, SCPs and SCP_decus for pre and put them in diffusion/Kwon_ROIs_ants
 #Will work for left hemi lesions only, and only if you use the ants bet reg
