@@ -11,8 +11,8 @@ SCRIPTSDIR=/Users/erin/Desktop/Projects/MRGFUS/scripts
 #analysis_longitudinal_all_T1s_in_pre_space.sh ${MYSUB} $2 $3 $4
 
 #in longitudal_xfms folder for each participant
-day1_to_pre_mat=mT1_brain_day1_2_pre_6dof.mat
-month3_to_pre_mat=mT1_brain_month3_2_pre_6dof.mat
+day1_to_pre_mat=T1_brain_day1_2_pre_6dof.mat
+month3_to_pre_mat=T1_brain_month3_2_pre_6dof.mat
 
 #in diffusion/xfms for each session
 diff_to_T1_mat=diff_2_T1_bbr.mat 

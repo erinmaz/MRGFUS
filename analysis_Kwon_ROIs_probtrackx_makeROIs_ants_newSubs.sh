@@ -8,7 +8,7 @@ MYSUB=$1
 for ROI in mni_prob_Cerebellum_thr10_L mni_prob_Cerebellum_thr10_R midsag_plane_CC_MNI152_T1_2mm optic_chiasm_thalterm jhu-tracts_prob_Cingulum_hippocampus_L jhu-tracts_prob_Cingulum_hippocampus_R harvardoxford-subcortical_thalamus_R_final_1mm harvardoxford-subcortical_thalamus_L_final_1mm jhu-labels_Label_Anterior_Limb_of_internal_capsule_L jhu-labels_Label_Anterior_Limb_of_internal_capsule_R histthal_label_anterior_commissure_dil2 brainstem_slice_below_pons optic_chiasm_thalterm
 do
 
-antsApplyTransforms -d 3 -i ${ROIDIR}/${ROI}.nii.gz -r ${MAINDIR}/analysis/${MYSUB}/anat/mT1.nii.gz -o ${MAINDIR}/analysis/${MYSUB}/diffusion/Kwon_ROIs_ants/${ROI}.nii.gz -t ${MAINDIR}/analysis/${MYSUB}/anat/xfms/ants/bet/MNI_1mm_2_mT10GenericAffine.mat -t ${MAINDIR}/analysis/${MYSUB}/anat/xfms/ants/bet/MNI_1mm_2_mT11Warp.nii.gz -n NearestNeighbor
+antsApplyTransforms -d 3 -i ${ROIDIR}/${ROI}.nii.gz -r ${MAINDIR}/analysis/${MYSUB}/anat/T1.nii.gz -o ${MAINDIR}/analysis/${MYSUB}/diffusion/Kwon_ROIs_ants/${ROI}.nii.gz -t ${MAINDIR}/analysis/${MYSUB}/anat/xfms/ants/bet/MNI_1mm_2_T10GenericAffine.mat -t ${MAINDIR}/analysis/${MYSUB}/anat/xfms/ants/bet/MNI_1mm_2_T11Warp.nii.gz -n NearestNeighbor
 
 flirt -applyxfm -init ${MAINDIR}/analysis/${MYSUB}/diffusion/xfms/T1_2_diff_bbr.mat -in ${MAINDIR}/analysis/${MYSUB}/diffusion/Kwon_ROIs_ants/${ROI} -out ${MAINDIR}/analysis/${MYSUB}/diffusion/Kwon_ROIs_ants/${ROI}2diff -ref ${MAINDIR}/analysis/${MYSUB}/diffusion/mean_b0_unwarped -interp nearestneighbour
 done

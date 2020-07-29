@@ -1,7 +1,7 @@
 #Add a new subject
 #FIRST: Put new line in IDs_and_ExamNums.sh
 #Assumes you have run the QA script on all sessions, and analysis_diffusion_step1A_bedpostx.sh on the pre session
-#ASSUMES You have traced the lesions for day1 and month3, and moved it to T1_lesion_zonesIandII in analysis
+#ASSUMES You have traced the lesions for day1 and month3, and moved it to T1_lesion_zonesIandII ??? T1_lesion_mask_filled in analysis
 #ASSUMES you have traced dentates, RNs, SCPs and SCP_decus for pre and put them in diffusion/Kwon_ROIs_ants
 #Will work for left hemi lesions only, and only if you use the ants bet reg
 
@@ -12,8 +12,8 @@ PRE=`sed -n '/'${MYSUB}'/p' ~/Desktop/Projects/MRGFUS/scripts/IDs_and_ExamNums.s
 DAY1=`sed -n '/'${MYSUB}'/p' ~/Desktop/Projects/MRGFUS/scripts/IDs_and_ExamNums.sh | awk '{print $3}'` 
 MONTH3=`sed -n '/'${MYSUB}'/p' ~/Desktop/Projects/MRGFUS/scripts/IDs_and_ExamNums.sh | awk '{print $4}'`
 
-analysis_longitudinal_all_T1s_in_pre_space.sh $MYSUB $PRE $DAY1 $MONTH3
-analysis_ants_reg_one_subject.sh $MYSUB
+#analysis_longitudinal_all_T1s_in_pre_space.sh $MYSUB $PRE $DAY1 $MONTH3
+#analysis_ants_reg_one_subject.sh $MYSUB
 analysis_T1_day1_2_diff_pre.sh $MYSUB $PRE $DAY1
 analysis_Kwon_ROIs_checkOverlap_newSub.sh ${MYSUB}-${PRE}
 analysis_Kwon_ROIs_probtrackx_makeROIs_ants_newSubs.sh ${MYSUB}-${PRE}

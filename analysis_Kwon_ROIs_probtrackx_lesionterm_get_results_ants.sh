@@ -7,12 +7,12 @@ DAY1=${MAINDIR}/${1}-${3}
 DAY1_LESION=${LESIONDIR}/${1}-${3}
 OUTFILE=${4}
 
-if [ -f ${DAY1_LESION}/anat/xfms/ants/bet/T1_lesion_filled_mask2mT1_2_MNI152_T1_1mm.nii.gz ]; then
-MYLESION=${DAY1_LESION}/anat/xfms/ants/bet/T1_lesion_filled_mask2mT1_2_MNI152_T1_1mm
+if [ -f ${DAY1_LESION}/anat/xfms/ants/bet/T1_lesion_filled_mask2T1_2_MNI152_T1_1mm.nii.gz ]; then
+MYLESION=${DAY1_LESION}/anat/xfms/ants/bet/T1_lesion_filled_mask2T1_2_MNI152_T1_1mm
 elif [ -f ${DAY1_LESION}/anat/xfms/ants/bet/T1_lesion_filled_mask_2_MNI152_T1_1mm.nii.gz ]; then
 MYLESION=${DAY1_LESION}/anat/xfms/ants/bet/T1_lesion_filled_mask_2_MNI152_T1_1mm
-elif [ -f ${DAY1_LESION}/anat/xfms/ants/T1_lesion_filled_mask2mT1_2_MNI152_T1_1mm.nii.gz ]; then
-MYLESION=${DAY1_LESION}/anat/xfms/ants/T1_lesion_filled_mask2mT1_2_MNI152_T1_1mm
+elif [ -f ${DAY1_LESION}/anat/xfms/ants/T1_lesion_filled_mask2T1_2_MNI152_T1_1mm.nii.gz ]; then
+MYLESION=${DAY1_LESION}/anat/xfms/ants/T1_lesion_filled_mask2T1_2_MNI152_T1_1mm
 else
 MYLESION=${DAY1_LESION}/anat/xfms/ants/T1_lesion_filled_mask_2_MNI152_T1_1mm
 fi

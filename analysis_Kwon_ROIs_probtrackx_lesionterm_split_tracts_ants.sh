@@ -9,12 +9,12 @@ MYDIR=${MAINDIR}/${1}-${2} #pre
 DAY1=${MAINDIR}/${1}-${3}
 DAY1_LESION=${LESIONDIR}/${1}-${3}
 
-if [ -f ${DAY1_LESION}/anat/xfms/ants/bet/T1_lesion_filled_mask2mT1_2_MNI152_T1_1mm.nii.gz ]; then
-MYLESION=${DAY1_LESION}/anat/xfms/ants/bet/T1_lesion_filled_mask2mT1_2_MNI152_T1_1mm
+if [ -f ${DAY1_LESION}/anat/xfms/ants/bet/T1_lesion_filled_mask2T1_2_MNI152_T1_1mm.nii.gz ]; then
+MYLESION=${DAY1_LESION}/anat/xfms/ants/bet/T1_lesion_filled_mask2T1_2_MNI152_T1_1mm
 elif [ -f ${DAY1_LESION}/anat/xfms/ants/bet/T1_lesion_filled_mask_2_MNI152_T1_1mm.nii.gz ]; then
 MYLESION=${DAY1_LESION}/anat/xfms/ants/bet/T1_lesion_filled_mask_2_MNI152_T1_1mm
-elif [ -f ${DAY1_LESION}/anat/xfms/ants/T1_lesion_filled_mask2mT1_2_MNI152_T1_1mm.nii.gz ]; then
-MYLESION=${DAY1_LESION}/anat/xfms/ants/T1_lesion_filled_mask2mT1_2_MNI152_T1_1mm
+elif [ -f ${DAY1_LESION}/anat/xfms/ants/T1_lesion_filled_mask2T1_2_MNI152_T1_1mm.nii.gz ]; then
+MYLESION=${DAY1_LESION}/anat/xfms/ants/T1_lesion_filled_mask2T1_2_MNI152_T1_1mm
 else
 MYLESION=${DAY1_LESION}/anat/xfms/ants/T1_lesion_filled_mask_2_MNI152_T1_1mm
 fi
@@ -78,12 +78,12 @@ fslmaths ${MYDIR}/diffusion/Kwon_ROIs_ants/dentate_${TREATED_DENTATE}_dil_lesion
 
 #convert all sub-tracts to T1 space for longitudinal analysis
 
-flirt -applyxfm -init ${MYDIR}/diffusion/xfms/diff_2_T1_bbr.mat -in ${MYDIR}/diffusion/Kwon_ROIs_ants/dentate_${TREATED_DENTATE}_dil_lesionterm/fdt_paths_dentate2SCP_decus_bin -out ${MYDIR}/diffusion/Kwon_ROIs_ants/dentate_${TREATED_DENTATE}_dil_lesionterm/fdt_paths_dentate2SCP_decus2T1 -ref ${MYDIR}/anat/mT1 
+flirt -applyxfm -init ${MYDIR}/diffusion/xfms/diff_2_T1_bbr.mat -in ${MYDIR}/diffusion/Kwon_ROIs_ants/dentate_${TREATED_DENTATE}_dil_lesionterm/fdt_paths_dentate2SCP_decus_bin -out ${MYDIR}/diffusion/Kwon_ROIs_ants/dentate_${TREATED_DENTATE}_dil_lesionterm/fdt_paths_dentate2SCP_decus2T1 -ref ${MYDIR}/anat/T1 
 
-flirt -applyxfm -init ${MYDIR}/diffusion/xfms/diff_2_T1_bbr.mat -in ${MYDIR}/diffusion/Kwon_ROIs_ants/dentate_${TREATED_DENTATE}_dil_lesionterm/fdt_paths_SCP_decus2lesion_bin_nolesion -out ${MYDIR}/diffusion/Kwon_ROIs_ants/dentate_${TREATED_DENTATE}_dil_lesionterm/fdt_paths_SCP_decus2lesion2T1 -ref ${MYDIR}/anat/mT1 
+flirt -applyxfm -init ${MYDIR}/diffusion/xfms/diff_2_T1_bbr.mat -in ${MYDIR}/diffusion/Kwon_ROIs_ants/dentate_${TREATED_DENTATE}_dil_lesionterm/fdt_paths_SCP_decus2lesion_bin_nolesion -out ${MYDIR}/diffusion/Kwon_ROIs_ants/dentate_${TREATED_DENTATE}_dil_lesionterm/fdt_paths_SCP_decus2lesion2T1 -ref ${MYDIR}/anat/T1 
 
 fslmaths ${MYDIR}/diffusion/Kwon_ROIs_ants/dentate_${TREATED_DENTATE}_dil_lesionterm/fdt_paths_dentate2SCP_decus2T1 -thr 0.5 -bin ${MYDIR}/diffusion/Kwon_ROIs_ants/dentate_${TREATED_DENTATE}_dil_lesionterm/fdt_paths_dentate2SCP_decusT1_bin
 fslmaths ${MYDIR}/diffusion/Kwon_ROIs_ants/dentate_${TREATED_DENTATE}_dil_lesionterm/fdt_paths_SCP_decus2lesion2T1 -thr 0.5 -bin ${MYDIR}/diffusion/Kwon_ROIs_ants/dentate_${TREATED_DENTATE}_dil_lesionterm/fdt_paths_SCP_decus2lesion2T1_bin
 
-fsleyes ${MYDIR}/anat/mT1 ${MYDIR}/diffusion/Kwon_ROIs_ants/dentate_${TREATED_DENTATE}_dil_lesionterm/fdt_paths_dentate2SCP_decusT1_bin -cm "Red" ${MYDIR}/diffusion/Kwon_ROIs_ants/dentate_${TREATED_DENTATE}_dil_lesionterm/fdt_paths_SCP_decus2lesion2T1_bin -cm "Blue" &
+fsleyes ${MYDIR}/anat/T1 ${MYDIR}/diffusion/Kwon_ROIs_ants/dentate_${TREATED_DENTATE}_dil_lesionterm/fdt_paths_dentate2SCP_decusT1_bin -cm "Red" ${MYDIR}/diffusion/Kwon_ROIs_ants/dentate_${TREATED_DENTATE}_dil_lesionterm/fdt_paths_SCP_decus2lesion2T1_bin -cm "Blue" &
 

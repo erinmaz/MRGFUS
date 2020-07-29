@@ -21,10 +21,10 @@ for EXAM in $day1_exam $month3_exam
 do
 
 cd ${MAINDIR}/analysis/${MYSUB}-${EXAM}/anat/xfms/ants/bet
-if [ -f ${LESIONDIR}/${MYSUB}-${EXAM}/anat/T1_lesion_zonesIandII2mT1.nii.gz ]; then
-antsApplyTransforms -d 3 -i ${LESIONDIR}/${MYSUB}-${EXAM}/anat/T1_lesion_zonesIandII2mT1.nii.gz -r ${FSLDIR}/data/standard/MNI152_T1_1mm.nii.gz -o T1_lesion_filled_mask_2_MNI152_T1_1mm.nii.gz -t [MNI_1mm_2_mT10GenericAffine.mat,1] -t MNI_1mm_2_mT11InverseWarp.nii.gz -n Linear
+if [ -f ${LESIONDIR}/${MYSUB}-${EXAM}/anat/T1_lesion_zonesIandII2T1.nii.gz ]; then
+antsApplyTransforms -d 3 -i ${LESIONDIR}/${MYSUB}-${EXAM}/anat/T1_lesion_zonesIandII2T1.nii.gz -r ${FSLDIR}/data/standard/MNI152_T1_1mm.nii.gz -o T1_lesion_filled_mask_2_MNI152_T1_1mm.nii.gz -t [MNI_1mm_2_T10GenericAffine.mat,1] -t MNI_1mm_2_T11InverseWarp.nii.gz -n Linear
 else
-antsApplyTransforms -d 3 -i ${LESIONDIR}/${MYSUB}-${EXAM}/anat/T1_lesion_zonesIandII.nii.gz -r ${FSLDIR}/data/standard/MNI152_T1_1mm.nii.gz -o T1_lesion_filled_mask_2_MNI152_T1_1mm.nii.gz -t [MNI_1mm_2_mT10GenericAffine.mat,1] -t MNI_1mm_2_mT11InverseWarp.nii.gz -n Linear
+antsApplyTransforms -d 3 -i ${LESIONDIR}/${MYSUB}-${EXAM}/anat/T1_lesion_zonesIandII.nii.gz -r ${FSLDIR}/data/standard/MNI152_T1_1mm.nii.gz -o T1_lesion_filled_mask_2_MNI152_T1_1mm.nii.gz -t [MNI_1mm_2_T10GenericAffine.mat,1] -t MNI_1mm_2_T11InverseWarp.nii.gz -n Linear
 fi
 fslmaths T1_lesion_filled_mask_2_MNI152_T1_1mm -thr 0.5 -bin T1_lesion_filled_mask_2_MNI152_T1_1mm
 

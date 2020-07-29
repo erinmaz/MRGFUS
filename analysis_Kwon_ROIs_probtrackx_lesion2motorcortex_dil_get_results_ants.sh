@@ -24,7 +24,7 @@ fslmaths ${MYDIR}/diffusion/Kwon_ROIs_ants/lesion2motorcortex_dil/fdt_paths_thr_
 
 for roi in fdt_paths_thr_bin_outsidethal fdt_paths_thr_bin_withinthal
 do
-flirt -applyxfm -init ${MYDIR}/diffusion/xfms/diff_2_T1_bbr.mat -in ${MYDIR}/diffusion/Kwon_ROIs_ants/lesion2motorcortex_dil/${roi} -out ${MYDIR}/diffusion/Kwon_ROIs_ants/lesion2motorcortex_dil/${roi}2T1 -ref ${MYDIR}/anat/mT1 
+flirt -applyxfm -init ${MYDIR}/diffusion/xfms/diff_2_T1_bbr.mat -in ${MYDIR}/diffusion/Kwon_ROIs_ants/lesion2motorcortex_dil/${roi} -out ${MYDIR}/diffusion/Kwon_ROIs_ants/lesion2motorcortex_dil/${roi}2T1 -ref ${MYDIR}/anat/T1 
 fslmaths ${MYDIR}/diffusion/Kwon_ROIs_ants/lesion2motorcortex_dil/${roi}2T1 -thr 0.5 -bin ${MYDIR}/diffusion/Kwon_ROIs_ants/lesion2motorcortex_dil/${roi}2T1_bin
 done
 
