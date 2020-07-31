@@ -5,7 +5,7 @@ MAINDIR=/Users/erin/Desktop/Projects/MRGFUS
 ROIDIR=/Users/erin/Desktop/Projects/MRGFUS/scripts/rois_standardspace
 MYSUB=$1
 
-for ROI in mni_prob_Cerebellum_thr10_L mni_prob_Cerebellum_thr10_R midsag_plane_CC_MNI152_T1_2mm optic_chiasm_thalterm jhu-tracts_prob_Cingulum_hippocampus_L jhu-tracts_prob_Cingulum_hippocampus_R harvardoxford-subcortical_thalamus_R_final_1mm harvardoxford-subcortical_thalamus_L_final_1mm jhu-labels_Label_Anterior_Limb_of_internal_capsule_L jhu-labels_Label_Anterior_Limb_of_internal_capsule_R histthal_label_anterior_commissure_dil2 brainstem_slice_below_pons optic_chiasm_thalterm
+for ROI in mni_prob_Cerebellum_thr10_L mni_prob_Cerebellum_thr10_R midsag_plane_CC_MNI152_T1_2mm optic_chiasm_thalterm jhu-tracts_prob_Cingulum_hippocampus_L jhu-tracts_prob_Cingulum_hippocampus_R harvardoxford-subcortical_thalamus_R_final_1mm harvardoxford-subcortical_thalamus_L_final_1mm jhu-labels_Label_Anterior_Limb_of_internal_capsule_L jhu-labels_Label_Anterior_Limb_of_internal_capsule_R histthal_label_anterior_commissure_dil2 brainstem_slice_below_pons optic_chiasm_thalterm harvardoxford-cortical_prob_Precentral+Juxtapositional_L harvardoxford-cortical_prob_Precentral+Juxtapositional_R
 do
 
 antsApplyTransforms -d 3 -i ${ROIDIR}/${ROI}.nii.gz -r ${MAINDIR}/analysis/${MYSUB}/anat/T1.nii.gz -o ${MAINDIR}/analysis/${MYSUB}/diffusion/Kwon_ROIs_ants/${ROI}.nii.gz -t ${MAINDIR}/analysis/${MYSUB}/anat/xfms/ants/bet/MNI_1mm_2_T10GenericAffine.mat -t ${MAINDIR}/analysis/${MYSUB}/anat/xfms/ants/bet/MNI_1mm_2_T11Warp.nii.gz -n NearestNeighbor
@@ -33,5 +33,9 @@ fslmaths exclude_R -mas SCP_R_dil2_binv -bin exclude_R
 fslstats exclude_L -k SCP_L_dil -V
 fslstats exclude_R -k SCP_R_dil -V
 
-fsleyes ${MAINDIR}/analysis/${MYSUB}/diffusion/mean_b0_unwarped exclude_L exclude_R dentate_R_dil dentate_L_dil RN_L_dil RN_R_dil SCP_R_dil SCP_L_dil harvardoxford-subcortical_thalamus_L_final_1mm2diff harvardoxford-subcortical_thalamus_R_final_1mm2diff &
+fslmaths harvardoxford-cortical_prob_Precentral+Juxtapositional_R2diff -dilM harvardoxford-cortical_prob_Precentral+Juxtapositional_R2diff_dilM
+
+fslmaths harvardoxford-cortical_prob_Precentral+Juxtapositional_L2diff -dilM harvardoxford-cortical_prob_Precentral+Juxtapositional_L2diff_dilM
+
+fsleyes ${MAINDIR}/analysis/${MYSUB}/diffusion/mean_b0_unwarped exclude_L exclude_R dentate_R_dil dentate_L_dil RN_L_dil RN_R_dil SCP_R_dil SCP_L_dil harvardoxford-subcortical_thalamus_L_final_1mm2diff harvardoxford-subcortical_thalamus_R_final_1mm2diff harvardoxford-cortical_prob_Precentral+Juxtapositional_L2diff_dilM harvardoxford-cortical_prob_Precentral+Juxtapositional_R2diff_dilM &
 
