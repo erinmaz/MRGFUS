@@ -12,8 +12,8 @@ PRE=`sed -n '/'${MYSUB}'/p' ~/Desktop/Projects/MRGFUS/scripts/IDs_and_ExamNums.s
 DAY1=`sed -n '/'${MYSUB}'/p' ~/Desktop/Projects/MRGFUS/scripts/IDs_and_ExamNums.sh | awk '{print $3}'` 
 MONTH3=`sed -n '/'${MYSUB}'/p' ~/Desktop/Projects/MRGFUS/scripts/IDs_and_ExamNums.sh | awk '{print $4}'`
 
-#analysis_longitudinal_all_T1s_in_pre_space.sh $MYSUB $PRE $DAY1 $MONTH3
-#analysis_ants_reg_one_subject.sh $MYSUB
+analysis_longitudinal_all_T1s_in_pre_space.sh $MYSUB $PRE $DAY1 $MONTH3
+analysis_ants_reg_one_subject.sh $MYSUB
 analysis_T1_day1_2_diff_pre.sh $MYSUB $PRE $DAY1
 analysis_Kwon_ROIs_checkOverlap_newSub.sh ${MYSUB}-${PRE}
 analysis_Kwon_ROIs_probtrackx_makeROIs_ants_newSubs.sh ${MYSUB}-${PRE}
