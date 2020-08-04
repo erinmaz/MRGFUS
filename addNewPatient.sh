@@ -12,8 +12,8 @@ PRE=`sed -n '/'${MYSUB}'/p' ~/Desktop/Projects/MRGFUS/scripts/IDs_and_ExamNums.s
 DAY1=`sed -n '/'${MYSUB}'/p' ~/Desktop/Projects/MRGFUS/scripts/IDs_and_ExamNums.sh | awk '{print $3}'` 
 MONTH3=`sed -n '/'${MYSUB}'/p' ~/Desktop/Projects/MRGFUS/scripts/IDs_and_ExamNums.sh | awk '{print $4}'`
 
-analysis_longitudinal_all_T1s_in_pre_space.sh $MYSUB $PRE $DAY1 $MONTH3
-analysis_ants_reg_one_subject.sh $MYSUB
+#analysis_longitudinal_all_T1s_in_pre_space.sh $MYSUB $PRE $DAY1 $MONTH3
+#analysis_ants_reg_one_subject.sh $MYSUB
 analysis_T1_day1_2_diff_pre.sh $MYSUB $PRE $DAY1
 analysis_Kwon_ROIs_checkOverlap_newSub.sh ${MYSUB}-${PRE}
 analysis_Kwon_ROIs_probtrackx_makeROIs_ants_newSubs.sh ${MYSUB}-${PRE}
@@ -25,7 +25,7 @@ fslstats /Users/erin/Desktop/Projects/MRGFUS/analysis/${MYSUB}-${PRE}/diffusion/
 check_stn_ANTs_newSub.sh $MYSUB $DAY1 $MONTH3
 analysis_Kwon_ROIs_probtrackx_lesionterm_split_tracts_ants.sh $MYSUB $PRE $DAY1
 analysis_longitudinal_diffusion_in_pre_T1_space.sh $MYSUB $PRE $DAY1 $MONTH3
-analysis_Kwon_ROIs_probtrackx_makeROI_motorcortex_ants_newSub.sh.sh $MYSUB $PRE 
+analysis_Kwon_ROIs_probtrackx_makeROI_motorcortex_ants_newSub.sh $MYSUB $PRE 
 analysis_Kwon_ROIs_probtrackx_lesion2motorcortex_dil_ants_newSub.sh $MYSUB $PRE
  
 analysis_Kwon_ROIs_probtrackx_lesionterm_get_results_ants.sh $MYSUB $PRE $DAY1 /Users/erin/Desktop/Projects/MRGFUS/analysis/results_lesionterm_ants_${MYSUB}

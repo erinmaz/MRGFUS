@@ -31,6 +31,8 @@ done
 vol_withinthal=`fslstats ${MYDIR}/diffusion/Kwon_ROIs_ants/lesion2motorcortex_dil/fdt_paths_thr_bin_withinthal2T1_bin -V | awk '{print $2}'`
 vol_outsidethal=`fslstats ${MYDIR}/diffusion/Kwon_ROIs_ants/lesion2motorcortex_dil/fdt_paths_thr_bin_outsidethal2T1_bin -V | awk '{print $2}'`
 
+fsleyes ${MYDIR}/anat/T1 ${MYDIR}/diffusion/Kwon_ROIs_ants/lesion2motorcortex_dil/fdt_paths_thr_bin_outsidethal2T1_bin ${MYDIR}/diffusion/Kwon_ROIs_ants/lesion2motorcortex_dil/fdt_paths_thr_bin_withinthal2T1_bin
+
 echo $vol_withinthal >> ${OUTFILE}_withinthal
 echo $vol_outsidethal >> ${OUTFILE}_outsidethal
 
