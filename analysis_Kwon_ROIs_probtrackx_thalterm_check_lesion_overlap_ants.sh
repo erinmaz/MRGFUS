@@ -3,7 +3,7 @@ ANALYSISDIR=${MAINDIR}/analysis
 
 
 LESIONFILE=anat/xfms/ants/bet/T1_lesion_filled_mask_2_MNI152_T1_1mm.nii.gz
-for MYSUB in 9001_SH 9002_RA 9004_EP 9005_BG 9006_EO 9007_RB 9009_CRB 9011_BB 9013_JD 9021_WM 9022_JG 9023_WS
+for MYSUB in 9001_SH 9004_EP 9005_BG 9006_EO 9007_RB 9009_CRB 9011_BB 9013_JD 9021_WM 9022_JG 9023_WS 9024_LLB 9028_PR 9030_GA 9031_DB
 do
 
 PRE_EXAM=`sed -n '/'${MYSUB}'/p' ~/Desktop/Projects/MRGFUS/scripts/IDs_and_ExamNums.sh | awk '{print $2}'` 
