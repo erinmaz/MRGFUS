@@ -33,13 +33,11 @@ LESION_AND_NEIGHBOURS_BINV=${MYDIR}/diffusion/Kwon_ROIs_ants/T1_lesion_mask_fill
 
 fslmaths ${MYDIR}/diffusion/Kwon_ROIs_ants/dentate_${TREATED_DENTATE}_dil_thalterm/fdt_paths -bin -mas ${LESION_AND_NEIGHBOURS_BINV} ${MYDIR}/diffusion/Kwon_ROIs_ants/dentate_${TREATED_DENTATE}_dil_thalterm/fdt_paths_bin_nolesion
 
-fsleyes  ${MYDIR}/diffusion/Kwon_ROIs_ants/dentate_${TREATED_DENTATE}_dil_thalterm/fdt_paths ${MYDIR}/diffusion/Kwon_ROIs_ants/dentate_${TREATED_DENTATE}_dil_thalterm/fdt_paths_bin_nolesion ${MYDIR}/diffusion/Kwon_ROIs_ants/dentate_${TREATED_DENTATE}_dil_lesionterm/fdt_paths
-
 fslmaths ${MYDIR}/diffusion/Kwon_ROIs_ants/dentate_${TREATED_DENTATE}_dil_lesionterm/fdt_paths -binv ${MYDIR}/diffusion/Kwon_ROIs_ants/dentate_${TREATED_DENTATE}_dil_lesionterm/fdt_paths_binv
 
 fslmaths ${MYDIR}/diffusion/Kwon_ROIs_ants/dentate_${TREATED_DENTATE}_dil_thalterm/fdt_paths_bin_nolesion -mas ${MYDIR}/diffusion/Kwon_ROIs_ants/dentate_${TREATED_DENTATE}_dil_lesionterm/fdt_paths_binv ${MYDIR}/diffusion/Kwon_ROIs_ants/dentate_${TREATED_DENTATE}_dil_thalterm/fdt_paths_bin_nolesion_untreated
 
-fsleyes ${MYDIR}/diffusion/Kwon_ROIs_ants/dentate_${TREATED_DENTATE}_dil_lesionterm/fdt_paths ${MYDIR}/diffusion/Kwon_ROIs_ants/dentate_${TREATED_DENTATE}_dil_thalterm/fdt_paths_bin_nolesion_untreated
+#fsleyes ${MYDIR}/diffusion/Kwon_ROIs_ants/dentate_${TREATED_DENTATE}_dil_lesionterm/fdt_paths ${MYDIR}/diffusion/Kwon_ROIs_ants/dentate_${TREATED_DENTATE}_dil_thalterm/fdt_paths_bin_nolesion_untreated
 
 treated_dentate_coords=`fslstats ${MYDIR}/diffusion/Kwon_ROIs_ants/dentate_${TREATED_DENTATE}_dil -C`
 treated_dentate_x=`echo $treated_dentate_coords | awk '{print $1}'`
@@ -79,7 +77,15 @@ fi
 
 fslmaths ${MYDIR}/diffusion/Kwon_ROIs_ants/dentate_${TREATED_DENTATE}_dil_thalterm/fdt_paths_bin_nolesion_untreated_dentate2SCP_decus -bin ${MYDIR}/diffusion/Kwon_ROIs_ants/dentate_${TREATED_DENTATE}_dil_thalterm/fdt_paths_bin_nolesion_untreated_dentate2SCP_decus_bin
 
-fsleyes ${MYDIR}/diffusion/mean_b0_unwarped ${MYDIR}/diffusion/Kwon_ROIs_ants/dentate_${TREATED_DENTATE}_dil_thalterm/fdt_paths_bin_nolesion_untreated_dentate2SCP_decus_bin ${MYDIR}/diffusion/Kwon_ROIs_ants/dentate_${TREATED_DENTATE}_dil_thalterm/fdt_paths_bin_nolesion_untreated_SCP_decus2lesion  ${MYDIR}/diffusion/Kwon_ROIs_ants/dentate_${TREATED_DENTATE}_dil_lesionterm/fdt_paths
+#fsleyes ${MYDIR}/diffusion/mean_b0_unwarped ${MYDIR}/diffusion/Kwon_ROIs_ants/dentate_${TREATED_DENTATE}_dil_thalterm/fdt_paths_bin_nolesion_untreated_dentate2SCP_decus_bin ${MYDIR}/diffusion/Kwon_ROIs_ants/dentate_${TREATED_DENTATE}_dil_thalterm/fdt_paths_bin_nolesion_untreated_SCP_decus2lesion  ${MYDIR}/diffusion/Kwon_ROIs_ants/dentate_${TREATED_DENTATE}_dil_lesionterm/fdt_paths &
 
-echo `basename $MYDIR` `fslstats ${MYDIR}/diffusion/Kwon_ROIs_ants/dentate_${TREATED_DENTATE}_dil_thalterm/fdt_paths_bin_nolesion_untreated_dentate2SCP_decus_bin -V` `fslstats ${MYDIR}/diffusion/Kwon_ROIs_ants/dentate_${TREATED_DENTATE}_dil_thalterm/fdt_paths_bin_nolesion_untreated_SCP_decus2lesion -V`
+#echo `basename $MYDIR` `fslstats ${MYDIR}/diffusion/Kwon_ROIs_ants/dentate_${TREATED_DENTATE}_dil_thalterm/fdt_paths_bin_nolesion_untreated_dentate2SCP_decus_bin -V` `fslstats ${MYDIR}/diffusion/Kwon_ROIs_ants/dentate_${TREATED_DENTATE}_dil_thalterm/fdt_paths_bin_nolesion_untreated_SCP_decus2lesion -V`
 
+flirt -applyxfm -init ${MYDIR}/diffusion/xfms/diff_2_T1_bbr.mat -in ${MYDIR}/diffusion/Kwon_ROIs_ants/dentate_${TREATED_DENTATE}_dil_thalterm/fdt_paths_bin_nolesion_untreated_dentate2SCP_decus_bin  -out ${MYDIR}/diffusion/Kwon_ROIs_ants/dentate_${TREATED_DENTATE}_dil_thalterm/fdt_paths_bin_nolesion_untreated_dentate2SCP_decus_bin2T1 -ref ${MYDIR}/anat/T1 
+
+flirt -applyxfm -init ${MYDIR}/diffusion/xfms/diff_2_T1_bbr.mat -in ${MYDIR}/diffusion/Kwon_ROIs_ants/dentate_${TREATED_DENTATE}_dil_thalterm/fdt_paths_bin_nolesion_untreated_SCP_decus2lesion -out ${MYDIR}/diffusion/Kwon_ROIs_ants/dentate_${TREATED_DENTATE}_dil_thalterm/fdt_paths_bin_nolesion_untreated_SCP_decus2lesion2T1 -ref ${MYDIR}/anat/T1 
+
+fslmaths ${MYDIR}/diffusion/Kwon_ROIs_ants/dentate_${TREATED_DENTATE}_dil_thalterm/fdt_paths_bin_nolesion_untreated_dentate2SCP_decus_bin2T1 -thr 0.5 -bin ${MYDIR}/diffusion/Kwon_ROIs_ants/dentate_${TREATED_DENTATE}_dil_thalterm/fdt_paths_bin_nolesion_untreated_dentate2SCP_decus_bin2T1_bin
+fslmaths ${MYDIR}/diffusion/Kwon_ROIs_ants/dentate_${TREATED_DENTATE}_dil_thalterm/fdt_paths_bin_nolesion_untreated_SCP_decus2lesion2T1 -thr 0.5 -bin ${MYDIR}/diffusion/Kwon_ROIs_ants/dentate_${TREATED_DENTATE}_dil_thalterm/fdt_paths_bin_nolesion_untreated_SCP_decus2lesion2T1_bin
+
+fsleyes ${MYDIR}/anat/T1 ${MYDIR}/diffusion/Kwon_ROIs_ants/dentate_${TREATED_DENTATE}_dil_thalterm/fdt_paths_bin_nolesion_untreated_SCP_decus2lesion2T1_bin -cm "Red"  ${MYDIR}/diffusion/Kwon_ROIs_ants/dentate_${TREATED_DENTATE}_dil_thalterm/fdt_paths_bin_nolesion_untreated_dentate2SCP_decus_bin2T1_bin -cm "Blue" &
